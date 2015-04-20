@@ -17,6 +17,8 @@ GENERATED_DIR="${PROJECT_DIR}/documentation"
 mkdir -p "${GHPAGES_DIR}"
 cd "${GHPAGES_DIR}"
 git init
+git config user.name "${GIT_USER}"
+git config user.email "${GIT_EMAIL}"
 git remote add upstream "https://${GH_TOKEN}@github.com/${GH_USER}/${GH_REPO}.git"
 git fetch upstream gh-pages
 git checkout gh-pages
