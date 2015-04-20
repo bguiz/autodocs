@@ -78,6 +78,25 @@ It makes the most sense to select the branch from which releases are cut.
 If you are using either Git Flow or the standard Github branching strategies,
 it makes the most sense to leave this as `master`.
 
+## Published Result
+
+If your project has built successfully on CI,
+visit `http://GH_USER.github.io/GH_REPO/api/VERSION`.
+
+For example: [bguiz.github.io/plugin-registry/api/0.2](http://bguiz.github.io/plugin-registry/api/0.2/)
+
+The value of `VERSION` includes the major and minor versions only,
+because semver (semantic versioning) principles state that
+if there are any API changes, the major or minor version numbers should be bumped;
+and conversly, that when a patch version number is bumped,
+it implies that there have **not** been any API changes.
+
+This is done so as to be able to provide references for multiple versions
+of your projects at the same time,
+which can be handy for users who are unable to upgrade,
+and also for users determining what has changed from the version
+they are currently using to the one they wish to switch to.
+
 ## Contributing
 
 This repository uses the **git flow** branching strategy.
