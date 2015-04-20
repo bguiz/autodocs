@@ -6,7 +6,7 @@ if (testShouldPublishTravis()) {
 
 function environmentVariablesTravis() {
   requireEnvironmentVariable('TRAVIS_REPO_SLUG');
-  process.env.REPO_SLUG = process.env.REPO_SLUG;
+  process.env.REPO_SLUG = process.env.TRAVIS_REPO_SLUG;
   requireEnvironmentVariable('TRAVIS_PULL_REQUEST');
   requireEnvironmentVariable('TRAVIS_BRANCH');
   requireEnvironmentVariable('TRAVIS_BUILD_NUMBER');
