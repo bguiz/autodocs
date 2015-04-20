@@ -67,6 +67,11 @@ In addition to this, publishing also needs a few environment variables to be set
   - Optional, set to override
   - `master`
   - Documentation will be generated only when this branch is pushed.
+- `DOCUMENT_JOB_INDEX`
+  - Optional, set to override
+  - `1`
+  - Documentation will be generated only on one of the jobs
+    for each build, use this to specify which one.
 
 Your Git repository can have many different branches being pushed,
 but you only have one published documentation,
