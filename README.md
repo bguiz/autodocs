@@ -5,7 +5,7 @@ Automates publishing API docs for NodeJs projects, useful for continuous integra
 ## Installation
 
 Install this tool as a `devDependency` in your NodeJs project,
-and add a `publishdocs` script to your project's `package.json`.
+and add a `autodocs` script to your project's `package.json`.
 
 This tool is agnostic to your choice of tool used to generate documentation,
 and it will execute `npm run generatedocs`,
@@ -23,19 +23,19 @@ npm install --save-dev yuidocjs autodocs
 ```json
 "scripts": {
   "generatedocs": "node ./node_modules/yuidocjs/lib/cli .",
-  "publishdocs": "node ./node_modules/autodocs"
+  "autodocs": "node ./node_modules/autodocs"
 }
 ```
 
 ## Usage
 
-Configure your CI environment to run the `publishdocs` script
+Configure your CI environment to run the `autodocs` script
 after the project has successfully built.
 For example, if using Travis, add this to your `.travis.yml`
 
 ```yaml
 after_success:
-- npm run publishdocs
+- npm run autodocs
 ```
 
 In addition to this, publishing also needs a few environment variables to be set:

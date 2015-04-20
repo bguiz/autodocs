@@ -10,27 +10,36 @@ set -o errexit -o nounset
 npm run generatedocs
 
 # Publish documentation to gh-pages
-# Set up new git repo in documentation folder, and use gh-pages branch
-cd documentation
+
+TIME_STAMP=$( date +%Y-%m-%d:%H:%M:%S )
+GHPAGES_DIR="${PROJECT_DIR}/autodocs/ghpages-${TIME_STAMP}"
+GENERATED_DIR="${PROJECT_DIR}/documentation"
+mkdir -p "${GHPAGES_DIR}"
+cd "${GHPAGES_DIR}"
 git init
 git config user.name "${GIT_USER}"
 git config user.email "${GIT_EMAIL}"
 git remote add upstream "https://${GH_TOKEN}@github.com/${GH_USER}/${GH_REPO}.git"
 git fetch upstream gh-pages
-git reset upstream/gh-pages
+git checkout gh-pages
+COMMIT_ID=$( git rev-parse --short HEAD )
+API_VERSION_DIR="${GHPAGES_DIR}/api/${MAJOR_MINOR_VERSION}"
+mkdir -p "${API_VERSION_DIR}"
+rm -rf ${API_VERSION_DIR}/*
+cp -r ${GENERATED_DIR}/* "${API_VERSION_DIR}"
 
-# Add any files needed manually
-#echo "${GH_USER}.github.io/" > CNAME
-touch .
+# TODO specify a folder for files to copy across manually
+touch "${API_VERSION_DIR}"
+
+# TODO generate an index page to list all available API documentation versions
+# TODO alias "latest" or "current" to the one currently being generated
 
 # Test if there are any changes
-NUM_FILES_CHANGED=$( git ls-files -m | wc -l )
+NUM_FILES_CHANGED=$( git ls-files -m -o | wc -l )
 if test "${NUM_FILES_CHANGED}" -gt "0" ; then
 
   # Commit and push
-  git add -A .
-  COMMIT_ID=$( git rev-parse --short HEAD )
-  TIME_STAMP=$( date +%Y-%m-%d:%H:%M:%S )
+  git add -A "${API_VERSION_DIR}"
   COMMIT_MESSAGE="autodocs publish ${TIME_STAMP} ${COMMIT_ID}"
   echo "${COMMIT_MESSAGE}"
   git commit -m "${COMMIT_MESSAGE}"
