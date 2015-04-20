@@ -1,8 +1,6 @@
 # `autodocs-ghpages`
 
-Automates publishing API docs for NodeJs projects, useful for continuous integration
-
-Currently a work in progress
+Automates publishing API docs for NodeJs projects, useful for continuous integration.
 
 ## Installation
 
