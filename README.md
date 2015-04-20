@@ -5,7 +5,7 @@ Automates publishing API docs for NodeJs projects, useful for continuous integra
 ## Installation
 
 Install this tool as a `devDependency` in your NodeJs project,
-and add a `publishdocs` script to your project's `package.json`.
+and add a `autodocs` script to your project's `package.json`.
 
 This tool is agnostic to your choice of tool used to generate documentation,
 and it will execute `npm run generatedocs`,
@@ -23,19 +23,19 @@ npm install --save-dev yuidocjs autodocs
 ```json
 "scripts": {
   "generatedocs": "node ./node_modules/yuidocjs/lib/cli .",
-  "publishdocs": "node ./node_modules/autodocs"
+  "autodocs": "node ./node_modules/autodocs"
 }
 ```
 
 ## Usage
 
-Configure your CI environment to run the `publishdocs` script
+Configure your CI environment to run the `autodocs` script
 after the project has successfully built.
 For example, if using Travis, add this to your `.travis.yml`
 
 ```yaml
 after_success:
-- npm run publishdocs
+- npm run autodocs
 ```
 
 In addition to this, publishing also needs a few environment variables to be set:
@@ -77,6 +77,25 @@ so for `DOCUMENT_BRANCH`, select the branch for which documentation should be pu
 It makes the most sense to select the branch from which releases are cut.
 If you are using either Git Flow or the standard Github branching strategies,
 it makes the most sense to leave this as `master`.
+
+## Published Result
+
+If your project has built successfully on CI,
+visit `http://GH_USER.github.io/GH_REPO/api/VERSION`.
+
+For example: [bguiz.github.io/plugin-registry/api/0.2](http://bguiz.github.io/plugin-registry/api/0.2/)
+
+The value of `VERSION` includes the major and minor versions only,
+because semver (semantic versioning) principles state that
+if there are any API changes, the major or minor version numbers should be bumped;
+and conversly, that when a patch version number is bumped,
+it implies that there have **not** been any API changes.
+
+This is done so as to be able to provide references for multiple versions
+of your projects at the same time,
+which can be handy for users who are unable to upgrade,
+and also for users determining what has changed from the version
+they are currently using to the one they wish to switch to.
 
 ## Contributing
 
