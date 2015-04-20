@@ -25,7 +25,8 @@ git checkout gh-pages
 COMMIT_ID=$( git rev-parse --short HEAD )
 API_VERSION_DIR="${GHPAGES_DIR}/api/${MAJOR_MINOR_VERSION}"
 mkdir -p "${API_VERSION_DIR}"
-cp -r "${GENERATED_DIR}" "${API_VERSION_DIR}"
+rm -rf "${API_VERSION_DIR}/*"
+cp -r "${GENERATED_DIR}/*" "${API_VERSION_DIR}"
 
 # TODO specify a folder for files to copy across manually
 touch "${API_VERSION_DIR}"
