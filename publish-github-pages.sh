@@ -7,7 +7,7 @@
 set -o errexit -o nounset
 
 # Generate the documentation
-npm run document
+npm run generatedocs
 
 # Publish documentation to gh-pages
 # Set up new git repo in documentation folder, and use gh-pages branch
