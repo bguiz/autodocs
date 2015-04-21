@@ -1,4 +1,4 @@
-# `autodocs-ghpages`
+# `autodocs`
 
 Automates publishing API docs for NodeJs projects, useful for continuous integration.
 
@@ -37,6 +37,10 @@ For example, if using Travis, add this to your `.travis.yml`
 after_success:
 - npm run autodocs
 ```
+
+Remember that `autodocs` will run `generatedocs` when it deems that there is a need,
+so there is **no need** to include `generatedocs` in your CI script -
+only `autodocs` is necessary here.
 
 In addition to this, publishing also needs a few environment variables to be set:
 
