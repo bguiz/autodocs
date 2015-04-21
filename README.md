@@ -1,4 +1,4 @@
-# `autodocs-ghpages`
+# `autodocs`
 
 Automates publishing API docs for NodeJs projects, useful for continuous integration.
 
