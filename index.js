@@ -20,7 +20,6 @@ function environmentVariablesTravis() {
   requireEnvironmentVariable('TRAVIS_BRANCH');
   requireEnvironmentVariable('TRAVIS_BUILD_NUMBER');
   requireEnvironmentVariable('TRAVIS_JOB_NUMBER');
-  requireEnvironmentVariable('TRAVIS_TAG');
 }
 
 function environmentVariablesGithub() {
@@ -76,7 +75,7 @@ function testShouldPublishTravis() {
     return false;
   }
   else if (process.env.FLAG_PUBLISH_ON_RELEASE === 'true') {
-    return (process.env.TRAVIS_TAG !== 'false');
+    return (existsEnvironmentVariable('TRAVIS_TAG'));
   }
   else {
     return (
