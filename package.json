@@ -4,6 +4,7 @@
   "description": "Automates publishing API docs for NodeJs projects, useful for continuous integration",
   "main": "index.js",
   "scripts": {
+    "lint": "./node_modules/jshint/bin/jshint --verbose --reporter ./node_modules/jshint-stylish .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -24,5 +25,9 @@
   "bugs": {
     "url": "https://github.com/bguiz/autodocs/issues"
   },
-  "homepage": "https://github.com/bguiz/autodocs"
+  "homepage": "https://github.com/bguiz/autodocs",
+  "devDependencies": {
+    "jshint": "^2.6.3",
+    "jshint-stylish": "^1.0.1"
+  }
 }

@@ -51,7 +51,7 @@ function environmentVariablesCommon() {
 
   defaultEnvironmentVariable('FLAG_COPY_ASSETS', 'false');
   defaultEnvironmentVariable('FLAG_PUBLISH_ON_RELEASE', 'false');
-  defaultEnvironmentVariable('FLAG_CLEAN_DOCUMENT', 'false')
+  defaultEnvironmentVariable('FLAG_CLEAN_DOCUMENT', 'false');
 
   defaultEnvironmentVariable('DOCUMENT_BRANCH', 'master');
   defaultEnvironmentVariable('DOCUMENT_JOB_INDEX', '1');
@@ -114,7 +114,7 @@ function substituteEnvironmentVariable(name) {
   process.env[name] = process.env[name]
     .replace(/{{[^{}]+}}/g, function(otherName) {
       otherName = otherName.replace(/[{}]+/g, '');
-      requireEnvironmentVariable(otherName)
+      requireEnvironmentVariable(otherName);
       return process.env[otherName];
     });
 }
