@@ -11,6 +11,7 @@ npm run generatedocs
 
 # Publish documentation to gh-pages
 
+# Git repo init and update gh-pages branch
 TIME_STAMP=$( date +%Y-%m-%d:%H:%M:%S )
 GHPAGES_DIR="${PROJECT_DIR}/autodocs/ghpages-${TIME_STAMP}"
 GENERATED_DIR="${PROJECT_DIR}/documentation"
@@ -20,6 +21,8 @@ git init
 git config user.name "${GIT_USER}"
 git config user.email "${GIT_EMAIL}"
 git remote add upstream "https://${GH_TOKEN}@github.com/${GH_USER}/${GH_REPO}.git"
+
+# TODO check if gh-pages branch exists, otherwise create on first
 git fetch upstream gh-pages
 git checkout gh-pages
 COMMIT_ID=$( git rev-parse --short HEAD )

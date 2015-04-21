@@ -38,6 +38,10 @@ after_success:
 - npm run autodocs
 ```
 
+Remember that `autodocs` will run `generatedocs` when it deems that there is a need,
+so there is **no need** to include `generatedocs` in your CI script -
+only `autodocs` is necessary here.
+
 In addition to this, publishing also needs a few environment variables to be set:
 
 - `GH_TOKEN`

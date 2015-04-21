@@ -62,12 +62,6 @@ function environmentVariablesCommon() {
 }
 
 function testShouldPublishTravis() {
-  console.log('TRAVIS_PULL_REQUEST', process.env.TRAVIS_PULL_REQUEST);
-  console.log('TRAVIS_BRANCH', process.env.TRAVIS_BRANCH);
-  console.log('DOCUMENT_BRANCH', process.env.DOCUMENT_BRANCH);
-  console.log('TRAVIS_BUILD_NUMBER', process.env.TRAVIS_BUILD_NUMBER);
-  console.log('TRAVIS_JOB_NUMBER', process.env.TRAVIS_JOB_NUMBER);
-  console.log('DOCUMENT_JOB_INDEX', process.env.DOCUMENT_JOB_INDEX);
   return (
     process.env.TRAVIS_PULL_REQUEST === 'false' &&
     process.env.TRAVIS_BRANCH === process.env.DOCUMENT_BRANCH &&
