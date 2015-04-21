@@ -67,13 +67,38 @@ In addition to this, publishing also needs a few environment variables to be set
   - Email address to use when creating the Git commit
 - `DOCUMENT_BRANCH`
   - Optional, set to override
-  - `master`
+  - default: `master`
   - Documentation will be generated only when this branch is pushed.
 - `DOCUMENT_JOB_INDEX`
   - Optional, set to override
-  - `1`
+  - default: `1`
   - Documentation will be generated only on one of the jobs
     for each build, use this to specify which one.
+- `DOCUMENT_GENERATED_FOLDER`:
+  - default: `documentation`
+  - to specify folder where documentation is generated
+  - this represents the location of the **input** for `autodocs`,
+    and it expects the files needed to be published to be here after running the `generatedocs` script
+- `DOCUMENT_PUBLISH_FOLDER`
+  - default: `api/{{MAJOR_VERSION}}.{{MINOR_VERSION}}`
+  - to specify where within gh-pages branch to publish documentation
+  - allows substitution of other environment variables, using `{{VARIABLE}}` syntax
+  - this represents the location of the **output** for `autodocs`
+- `FLAG_COPY_ASSETS`
+  - default: `false`
+  - whether there are any assets to copy
+  - set to `true` **only if** intending to use `DOCUMENT_ASSETS`
+- `DOCUMENT_ASSETS`
+  - default: `CNAME`
+  - list of files and folders (bash style) to copy into the root of the `gh-pages` branch
+  - these files will be copied to the **root**, not the `DOCUMENT_PUBLISH_FOLDER`
+- `FLAG_PUBLISH_ON_RELEASE`
+  - default: `false`
+  - If set to `true` publishing does not happen when any branches are pushed,
+    instead, publishing will happen when tags are pushed
+- `FLAG_CLEAN_DOCUMENT`
+  - default: `false`
+  - If set to `true` the `gh-pages` folder/ repository are deleted
 
 Your Git repository can have many different branches being pushed,
 but you only have one published documentation,
