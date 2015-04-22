@@ -1,0 +1,10 @@
+{
+  "options": {
+    "exclude": "autodocs,coverage,documentation,node_modules,test",
+    "paths": "**/*.js",
+    "tabtospace": 2,
+    "outdir": "documentation",
+    "themedir" : "node_modules/yuidoc-lucid-theme",
+    "helpers" : [ "node_modules/yuidoc-lucid-theme/helpers/helpers.js" ]
+  }
+}
