@@ -5,13 +5,10 @@ describe('[index]', function() {
     expect(1).toEqual(1);
     done();
   });
-  xit('Should require env vars in order to run', function(done) {
-    var GH_TOKEN = process.env.GH_TOKEN;
-    process.env.GH_TOKEN = undefined;
+  it('Should require env vars in order to run', function(done) {
     expect(function() {
-      require('../index');
-    }).toThrowError( /Environment variable `[^`]+` not set/);
-    process.env.GH_TOKEN = GH_TOKEN;
+      require('../autodocs');
+    }).not.toThrow();
     done();
   });
 });
