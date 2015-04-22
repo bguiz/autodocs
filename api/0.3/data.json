@@ -1,0 +1,65 @@
+{
+    "project": {
+        "name": "autodocs",
+        "description": "Automates publishing API docs for NodeJs projects, useful for continuous integration",
+        "version": "0.3.0"
+    },
+    "files": {
+        "index.js": {
+            "name": "index.js",
+            "modules": {
+                "Autodocs": 1
+            },
+            "classes": {
+                "Autodocs": 1
+            },
+            "fors": {
+                "Autodocs": 1
+            },
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "Autodocs": {
+            "name": "Autodocs",
+            "submodules": {},
+            "classes": {
+                "Autodocs": 1
+            },
+            "fors": {
+                "Autodocs": 1
+            },
+            "namespaces": {},
+            "tag": "module",
+            "file": "index.js",
+            "line": 11
+        }
+    },
+    "classes": {
+        "Autodocs": {
+            "name": "Autodocs",
+            "shortname": "Autodocs",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Autodocs",
+            "namespace": "",
+            "file": "index.js",
+            "line": 11
+        }
+    },
+    "classitems": [
+        {
+            "file": "index.js",
+            "line": 17,
+            "description": "The main entry point.\n\nWill determine which continuous integration environment and publishing environment to use,\nand then run those appropriately.\nCurrently, the supported ones are:\n\n- Continuous Integration (`SELECT_CI`):\n  - `travis`\n- Publishing Environment (`SELECT_PUBLISH`):\n  - `github-pages`\n\nRuns various environment variables checks and sets defaults where appropriate.\nThen tests whether this particular build should trigger publishing the documentation,\nand if so fires the publish script",
+            "itemtype": "method",
+            "name": "autodocs",
+            "class": "Autodocs",
+            "module": "Autodocs"
+        }
+    ],
+    "warnings": []
+}
