@@ -100,7 +100,7 @@ function existsEnvironmentVariable(name) {
 
 function requireEnvironmentVariable(name) {
   if (!existsEnvironmentVariable(name)) {
-    throw new Error(''+name+' not set');
+    throw new Error('Environment variable `'+name+'` not set');
   }
 }
 
