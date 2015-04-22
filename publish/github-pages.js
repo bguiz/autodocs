@@ -1,5 +1,8 @@
 'use strict';
 
+var fs = require('fs');
+var path = require('path');
+
 var envVar = require('../environment-variables');
 
 /**
@@ -64,12 +67,44 @@ function environmentVariablesGithub() {
  */
 function publishGithubPages() {
   var childProcess = require('child_process');
-  var script = childProcess.spawn(__dirname+'/github-pages.sh', [], {
+  var script = childProcess.spawn(path.join(__dirname, 'github-pages.sh'), [], {
     stdio: 'inherit',
   });
   script.on('close', function(code) {
+    outputUrls();
     process.exit(code);
   });
+}
+
+/**
+ * Outputs the base URL and the API URL at which the documentation should be published.
+ *
+ * Uses `CNAME` file based on best guess,
+ * otherwise defaults to `*.github/*`
+ *
+ * @method  outputUrls
+ * @for  PublishGithubPages
+ * @private
+ */
+function outputUrls() {
+  var CNAME;
+  if (process.env.FLAG_COPY_ASSETS === 'true' &&
+      process.env.DOCUMENT_ASSETS.split(' ').indexOf('CNAME') >= 0) {
+    // Best guess that CNAME file was copied in
+    try {
+      var CNAMEfile = path.join(process.env.PROJECT_DIR, 'CNAME');
+      CNAME = fs.readFileSync(CNAMEfile).toString().trim();
+    }
+    catch (e) {
+      // Do nothing
+    }
+  }
+  CNAME = CNAME || (process.env.GH_USER+'.github.io');
+  var publishDomain = 'http://'+CNAME;
+  var publishUrl = publishDomain+'/'+process.env.GH_USER;
+  var publishApiUrl = publishUrl+'/'+process.env.DOCUMENT_PUBLISH_FOLDER;
+  console.log('Base URL: '+publishUrl);
+  console.log('API  URL: '+publishApiUrl);
 }
 
 module.exports = {
