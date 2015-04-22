@@ -36,7 +36,7 @@ function autodocs() {
  *
  * Runs various environment variables checks and sets defaults where appropriate.
  * Then tests whether this particular build should trigger publishing the documentation,
- * and if so fires the publish shell script
+ * and if so fires the publish script
  *
  * @method  autodocsForTravisAndGithubPages
  * @for  Autodocs
