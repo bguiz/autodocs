@@ -21,7 +21,7 @@
             <li class="divider-vertical"></li>
             <li>
                 <p class="navbar-text">
-                    API Docs for Version: <b>0.4.0</b>
+                    API Docs for Version: <b>0.4.3</b>
                 </p>
             </li>
         </div>
@@ -81,6 +81,9 @@
                         <div class="file">
                             <pre class="prettyprint linenums">
                         &#x27;use strict&#x27;;
+                        
+                        var fs = require(&#x27;fs&#x27;);
+                        var path = require(&#x27;path&#x27;);
                         
                         var envVar = require(&#x27;../environment-variables&#x27;);
                         
@@ -146,7 +149,7 @@
                          */
                         function publishGithubPages() {
                           var childProcess = require(&#x27;child_process&#x27;);
-                          var script = childProcess.spawn(__dirname+&#x27;/github-pages.sh&#x27;, [], {
+                          var script = childProcess.spawn(path.join(__dirname, &#x27;github-pages.sh&#x27;), [], {
                             stdio: &#x27;inherit&#x27;,
                           });
                           script.on(&#x27;close&#x27;, function(code) {
@@ -155,17 +158,35 @@
                           });
                         }
                         
+                        /**
+                         * Outputs the base URL and the API URL at which the documentation should be published.
+                         *
+                         * Uses &#x60;CNAME&#x60; file based on best guess,
+                         * otherwise defaults to &#x60;*.github/*&#x60;
+                         *
+                         * @method  outputUrls
+                         * @for  PublishGithubPages
+                         * @private
+                         */
                         function outputUrls() {
-                          var publishDomain = &#x27;http://&#x27;+process.env.GH_USER+&#x27;.github.io&#x27;;
-                          var publishUrl = publishDomain+&#x27;/&#x27;+process.env.GH_USER;
+                          var CNAME;
+                          if (process.env.FLAG_COPY_ASSETS === &#x27;true&#x27; &amp;&amp;
+                              process.env.DOCUMENT_ASSETS.split(&#x27; &#x27;).indexOf(&#x27;CNAME&#x27;) &gt;= 0) {
+                            // Best guess that CNAME file was copied in
+                            try {
+                              var CNAMEfile = path.join(process.env.PROJECT_DIR, &#x27;CNAME&#x27;);
+                              CNAME = fs.readFileSync(CNAMEfile).toString().trim();
+                            }
+                            catch (e) {
+                              // Do nothing
+                            }
+                          }
+                          CNAME = CNAME || (process.env.GH_USER+&#x27;.github.io&#x27;);
+                          var publishDomain = &#x27;http://&#x27;+CNAME;
+                          var publishUrl = publishDomain+&#x27;/&#x27;+process.env.GH_REPO;
                           var publishApiUrl = publishUrl+&#x27;/&#x27;+process.env.DOCUMENT_PUBLISH_FOLDER;
                           console.log(&#x27;Base URL: &#x27;+publishUrl);
                           console.log(&#x27;API  URL: &#x27;+publishApiUrl);
-                        // PUBLISH_DOMAIN=&quot;http://${GH_USER}.github.io&quot;
-                        // PUBLISH_URL=&quot;${PUBLISH_DOMAIN}/${GH_REPO}&quot;
-                        // PUBLISH_API_URL=&quot;${PUBLISH_URL}/${DOCUMENT_PUBLISH_FOLDER}&quot;
-                        // echo &quot;Base URL: ${PUBLISH_URL}&quot;
-                        // echo &quot;API  URL: ${PUBLISH_API_URL}&quot;
                         }
                         
                         module.exports = {
