@@ -20,7 +20,7 @@ cd "${GHPAGES_DIR}"
 git init
 git config user.name "${GIT_USER}"
 git config user.email "${GIT_EMAIL}"
-git remote add upstream "https://${GH_TOKEN}@github.com/${GH_USER}/${GH_REPO}.git"
+git remote add upstream "https://${GH_USER}:${GH_TOKEN}@github.com/${GH_USER}/${GH_REPO}.git"
 
 # TODO check if gh-pages branch exists, otherwise create on first
 git fetch upstream gh-pages
@@ -61,7 +61,12 @@ if test "${NUM_FILES_CHANGED}" -gt "0" ; then
   echo "${COMMIT_MESSAGE}"
   git commit -m "${COMMIT_MESSAGE}"
   # discard all output, because it contains the github access token
-  git push --quiet upstream HEAD:gh-pages > /dev/null 2>&1
+  # unless, opted out, using `FLAG_QUIET_PUSH`
+  if test "${FLAG_QUIET_PUSH}" == "false" ; then
+    git push upstream HEAD:gh-pages
+  else
+    git push --quiet upstream HEAD:gh-pages > /dev/null 2>&1
+  fi
   echo "Successfully pushed documentation to gh-pages"
 
 else
