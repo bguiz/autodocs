@@ -2,6 +2,12 @@
 
 Automates publishing API docs for NodeJs projects, useful for continuous integration.
 
+[![NPM](https://nodei.co/npm/autodocs.png)](https://github.com/bguiz/autodocs/)
+
+[![Build Status](https://travis-ci.org/bguiz/autodocs.svg?branch=master)](https://travis-ci.org/bguiz/autodocs)
+[![Coverage Status](https://coveralls.io/repos/bguiz/autodocs/badge.svg?branch=master)](https://coveralls.io/r/bguiz/autodocs?branch=master)
+
+
 ## Installation
 
 Install this tool as a `devDependency` in your NodeJs project,
@@ -26,6 +32,12 @@ npm install --save-dev yuidocjs autodocs
   "autodocs": "node ./node_modules/autodocs"
 }
 ```
+
+## API
+
+[API documentation for `autodocs`](http://bguiz.github.io/autodocs/api/0.4/).
+
+You might be pleased to hear that `autodocs` generates its own documentation.
 
 ## Usage
 
