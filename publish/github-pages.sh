@@ -61,8 +61,8 @@ if test "${NUM_FILES_CHANGED}" -gt "0" ; then
   COMMIT_MESSAGE="autodocs publish ${TIME_STAMP} ${COMMIT_ID}"
   echo "${COMMIT_MESSAGE}"
   git commit -m "${COMMIT_MESSAGE}"
-  discard all output, because it contains the github access token
-  unless, opted out, using `FLAG_QUIET_PUSH`
+  # discard all output, because it contains the github access token
+  # unless, opted out, using `FLAG_QUIET_PUSH`
   if test "${FLAG_STRIP_TOKEN_OUTPUT}" == "false" ; then
     # Show output, unmodified.
     # This should *not* be done in CI, only for local testing
