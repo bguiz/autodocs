@@ -2,7 +2,7 @@
     "project": {
         "name": "autodocs",
         "description": "Automates publishing API docs for NodeJs projects, useful for continuous integration",
-        "version": "0.2.3"
+        "version": "0.2.4"
     },
     "files": {
         "index.js": {
@@ -63,7 +63,7 @@
         {
             "file": "index.js",
             "line": 34,
-            "description": "For the combination of Travis and Github Pages.\n\nRuns various environment variables checks and sets defaults where appropriate.\nThen tests whether this particular build should trigger publishing the documentation,\nand if so fires the publish shell script",
+            "description": "For the combination of Travis and Github Pages.\n\nRuns various environment variables checks and sets defaults where appropriate.\nThen tests whether this particular build should trigger publishing the documentation,\nand if so fires the publish script",
             "itemtype": "method",
             "name": "autodocsForTravisAndGithubPages",
             "class": "Autodocs",
