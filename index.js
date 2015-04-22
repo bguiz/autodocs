@@ -32,7 +32,11 @@ function autodocs() {
 }
 
 /**
- * For the combination of Travis and Github Pages
+ * For the combination of Travis and Github Pages.
+ *
+ * Runs various environment variables checks and sets defaults where appropriate.
+ * Then tests whether this particular build should trigger publishing the documentation,
+ * and if so fires the publish shell script
  *
  * @method  autodocsForTravisAndGithubPages
  * @for  Autodocs
@@ -89,7 +93,7 @@ function environmentVariablesCommon() {
   defaultEnvironmentVariable('FLAG_COPY_ASSETS', 'false');
   defaultEnvironmentVariable('FLAG_PUBLISH_ON_RELEASE', 'false');
   defaultEnvironmentVariable('FLAG_CLEAN_DOCUMENT', 'false');
-  defaultEnvironmentVariable('FLAG_QUIET_PUSH', 'true');
+  defaultEnvironmentVariable('FLAG_STRIP_TOKEN_OUTPUT', 'true');
 
   defaultEnvironmentVariable('DOCUMENT_BRANCH', 'master');
   defaultEnvironmentVariable('DOCUMENT_JOB_INDEX', '1');
