@@ -150,8 +150,22 @@
                             stdio: &#x27;inherit&#x27;,
                           });
                           script.on(&#x27;close&#x27;, function(code) {
+                            outputUrls();
                             process.exit(code);
                           });
+                        }
+                        
+                        function outputUrls() {
+                          var publishDomain = &#x27;http://&#x27;+process.env.GH_USER+&#x27;.github.io&#x27;;
+                          var publishUrl = publishDomain+&#x27;/&#x27;+process.env.GH_USER;
+                          var publishApiUrl = publishUrl+&#x27;/&#x27;+process.env.DOCUMENT_PUBLISH_FOLDER;
+                          console.log(&#x27;Base URL: &#x27;+process.env.PUBLISH_URL);
+                          console.log(&#x27;API  URL: &#x27;+process.env.PUBLISH_API_URL);
+                        // PUBLISH_DOMAIN=&quot;http://${GH_USER}.github.io&quot;
+                        // PUBLISH_URL=&quot;${PUBLISH_DOMAIN}/${GH_REPO}&quot;
+                        // PUBLISH_API_URL=&quot;${PUBLISH_URL}/${DOCUMENT_PUBLISH_FOLDER}&quot;
+                        // echo &quot;Base URL: ${PUBLISH_URL}&quot;
+                        // echo &quot;API  URL: ${PUBLISH_API_URL}&quot;
                         }
                         
                         module.exports = {
