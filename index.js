@@ -2,6 +2,8 @@
 
 var path = require('path');
 
+var envVar = require('./environment-variables');
+
 /**
  * @module  Autodocs
  */
@@ -17,61 +19,34 @@ autodocs();
  *
  * Will determine which continuous integration environment and publishing environment to use,
  * and then run those appropriately.
- * Currently the only supported ones are:
+ * Currently, the supported ones are:
  *
- * - Continuous Integration:
- *   - Travis
- * - Publishing Environment:
- *   - Github Pages
- *
- * @method autodocs
- * @for  Autodocs
- */
-function autodocs() {
-  autodocsForTravisAndGithubPages();
-}
-
-/**
- * For the combination of Travis and Github Pages.
+ * - Continuous Integration (`SELECT_CI`):
+ *   - `travis`
+ * - Publishing Environment (`SELECT_PUBLISH`):
+ *   - `github-pages`
  *
  * Runs various environment variables checks and sets defaults where appropriate.
  * Then tests whether this particular build should trigger publishing the documentation,
  * and if so fires the publish script
  *
- * @method  autodocsForTravisAndGithubPages
+ * @method autodocs
  * @for  Autodocs
  */
-function autodocsForTravisAndGithubPages() {
-  environmentVariablesTravis();
-  environmentVariablesGithub();
+function autodocs() {
+  var ciName = envVar.default('SELECT_CI', 'travis');
+  var publishName = envVar.default('SELECT_PUBLISH', 'github-pages');
+  var ci = require('./ci/'+ciName);
+  var publish = require('./publish/'+publishName);
+  ci.init();
+  publish.init();
   environmentVariablesCommon();
-  if (testShouldPublishTravis()) {
+  if (ci.shouldRun()) {
     console.log('This build will generate new documentation');
-    publishGithubPages();
+    publish.run();
   }
   else {
     console.log('This build does not need to generate new documentation');
-  }
-}
-
-function environmentVariablesTravis() {
-  requireEnvironmentVariable('TRAVIS_REPO_SLUG');
-  process.env.REPO_SLUG = process.env.TRAVIS_REPO_SLUG;
-  requireEnvironmentVariable('TRAVIS_PULL_REQUEST');
-  requireEnvironmentVariable('TRAVIS_BRANCH');
-  requireEnvironmentVariable('TRAVIS_BUILD_NUMBER');
-  requireEnvironmentVariable('TRAVIS_JOB_NUMBER');
-}
-
-function environmentVariablesGithub() {
-  requireEnvironmentVariable('GH_TOKEN');
-
-  if (!existsEnvironmentVariable('GH_USER') ||
-      !existsEnvironmentVariable('GH_REPO')) {
-    requireEnvironmentVariable('REPO_SLUG');
-    var tokens = process.env.REPO_SLUG.split('/');
-    defaultEnvironmentVariable('GH_USER', tokens[0]);
-    defaultEnvironmentVariable('GH_REPO', tokens[1]);
   }
 }
 
@@ -87,76 +62,24 @@ function environmentVariablesCommon() {
   process.env.MINOR_VERSION = projectVersionTokens[1];
   process.env.PATCH_VERSION = projectVersionTokens.slice(2).join('.');
 
-  defaultEnvironmentVariable('GIT_USER', 'autodocs Git User');
-  defaultEnvironmentVariable('GIT_EMAIL', 'autodocs-git-user@bguiz.com');
+  envVar.default('GIT_USER', 'autodocs Git User');
+  envVar.default('GIT_EMAIL', 'autodocs-git-user@bguiz.com');
 
-  defaultEnvironmentVariable('FLAG_COPY_ASSETS', 'false');
-  defaultEnvironmentVariable('FLAG_PUBLISH_ON_RELEASE', 'false');
-  defaultEnvironmentVariable('FLAG_CLEAN_DOCUMENT', 'false');
-  defaultEnvironmentVariable('FLAG_STRIP_TOKEN_OUTPUT', 'true');
+  envVar.default('FLAG_COPY_ASSETS', 'false');
+  envVar.default('FLAG_PUBLISH_ON_RELEASE', 'false');
+  envVar.default('FLAG_CLEAN_DOCUMENT', 'false');
+  envVar.default('FLAG_STRIP_TOKEN_OUTPUT', 'true');
 
-  defaultEnvironmentVariable('DOCUMENT_BRANCH', 'master');
-  defaultEnvironmentVariable('DOCUMENT_JOB_INDEX', '1');
-  defaultEnvironmentVariable('DOCUMENT_GENERATED_FOLDER', 'documentation');
-  defaultEnvironmentVariable('DOCUMENT_PUBLISH_FOLDER', 'api/{{MAJOR_VERSION}}.{{MINOR_VERSION}}');
-  defaultEnvironmentVariable('DOCUMENT_ASSETS', '');
+  envVar.default('DOCUMENT_BRANCH', 'master');
+  envVar.default('DOCUMENT_JOB_INDEX', '1');
+  envVar.default('DOCUMENT_GENERATED_FOLDER', 'documentation');
+  envVar.default('DOCUMENT_PUBLISH_FOLDER', 'api/{{MAJOR_VERSION}}.{{MINOR_VERSION}}');
+  envVar.default('DOCUMENT_ASSETS', '');
 
   //NOTE order of the values contained in the array matters -
   // the ones that run first should require the ones that run later to be fully resolved first
   // and of course, cycles will result in indeterminate results.
   [
     'DOCUMENT_PUBLISH_FOLDER'
-  ].forEach(substituteEnvironmentVariable);
-}
-
-function testShouldPublishTravis() {
-  var correctBuildIndex =
-    (process.env.TRAVIS_BUILD_NUMBER+'.'+process.env.DOCUMENT_JOB_INDEX ===
-      process.env.TRAVIS_JOB_NUMBER);
-  if (!correctBuildIndex) {
-    return false;
-  }
-  else if (process.env.FLAG_PUBLISH_ON_RELEASE === 'true') {
-    return (existsEnvironmentVariable('TRAVIS_TAG'));
-  }
-  else {
-    return (
-      process.env.TRAVIS_PULL_REQUEST === 'false' &&
-      process.env.TRAVIS_BRANCH === process.env.DOCUMENT_BRANCH);
-  }
-}
-
-function publishGithubPages() {
-  var childProcess = require('child_process');
-  var script = childProcess.spawn(__dirname+'/publish-github-pages.sh', [], {
-    stdio: 'inherit',
-  });
-  script.on('close', function(code) {
-    process.exit(code);
-  });
-}
-
-function existsEnvironmentVariable(name) {
-  return !!process.env[name];
-}
-
-function requireEnvironmentVariable(name) {
-  if (!existsEnvironmentVariable(name)) {
-    throw new Error('Environment variable `'+name+'` not set');
-  }
-}
-
-function defaultEnvironmentVariable(name, value) {
-  if (!existsEnvironmentVariable(name)) {
-    process.env[name] = value;
-  }
-}
-
-function substituteEnvironmentVariable(name) {
-  process.env[name] = process.env[name]
-    .replace(/{{[^{}]+}}/g, function(otherName) {
-      otherName = otherName.replace(/[{}]+/g, '');
-      requireEnvironmentVariable(otherName);
-      return process.env[otherName];
-    });
+  ].forEach(envVar.substitute);
 }
