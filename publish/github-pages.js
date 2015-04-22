@@ -101,7 +101,7 @@ function outputUrls() {
   }
   CNAME = CNAME || (process.env.GH_USER+'.github.io');
   var publishDomain = 'http://'+CNAME;
-  var publishUrl = publishDomain+'/'+process.env.GH_USER;
+  var publishUrl = publishDomain+'/'+process.env.GH_REPO;
   var publishApiUrl = publishUrl+'/'+process.env.DOCUMENT_PUBLISH_FOLDER;
   console.log('Base URL: '+publishUrl);
   console.log('API  URL: '+publishApiUrl);
