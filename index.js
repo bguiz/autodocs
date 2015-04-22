@@ -2,15 +2,52 @@
 
 var path = require('path');
 
-environmentVariablesTravis();
-environmentVariablesGithub();
-environmentVariablesCommon();
-if (testShouldPublishTravis()) {
-  console.log('This build will generate new documentation');
-  publishGithubPages();
+/**
+ * @module  Autodocs
+ */
+
+/**
+ * @class  Autodocs
+ */
+
+autodocs();
+
+/**
+ * The main entry point.
+ *
+ * Will determine which continuous integration environment and publishing environment to use,
+ * and then run those appropriately.
+ * Currently the only supported ones are:
+ *
+ * - Continuous Integration:
+ *   - Travis
+ * - Publishing Environment:
+ *   - Github Pages
+ *
+ * @method autodocs
+ * @for  Autodocs
+ */
+function autodocs() {
+  autodocsForTravisAndGithubPages();
 }
-else {
-  console.log('This build does not need to generate new documentation');
+
+/**
+ * For the combination of Travis and Github Pages
+ *
+ * @method  autodocsForTravisAndGithubPages
+ * @for  Autodocs
+ */
+function autodocsForTravisAndGithubPages() {
+  environmentVariablesTravis();
+  environmentVariablesGithub();
+  environmentVariablesCommon();
+  if (testShouldPublishTravis()) {
+    console.log('This build will generate new documentation');
+    publishGithubPages();
+  }
+  else {
+    console.log('This build does not need to generate new documentation');
+  }
 }
 
 function environmentVariablesTravis() {
