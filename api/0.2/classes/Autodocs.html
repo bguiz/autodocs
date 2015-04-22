@@ -92,6 +92,7 @@
                         			<strong>Methods</strong>
                         			<ul>
                         				<li><a href="#method-autodocs"><span class="im">autodocs</span>()</a></li>
+                        				<li><a href="#method-autodocsForTravisAndGithubPages"><span class="im">autodocsForTravisAndGithubPages</span>()</a></li>
                         			</ul>
                         		</li>
                         
@@ -121,7 +122,7 @@
                                     	<div class="meta">
                                     				<p>
                                     				Defined in
-                                    		<a href="../files/index.js.html#l17"><code>index.js:17</code></a>
+                                    		<a href="../files/index.js.html#l15"><code>index.js:15</code></a>
                                     		</p>
                                     
                                     
@@ -131,19 +132,47 @@
                                     	<div class="description"><p>The main entry point.</p>
                                     <p>Will determine which continuous integration environment and publishing environment to use,
                                     and then run those appropriately.
-                                    Currently, the supported ones are:</p>
+                                    Currently the only supported ones are:</p>
                                     <ul>
-                                    <li>Continuous Integration (<code>SELECT_CI</code>):
+                                    <li>Continuous Integration:
                                     <ul>
-                                    <li><code>travis</code></li>
+                                    <li>Travis</li>
                                     </ul>
                                     </li>
-                                    <li>Publishing Environment (<code>SELECT_PUBLISH</code>):
+                                    <li>Publishing Environment:
                                     <ul>
-                                    <li><code>github-pages</code></li>
+                                    <li>Github Pages</li>
                                     </ul>
                                     </li>
                                     </ul>
+                                    </div>
+                                    
+                                    
+                                    
+                                    </div>
+                                    <div id="method-autodocsForTravisAndGithubPages" class="method item">
+                                    	<div class="method-signature">
+                                    	<span class="name"><code>autodocsForTravisAndGithubPages</code></span>
+                                    
+                                    		<span class="paren">()</span>
+                                    	</div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    	<div class="meta">
+                                    				<p>
+                                    				Defined in
+                                    		<a href="../files/index.js.html#l34"><code>index.js:34</code></a>
+                                    		</p>
+                                    
+                                    
+                                    
+                                    	</div>
+                                    
+                                    	<div class="description"><p>For the combination of Travis and Github Pages.</p>
                                     <p>Runs various environment variables checks and sets defaults where appropriate.
                                     Then tests whether this particular build should trigger publishing the documentation,
                                     and if so fires the publish script</p>
