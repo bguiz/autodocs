@@ -7,7 +7,7 @@ node_js:
 - iojs-v1.0.4
 script:
 - npm run lint
-# NOTE: running test instead of cover, to allow low coverage tresholds for now
+# NOTE: running test instead of cover, to allow low coverage thresholds for now
 # - npm run cover
 - npm run test
 after_success:
@@ -15,6 +15,6 @@ after_success:
 - npm run autodocs
 env:
   global:
-  - secure: dsXQADywfJOlPsJe2EHPQBu6OrJRzov36A354yDacSOK7h8wvqUA+PtybKldg+CnhjXJ6imN6GXyTYEwg7Wsr01b579z/tj2D5XpXxurnJP0Y0Av/QRsHhtpbsyogqltg5zO9KFK3O2NBq9f+Yjeh8Op1WU06b0WNz8i5i77MTA=
+  - secure: XTd8Z5zz7xz0c90XJFLXAbxOOE5h9l+rIQxhy6Mk0LAAD2Fco5/2NGkcqg0RDRJ0uAuvmC9hLhvZbeUC6TuYmBSwcOprq6UZ/G5mh9OjS6SmJgbiPs/rcUqkASa8BlYbBDNrBlcfSyDxIcHVBdaITLMGjCkOqL7Emh+4gFfOuKE=
   - FLAG_CLEAN_DOCUMENT: 'true'
   - DOCUMENT_BRANCH: ${TRAVIS_BRANCH}
