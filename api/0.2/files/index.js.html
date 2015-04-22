@@ -110,7 +110,11 @@
                         }
                         
                         /**
-                         * For the combination of Travis and Github Pages
+                         * For the combination of Travis and Github Pages.
+                         *
+                         * Runs various environment variables checks and sets defaults where appropriate.
+                         * Then tests whether this particular build should trigger publishing the documentation,
+                         * and if so fires the publish script
                          *
                          * @method  autodocsForTravisAndGithubPages
                          * @for  Autodocs
