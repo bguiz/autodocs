@@ -1,7 +1,16 @@
 YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
-    "classes": [],
-    "modules": [],
-    "allModules": []
+    "classes": [
+        "Autodocs"
+    ],
+    "modules": [
+        "Autodocs"
+    ],
+    "allModules": [
+        {
+            "displayName": "Autodocs",
+            "name": "Autodocs"
+        }
+    ]
 } };
 });

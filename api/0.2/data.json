@@ -4,9 +4,71 @@
         "description": "Automates publishing API docs for NodeJs projects, useful for continuous integration",
         "version": "0.2.3"
     },
-    "files": {},
-    "modules": {},
-    "classes": {},
-    "classitems": [],
+    "files": {
+        "index.js": {
+            "name": "index.js",
+            "modules": {
+                "Autodocs": 1
+            },
+            "classes": {
+                "Autodocs": 1
+            },
+            "fors": {
+                "Autodocs": 1
+            },
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "Autodocs": {
+            "name": "Autodocs",
+            "submodules": {},
+            "classes": {
+                "Autodocs": 1
+            },
+            "fors": {
+                "Autodocs": 1
+            },
+            "namespaces": {},
+            "tag": "module",
+            "file": "index.js",
+            "line": 9
+        }
+    },
+    "classes": {
+        "Autodocs": {
+            "name": "Autodocs",
+            "shortname": "Autodocs",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Autodocs",
+            "namespace": "",
+            "file": "index.js",
+            "line": 9
+        }
+    },
+    "classitems": [
+        {
+            "file": "index.js",
+            "line": 15,
+            "description": "The main entry point.\n\nWill determine which continuous integration environment and publishing environment to use,\nand then run those appropriately.\nCurrently the only supported ones are:\n\n- Continuous Integration:\n  - Travis\n- Publishing Environment:\n  - Github Pages",
+            "itemtype": "method",
+            "name": "autodocs",
+            "class": "Autodocs",
+            "module": "Autodocs"
+        },
+        {
+            "file": "index.js",
+            "line": 34,
+            "description": "For the combination of Travis and Github Pages",
+            "itemtype": "method",
+            "name": "autodocsForTravisAndGithubPages",
+            "class": "Autodocs",
+            "module": "Autodocs"
+        }
+    ],
     "warnings": []
 }

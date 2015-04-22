@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>index.js - autodocs</title>
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/css/custom.css">
+    <link rel="stylesheet" href="../assets/css/lucid.css">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+</head>
+<body class="yui3-skin-sam">
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <h1 class="brand" style="padding: 10px 16px 10px; height: 20px; line-height: 20px; margin-left: 0;">
+            autodocs
+        </h1>
+	<div class="nav">
+            <li class="divider-vertical"></li>
+            <li>
+                <p class="navbar-text">
+                    API Docs for Version: <b>0.2.3</b>
+                </p>
+            </li>
+        </div>
+        <form class="navbar-form pull-right" style="line-height: 40px; height: 40px;">
+            <input style="margin-top: 0;" type="text" class="search-query" placeholder="Search for classes/modules..." data-obj='["classes/Autodocs", "modules/Autodocs"]'>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span3">
+	    <div>
+	        <div id="sidebar">
+	        <div id="classes">
+	            <ul id="api-classes" class="nav nav-list">
+	                    <li><a href="../classes/Autodocs.html">Autodocs</a></li>
+	            </ul>
+	        </div>
+	        </div>
+	    </div>
+        </div>
+        <div class="span9">
+                <form id="options-form" class="form-inline pull-right">
+                    Show:
+                    <label for="api-show-inherited" class="checkbox">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected" class="checkbox">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private" class="checkbox">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated" class="checkbox">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </form>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <div class="page-header">
+                            <h1>index.js <small>File</small></h1>
+                        </div>
+                        
+                        <div class="file">
+                            <pre class="prettyprint linenums">
+                        &#x27;use strict&#x27;;
+                        
+                        var path = require(&#x27;path&#x27;);
+                        
+                        /**
+                         * @module  Autodocs
+                         */
+                        
+                        /**
+                         * @class  Autodocs
+                         */
+                        
+                        autodocs();
+                        
+                        /**
+                         * The main entry point.
+                         *
+                         * Will determine which continuous integration environment and publishing environment to use,
+                         * and then run those appropriately.
+                         * Currently the only supported ones are:
+                         *
+                         * - Continuous Integration:
+                         *   - Travis
+                         * - Publishing Environment:
+                         *   - Github Pages
+                         *
+                         * @method autodocs
+                         * @for  Autodocs
+                         */
+                        function autodocs() {
+                          autodocsForTravisAndGithubPages();
+                        }
+                        
+                        /**
+                         * For the combination of Travis and Github Pages
+                         *
+                         * @method  autodocsForTravisAndGithubPages
+                         * @for  Autodocs
+                         */
+                        function autodocsForTravisAndGithubPages() {
+                          environmentVariablesTravis();
+                          environmentVariablesGithub();
+                          environmentVariablesCommon();
+                          if (testShouldPublishTravis()) {
+                            console.log(&#x27;This build will generate new documentation&#x27;);
+                            publishGithubPages();
+                          }
+                          else {
+                            console.log(&#x27;This build does not need to generate new documentation&#x27;);
+                          }
+                        }
+                        
+                        function environmentVariablesTravis() {
+                          requireEnvironmentVariable(&#x27;TRAVIS_REPO_SLUG&#x27;);
+                          process.env.REPO_SLUG = process.env.TRAVIS_REPO_SLUG;
+                          requireEnvironmentVariable(&#x27;TRAVIS_PULL_REQUEST&#x27;);
+                          requireEnvironmentVariable(&#x27;TRAVIS_BRANCH&#x27;);
+                          requireEnvironmentVariable(&#x27;TRAVIS_BUILD_NUMBER&#x27;);
+                          requireEnvironmentVariable(&#x27;TRAVIS_JOB_NUMBER&#x27;);
+                        }
+                        
+                        function environmentVariablesGithub() {
+                          requireEnvironmentVariable(&#x27;GH_TOKEN&#x27;);
+                        
+                          if (!existsEnvironmentVariable(&#x27;GH_USER&#x27;) ||
+                              !existsEnvironmentVariable(&#x27;GH_REPO&#x27;)) {
+                            requireEnvironmentVariable(&#x27;REPO_SLUG&#x27;);
+                            var tokens = process.env.REPO_SLUG.split(&#x27;/&#x27;);
+                            defaultEnvironmentVariable(&#x27;GH_USER&#x27;, tokens[0]);
+                            defaultEnvironmentVariable(&#x27;GH_REPO&#x27;, tokens[1]);
+                          }
+                        }
+                        
+                        function environmentVariablesCommon() {
+                          var projectPath = path.resolve(&#x27;.&#x27;);
+                          console.log(&#x27;projectPath&#x27;, projectPath);
+                          var projectPackageJson = require(path.resolve(projectPath, &#x27;package.json&#x27;));
+                          var projectVersion = projectPackageJson.version;
+                          process.env.PROJECT_DIR = projectPath;
+                          process.env.MAJOR_MINOR_PATCH_VERSION = projectVersion;
+                          var projectVersionTokens = projectVersion.split(&#x27;.&#x27;);
+                          process.env.MAJOR_VERSION = projectVersionTokens[0];
+                          process.env.MINOR_VERSION = projectVersionTokens[1];
+                          process.env.PATCH_VERSION = projectVersionTokens.slice(2).join(&#x27;.&#x27;);
+                        
+                          defaultEnvironmentVariable(&#x27;GIT_USER&#x27;, &#x27;autodocs Git User&#x27;);
+                          defaultEnvironmentVariable(&#x27;GIT_EMAIL&#x27;, &#x27;autodocs-git-user@bguiz.com&#x27;);
+                        
+                          defaultEnvironmentVariable(&#x27;FLAG_COPY_ASSETS&#x27;, &#x27;false&#x27;);
+                          defaultEnvironmentVariable(&#x27;FLAG_PUBLISH_ON_RELEASE&#x27;, &#x27;false&#x27;);
+                          defaultEnvironmentVariable(&#x27;FLAG_CLEAN_DOCUMENT&#x27;, &#x27;false&#x27;);
+                          defaultEnvironmentVariable(&#x27;FLAG_QUIET_PUSH&#x27;, &#x27;true&#x27;);
+                        
+                          defaultEnvironmentVariable(&#x27;DOCUMENT_BRANCH&#x27;, &#x27;master&#x27;);
+                          defaultEnvironmentVariable(&#x27;DOCUMENT_JOB_INDEX&#x27;, &#x27;1&#x27;);
+                          defaultEnvironmentVariable(&#x27;DOCUMENT_GENERATED_FOLDER&#x27;, &#x27;documentation&#x27;);
+                          defaultEnvironmentVariable(&#x27;DOCUMENT_PUBLISH_FOLDER&#x27;, &#x27;api/{{MAJOR_VERSION}}.{{MINOR_VERSION}}&#x27;);
+                          defaultEnvironmentVariable(&#x27;DOCUMENT_ASSETS&#x27;, &#x27;&#x27;);
+                        
+                          //NOTE order of the values contained in the array matters -
+                          // the ones that run first should require the ones that run later to be fully resolved first
+                          // and of course, cycles will result in indeterminate results.
+                          [
+                            &#x27;DOCUMENT_PUBLISH_FOLDER&#x27;
+                          ].forEach(substituteEnvironmentVariable);
+                        }
+                        
+                        function testShouldPublishTravis() {
+                          var correctBuildIndex =
+                            (process.env.TRAVIS_BUILD_NUMBER+&#x27;.&#x27;+process.env.DOCUMENT_JOB_INDEX ===
+                              process.env.TRAVIS_JOB_NUMBER);
+                          if (!correctBuildIndex) {
+                            return false;
+                          }
+                          else if (process.env.FLAG_PUBLISH_ON_RELEASE === &#x27;true&#x27;) {
+                            return (existsEnvironmentVariable(&#x27;TRAVIS_TAG&#x27;));
+                          }
+                          else {
+                            return (
+                              process.env.TRAVIS_PULL_REQUEST === &#x27;false&#x27; &amp;&amp;
+                              process.env.TRAVIS_BRANCH === process.env.DOCUMENT_BRANCH);
+                          }
+                        }
+                        
+                        function publishGithubPages() {
+                          var childProcess = require(&#x27;child_process&#x27;);
+                          var script = childProcess.spawn(__dirname+&#x27;/publish-github-pages.sh&#x27;, [], {
+                            stdio: &#x27;inherit&#x27;,
+                          });
+                          script.on(&#x27;close&#x27;, function(code) {
+                            process.exit(code);
+                          });
+                        }
+                        
+                        function existsEnvironmentVariable(name) {
+                          return !!process.env[name];
+                        }
+                        
+                        function requireEnvironmentVariable(name) {
+                          if (!existsEnvironmentVariable(name)) {
+                            throw new Error(&#x27;Environment variable &#x60;&#x27;+name+&#x27;&#x60; not set&#x27;);
+                          }
+                        }
+                        
+                        function defaultEnvironmentVariable(name, value) {
+                          if (!existsEnvironmentVariable(name)) {
+                            process.env[name] = value;
+                          }
+                        }
+                        
+                        function substituteEnvironmentVariable(name) {
+                          process.env[name] = process.env[name]
+                            .replace(/{{[^{}]+}}/g, function(otherName) {
+                              otherName = otherName.replace(/[{}]+/g, &#x27;&#x27;);
+                              requireEnvironmentVariable(otherName);
+                              return process.env[otherName];
+                            });
+                        }
+                        
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/jquery/jquery-1.8.2.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/yuidoc-bootstrap.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>
