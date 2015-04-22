@@ -1,0 +1,12 @@
+{
+    "project": {
+        "name": "autodocs",
+        "description": "Automates publishing API docs for NodeJs projects, useful for continuous integration",
+        "version": "0.2.3"
+    },
+    "files": {},
+    "modules": {},
+    "classes": {},
+    "classitems": [],
+    "warnings": []
+}
