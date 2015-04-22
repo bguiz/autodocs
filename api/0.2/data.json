@@ -63,7 +63,7 @@
         {
             "file": "index.js",
             "line": 34,
-            "description": "For the combination of Travis and Github Pages.\n\nRuns various environment variables checks and sets defaults where appropriate.\nThen tests whether this particular build should trigger publishing the documentation,\nand if so fires the publish script",
+            "description": "For the combination of Travis and Github Pages.\n\nRuns various environment variables checks and sets defaults where appropriate.\nThen tests whether this particular build should trigger publishing the documentation,\nand if so fires the publish shell script",
             "itemtype": "method",
             "name": "autodocsForTravisAndGithubPages",
             "class": "Autodocs",
