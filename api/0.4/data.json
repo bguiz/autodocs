@@ -1,0 +1,557 @@
+{
+    "project": {
+        "name": "autodocs",
+        "description": "Automates publishing API docs for NodeJs projects, useful for continuous integration",
+        "version": "0.4.0"
+    },
+    "files": {
+        "ci/travis.js": {
+            "name": "ci/travis.js",
+            "modules": {
+                "AutodocsCi": 1
+            },
+            "classes": {
+                "CiTravis": 1
+            },
+            "fors": {
+                "CiTravis": 1
+            },
+            "namespaces": {}
+        },
+        "publish/github-pages.js": {
+            "name": "publish/github-pages.js",
+            "modules": {
+                "AutodocsPublish": 1
+            },
+            "classes": {
+                "PublishGithubPages": 1
+            },
+            "fors": {
+                "PublishGithubPages": 1
+            },
+            "namespaces": {}
+        },
+        "autodocs.js": {
+            "name": "autodocs.js",
+            "modules": {
+                "Autodocs": 1
+            },
+            "classes": {
+                "Autodocs": 1
+            },
+            "fors": {
+                "Autodocs": 1
+            },
+            "namespaces": {}
+        },
+        "environment-variables.js": {
+            "name": "environment-variables.js",
+            "modules": {},
+            "classes": {
+                "EnvironmentVariables": 1
+            },
+            "fors": {
+                "EnvironmentVariables": 1
+            },
+            "namespaces": {}
+        },
+        "index.js": {
+            "name": "index.js",
+            "modules": {},
+            "classes": {
+                "AutodocsRun": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "AutodocsCi": {
+            "name": "AutodocsCi",
+            "submodules": {},
+            "classes": {
+                "CiTravis": 1
+            },
+            "fors": {
+                "CiTravis": 1
+            },
+            "namespaces": {},
+            "tag": "module",
+            "file": "ci/travis.js",
+            "line": 5
+        },
+        "AutodocsPublish": {
+            "name": "AutodocsPublish",
+            "submodules": {},
+            "classes": {
+                "PublishGithubPages": 1
+            },
+            "fors": {
+                "PublishGithubPages": 1
+            },
+            "namespaces": {},
+            "tag": "module",
+            "file": "publish/github-pages.js",
+            "line": 5
+        },
+        "Autodocs": {
+            "name": "Autodocs",
+            "submodules": {},
+            "classes": {
+                "Autodocs": 1,
+                "EnvironmentVariables": 1,
+                "AutodocsRun": 1
+            },
+            "fors": {
+                "Autodocs": 1,
+                "EnvironmentVariables": 1
+            },
+            "namespaces": {},
+            "tag": "module",
+            "file": "index.js",
+            "line": 5
+        }
+    },
+    "classes": {
+        "CiTravis": {
+            "name": "CiTravis",
+            "shortname": "CiTravis",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "AutodocsCi",
+            "file": "ci/travis.js",
+            "line": 5
+        },
+        "PublishGithubPages": {
+            "name": "PublishGithubPages",
+            "shortname": "PublishGithubPages",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "AutodocsPublish",
+            "file": "publish/github-pages.js",
+            "line": 5
+        },
+        "Autodocs": {
+            "name": "Autodocs",
+            "shortname": "Autodocs",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Autodocs",
+            "namespace": "",
+            "file": "autodocs.js",
+            "line": 11
+        },
+        "EnvironmentVariables": {
+            "name": "EnvironmentVariables",
+            "shortname": "EnvironmentVariables",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Autodocs",
+            "namespace": "",
+            "file": "environment-variables.js",
+            "line": 3
+        },
+        "AutodocsRun": {
+            "name": "AutodocsRun",
+            "shortname": "AutodocsRun",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Autodocs",
+            "namespace": "",
+            "file": "index.js",
+            "line": 5,
+            "description": "The main entry point for being invoked from npm scripts\n(or even from the command line)\n\nSimply does `autodocs.run()`"
+        }
+    },
+    "classitems": [
+        {
+            "file": "ci/travis.js",
+            "line": 10,
+            "description": "Initialisation step for Travis\n\nUsed to check/ set any Travis environment variables",
+            "itemtype": "method",
+            "name": "init",
+            "class": "CiTravis",
+            "module": "AutodocsCi"
+        },
+        {
+            "file": "ci/travis.js",
+            "line": 19,
+            "description": "Used to set value of `REPO_SLUG`",
+            "itemtype": "property",
+            "name": "TRAVIS_REPO_SLUG",
+            "type": "String (Environment Variable)",
+            "default": "None - throws when not set",
+            "class": "CiTravis",
+            "module": "AutodocsCi"
+        },
+        {
+            "file": "ci/travis.js",
+            "line": 29,
+            "itemtype": "property",
+            "name": "TRAVIS_PULL_REQUEST",
+            "type": "String (Environment Variable)",
+            "default": "None - throws when not set",
+            "class": "CiTravis",
+            "module": "AutodocsCi"
+        },
+        {
+            "file": "ci/travis.js",
+            "line": 36,
+            "itemtype": "property",
+            "name": "TRAVIS_BRANCH",
+            "type": "String (Environment Variable)",
+            "default": "None - throws when not set",
+            "class": "CiTravis",
+            "module": "AutodocsCi"
+        },
+        {
+            "file": "ci/travis.js",
+            "line": 43,
+            "itemtype": "property",
+            "name": "TRAVIS_BUILD_NUMBER",
+            "type": "String (Environment Variable)",
+            "default": "None - throws when not set",
+            "class": "CiTravis",
+            "module": "AutodocsCi"
+        },
+        {
+            "file": "ci/travis.js",
+            "line": 50,
+            "itemtype": "property",
+            "name": "TRAVIS_JOB_NUMBER",
+            "type": "String (Environment Variable)",
+            "default": "None - throws when not set",
+            "class": "CiTravis",
+            "module": "AutodocsCi"
+        },
+        {
+            "file": "ci/travis.js",
+            "line": 58,
+            "description": "Based on the Travis environment variables,\ndetermines whether to trigger generation and publishing of documentation.\n\nIf `FLAG_PUBLISH_ON_RELEASE` is `true`,\nthen will trigger if Travis says that a tag was pushed.\n\nOtherwise, it will trigger when a branch is pushed,\nif Travis says that this **is not** a pull request,\nand the branch being pushed matches `DOCUMENT_BRANCH`.\n\nBoth cases also require that the correct build index for the current job\nmatches `DOCUMENT_JOB_INDEX`.\nThis is to ensure that documentation is only published once per successful build.",
+            "itemtype": "method",
+            "name": "shouldRun",
+            "return": {
+                "description": "`true` when documentation should be generated and published",
+                "type": "Boolean"
+            },
+            "class": "CiTravis",
+            "module": "AutodocsCi"
+        },
+        {
+            "file": "ci/travis.js",
+            "line": 84,
+            "itemtype": "property",
+            "name": "TRAVIS_TAG",
+            "type": "String (Environment Variable)",
+            "default": "None",
+            "class": "CiTravis",
+            "module": "AutodocsCi"
+        },
+        {
+            "file": "publish/github-pages.js",
+            "line": 10,
+            "description": "Initialisation step for Github Pages\n\nUsed to check/ set any Github Pages environment variables",
+            "itemtype": "method",
+            "name": "init",
+            "class": "PublishGithubPages",
+            "module": "AutodocsPublish"
+        },
+        {
+            "file": "publish/github-pages.js",
+            "line": 19,
+            "itemtype": "property",
+            "name": "GH_TOKEN",
+            "type": "String (Environment Variable)",
+            "default": "None - throws when not set",
+            "class": "PublishGithubPages",
+            "module": "AutodocsPublish"
+        },
+        {
+            "file": "publish/github-pages.js",
+            "line": 26,
+            "itemtype": "property",
+            "name": "REPO_SLUG",
+            "type": "String (Environment Variable)",
+            "default": "None - throws when not set",
+            "class": "PublishGithubPages",
+            "module": "AutodocsPublish"
+        },
+        {
+            "file": "publish/github-pages.js",
+            "line": 36,
+            "itemtype": "property",
+            "name": "GH_USER",
+            "type": "String (Environment Variable)",
+            "default": "First half of `REPO_SLUG`",
+            "class": "PublishGithubPages",
+            "module": "AutodocsPublish"
+        },
+        {
+            "file": "publish/github-pages.js",
+            "line": 42,
+            "itemtype": "property",
+            "name": "GH_REPO",
+            "type": "String (Environment Variable)",
+            "default": "Second half of `REPO_SLUG`",
+            "class": "PublishGithubPages",
+            "module": "AutodocsPublish"
+        },
+        {
+            "file": "publish/github-pages.js",
+            "line": 51,
+            "description": "Performs the required steps for publishing to Github pages\n\n- runs `npm run generatedocs`\n- `git fetch`es the `gh-pages` branch of the project into a throwaway git repository\n- copies the documentation generated by the `generatedocs` script into the `gh-pages` branch\n- copies any additional files required into the gh-pages branch\n- if any files have changed, `git commit`s `git push`es on the `gh-pages` branch\n  - this is when the files actually succeed in publishing\n- if necessary, cleans up the throwaway git repository",
+            "itemtype": "method",
+            "name": "run",
+            "class": "PublishGithubPages",
+            "module": "AutodocsPublish"
+        },
+        {
+            "file": "autodocs.js",
+            "line": 16,
+            "description": "Will determine which continuous integration environment and publishing environment to use,\nand then run those appropriately.\n\nCurrently, the supported ones are:\n\n- Continuous Integration (`SELECT_CI`):\n  - `travis`\n- Publishing Environment (`SELECT_PUBLISH`):\n  - `github-pages`\n\nRuns various environment variables checks and sets defaults where appropriate.\nThen tests whether this particular build should trigger publishing the documentation,\nand if so fires the publish script",
+            "itemtype": "method",
+            "name": "run",
+            "class": "Autodocs",
+            "module": "Autodocs"
+        },
+        {
+            "file": "autodocs.js",
+            "line": 35,
+            "itemtype": "property",
+            "name": "SELECT_CI",
+            "type": "String (Environment Variable)",
+            "default": "'travis'",
+            "class": "Autodocs",
+            "module": "Autodocs"
+        },
+        {
+            "file": "autodocs.js",
+            "line": 41,
+            "itemtype": "property",
+            "name": "SELECT_PUBLISH",
+            "type": "String (Environment Variable)",
+            "default": "'github-pages'",
+            "class": "Autodocs",
+            "module": "Autodocs"
+        },
+        {
+            "file": "autodocs.js",
+            "line": 61,
+            "description": "Initialisation step for Autodocs\n\nUsed to check/ set any Autodocs environment variables",
+            "itemtype": "method",
+            "name": "init",
+            "class": "Autodocs",
+            "module": "Autodocs"
+        },
+        {
+            "file": "autodocs.js",
+            "line": 81,
+            "itemtype": "property",
+            "name": "GIT_USER",
+            "type": "String (Environment Variable)",
+            "default": "'autodocs Git User'",
+            "class": "Autodocs",
+            "module": "Autodocs"
+        },
+        {
+            "file": "autodocs.js",
+            "line": 88,
+            "itemtype": "property",
+            "name": "GIT_EMAIL",
+            "type": "String (Environment Variable)",
+            "default": "'autodocs-git-user@bguiz.com'",
+            "class": "Autodocs",
+            "module": "Autodocs"
+        },
+        {
+            "file": "autodocs.js",
+            "line": 96,
+            "itemtype": "property",
+            "name": "FLAG_COPY_ASSETS",
+            "type": "String (Environment Variable)",
+            "default": "'false'",
+            "class": "Autodocs",
+            "module": "Autodocs"
+        },
+        {
+            "file": "autodocs.js",
+            "line": 103,
+            "itemtype": "property",
+            "name": "FLAG_PUBLISH_ON_RELEASE",
+            "type": "String (Environment Variable)",
+            "default": "'false'",
+            "class": "Autodocs",
+            "module": "Autodocs"
+        },
+        {
+            "file": "autodocs.js",
+            "line": 110,
+            "itemtype": "property",
+            "name": "FLAG_CLEAN_DOCUMENT",
+            "type": "String (Environment Variable)",
+            "default": "'false'",
+            "class": "Autodocs",
+            "module": "Autodocs"
+        },
+        {
+            "file": "autodocs.js",
+            "line": 117,
+            "itemtype": "property",
+            "name": "FLAG_STRIP_TOKEN_OUTPUT",
+            "type": "String (Environment Variable)",
+            "default": "'true'",
+            "class": "Autodocs",
+            "module": "Autodocs"
+        },
+        {
+            "file": "autodocs.js",
+            "line": 124,
+            "itemtype": "property",
+            "name": "DOCUMENT_BRANCH",
+            "type": "String (Environment Variable)",
+            "default": "'master'",
+            "class": "Autodocs",
+            "module": "Autodocs"
+        },
+        {
+            "file": "autodocs.js",
+            "line": 131,
+            "itemtype": "property",
+            "name": "DOCUMENT_JOB_INDEX",
+            "type": "String (Environment Variable)",
+            "default": "'1'",
+            "class": "Autodocs",
+            "module": "Autodocs"
+        },
+        {
+            "file": "autodocs.js",
+            "line": 138,
+            "itemtype": "property",
+            "name": "DOCUMENT_GENERATED_FOLDER",
+            "type": "String (Environment Variable)",
+            "default": "'documentation'",
+            "class": "Autodocs",
+            "module": "Autodocs"
+        },
+        {
+            "file": "autodocs.js",
+            "line": 145,
+            "itemtype": "property",
+            "name": "DOCUMENT_PUBLISH_FOLDER",
+            "type": "String (Environment Variable)",
+            "default": "'api/{{MAJOR_VERSION}}.{{MINOR_VERSION}}'",
+            "class": "Autodocs",
+            "module": "Autodocs"
+        },
+        {
+            "file": "autodocs.js",
+            "line": 152,
+            "itemtype": "property",
+            "name": "DOCUMENT_ASSETS",
+            "type": "String (Environment Variable)",
+            "default": "''",
+            "class": "Autodocs",
+            "module": "Autodocs"
+        },
+        {
+            "file": "environment-variables.js",
+            "line": 8,
+            "description": "Test that an environment variable exists",
+            "itemtype": "method",
+            "name": "exists",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "The name of the environment variable",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "`true` when environment variable is defined and **is not** an empty string",
+                "type": "Boolean"
+            },
+            "class": "EnvironmentVariables",
+            "module": "Autodocs"
+        },
+        {
+            "file": "environment-variables.js",
+            "line": 20,
+            "description": "Enforce that an environment variable exists",
+            "itemtype": "method",
+            "name": "require",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "The name of the environment variable",
+                    "type": "String"
+                }
+            ],
+            "throws": {
+                "description": "Throws and error when the environment variable does not exist"
+            },
+            "class": "EnvironmentVariables",
+            "module": "Autodocs"
+        },
+        {
+            "file": "environment-variables.js",
+            "line": 34,
+            "description": "Set a default value for an environment variable if it does not exist",
+            "itemtype": "method",
+            "name": "default",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "The name of the environment variable",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "The default value",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The value of the existing or newly set environment variable",
+                "type": "String"
+            },
+            "class": "EnvironmentVariables",
+            "module": "Autodocs"
+        },
+        {
+            "file": "environment-variables.js",
+            "line": 50,
+            "description": "Substitute the value of other environment variables into the named one.\n\nFor example:\n\n```javascript\nprocess.env.MAJOR_VERSION = \"0\";\nprocess.env.MINOR_VERSION = \"3\";\nEnvironmentVariables.substitute('api/{{MAJOR_VERSION}}.{{MINOR_VERSION}}');\n```\n\n... will return `'api/0.3'`;\n\nNote that if this is done for multiple environment variables,\nthe order in which they are done will affect the result.\nIt is the responsibility of the caller to this function to ensure that\nthe values to be substituted in are already fully resolved:\nthis function **is not** recursive.\nTherefore, cycles are also not allowed.\nAny of these will result in indeterminate results, including errors.",
+            "itemtype": "method",
+            "name": "default",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "The name of the environment variable",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The value of the existing or newly set environment variable",
+                "type": "String"
+            },
+            "class": "EnvironmentVariables",
+            "module": "Autodocs"
+        }
+    ],
+    "warnings": []
+}
