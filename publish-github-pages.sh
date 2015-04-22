@@ -20,7 +20,7 @@ cd "${GHPAGES_DIR}"
 git init
 git config user.name "${GIT_USER}"
 git config user.email "${GIT_EMAIL}"
-git remote add upstream "https://${GH_TOKEN}@github.com/${GH_USER}/${GH_REPO}.git"
+git remote add upstream "https://${GH_USER}:${GH_TOKEN}@github.com/${GH_USER}/${GH_REPO}.git"
 
 # TODO check if gh-pages branch exists, otherwise create on first
 git fetch upstream gh-pages
@@ -44,6 +44,7 @@ if test "${FLAG_COPY_ASSETS}" == "true" ; then
   cd "${GHPAGES_DIR}"
 else
   echo "Not copying assets"
+  DOCUMENT_ASSETS=""
 fi
 touch "${DOC_PUBLISH_DIR}"
 
@@ -55,13 +56,21 @@ NUM_FILES_CHANGED=$( git ls-files -m -o | wc -l )
 if test "${NUM_FILES_CHANGED}" -gt "0" ; then
 
   # Commit and push
-  git add -A "${DOC_PUBLISH_DIR}"
-  git add -A ${DOCUMENT_ASSETS}
+  git add -A "${DOC_PUBLISH_DIR}" ${DOCUMENT_ASSETS}
   COMMIT_MESSAGE="autodocs publish ${TIME_STAMP} ${COMMIT_ID}"
   echo "${COMMIT_MESSAGE}"
   git commit -m "${COMMIT_MESSAGE}"
   # discard all output, because it contains the github access token
-  git push --quiet upstream HEAD:gh-pages > /dev/null 2>&1
+  # unless, opted out, using `FLAG_QUIET_PUSH`
+  if test "${FLAG_STRIP_TOKEN_OUTPUT}" == "false" ; then
+    # Show output, unmodified.
+    # This should *not* be done in CI, only for local testing
+    git push upstream HEAD:gh-pages
+  else
+    # Use `sed` to replace any instances of the Github token in both stdout and stderr
+    SED_STRIP_TOKEN="s/${GH_TOKEN}/\[SECURE\]/g"
+    { git push upstream HEAD:gh-pages 2>&1 >&3 | sed ${SED_STRIP_TOKEN} ; } 3>&1
+  fi
   echo "Successfully pushed documentation to gh-pages"
 
 else

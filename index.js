@@ -2,15 +2,56 @@
 
 var path = require('path');
 
-environmentVariablesTravis();
-environmentVariablesGithub();
-environmentVariablesCommon();
-if (testShouldPublishTravis()) {
-  console.log('This build will generate new documentation');
-  publishGithubPages();
+/**
+ * @module  Autodocs
+ */
+
+/**
+ * @class  Autodocs
+ */
+
+autodocs();
+
+/**
+ * The main entry point.
+ *
+ * Will determine which continuous integration environment and publishing environment to use,
+ * and then run those appropriately.
+ * Currently the only supported ones are:
+ *
+ * - Continuous Integration:
+ *   - Travis
+ * - Publishing Environment:
+ *   - Github Pages
+ *
+ * @method autodocs
+ * @for  Autodocs
+ */
+function autodocs() {
+  autodocsForTravisAndGithubPages();
 }
-else {
-  console.log('This build does not need to generate new documentation');
+
+/**
+ * For the combination of Travis and Github Pages.
+ *
+ * Runs various environment variables checks and sets defaults where appropriate.
+ * Then tests whether this particular build should trigger publishing the documentation,
+ * and if so fires the publish script
+ *
+ * @method  autodocsForTravisAndGithubPages
+ * @for  Autodocs
+ */
+function autodocsForTravisAndGithubPages() {
+  environmentVariablesTravis();
+  environmentVariablesGithub();
+  environmentVariablesCommon();
+  if (testShouldPublishTravis()) {
+    console.log('This build will generate new documentation');
+    publishGithubPages();
+  }
+  else {
+    console.log('This build does not need to generate new documentation');
+  }
 }
 
 function environmentVariablesTravis() {
@@ -52,12 +93,13 @@ function environmentVariablesCommon() {
   defaultEnvironmentVariable('FLAG_COPY_ASSETS', 'false');
   defaultEnvironmentVariable('FLAG_PUBLISH_ON_RELEASE', 'false');
   defaultEnvironmentVariable('FLAG_CLEAN_DOCUMENT', 'false');
+  defaultEnvironmentVariable('FLAG_STRIP_TOKEN_OUTPUT', 'true');
 
   defaultEnvironmentVariable('DOCUMENT_BRANCH', 'master');
   defaultEnvironmentVariable('DOCUMENT_JOB_INDEX', '1');
   defaultEnvironmentVariable('DOCUMENT_GENERATED_FOLDER', 'documentation');
   defaultEnvironmentVariable('DOCUMENT_PUBLISH_FOLDER', 'api/{{MAJOR_VERSION}}.{{MINOR_VERSION}}');
-  defaultEnvironmentVariable('DOCUMENT_ASSETS', 'CNAME');
+  defaultEnvironmentVariable('DOCUMENT_ASSETS', '');
 
   //NOTE order of the values contained in the array matters -
   // the ones that run first should require the ones that run later to be fully resolved first
@@ -100,7 +142,7 @@ function existsEnvironmentVariable(name) {
 
 function requireEnvironmentVariable(name) {
   if (!existsEnvironmentVariable(name)) {
-    throw new Error(''+name+' not set');
+    throw new Error('Environment variable `'+name+'` not set');
   }
 }
 
