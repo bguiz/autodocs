@@ -44,6 +44,7 @@ if test "${FLAG_COPY_ASSETS}" == "true" ; then
   cd "${GHPAGES_DIR}"
 else
   echo "Not copying assets"
+  DOCUMENT_ASSETS=""
 fi
 touch "${DOC_PUBLISH_DIR}"
 
@@ -55,8 +56,7 @@ NUM_FILES_CHANGED=$( git ls-files -m -o | wc -l )
 if test "${NUM_FILES_CHANGED}" -gt "0" ; then
 
   # Commit and push
-  git add -A "${DOC_PUBLISH_DIR}"
-  git add -A ${DOCUMENT_ASSETS}
+  git add -A "${DOC_PUBLISH_DIR}" ${DOCUMENT_ASSETS}
   COMMIT_MESSAGE="autodocs publish ${TIME_STAMP} ${COMMIT_ID}"
   echo "${COMMIT_MESSAGE}"
   git commit -m "${COMMIT_MESSAGE}"

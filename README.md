@@ -89,7 +89,7 @@ In addition to this, publishing also needs a few environment variables to be set
   - whether there are any assets to copy
   - set to `true` **only if** intending to use `DOCUMENT_ASSETS`
 - `DOCUMENT_ASSETS`
-  - default: `CNAME`
+  - default: ``
   - list of files and folders (bash style) to copy into the root of the `gh-pages` branch
   - these files will be copied to the **root**, not the `DOCUMENT_PUBLISH_FOLDER`
 - `FLAG_PUBLISH_ON_RELEASE`

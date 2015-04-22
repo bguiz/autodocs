@@ -57,7 +57,7 @@ function environmentVariablesCommon() {
   defaultEnvironmentVariable('DOCUMENT_JOB_INDEX', '1');
   defaultEnvironmentVariable('DOCUMENT_GENERATED_FOLDER', 'documentation');
   defaultEnvironmentVariable('DOCUMENT_PUBLISH_FOLDER', 'api/{{MAJOR_VERSION}}.{{MINOR_VERSION}}');
-  defaultEnvironmentVariable('DOCUMENT_ASSETS', 'CNAME');
+  defaultEnvironmentVariable('DOCUMENT_ASSETS', '');
 
   //NOTE order of the values contained in the array matters -
   // the ones that run first should require the ones that run later to be fully resolved first
