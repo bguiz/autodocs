@@ -7,12 +7,9 @@ node_js:
 - iojs-v1.0.4
 script:
 - npm run lint
-- npm run test
+- npm run cover
 after_success:
 - npm run autodocs
-# NOTE: running cover in `after_success` instead of `script`,
-# to allow build to pass in spite of failure to meet minimum coverage treshold
-- npm run cover
 - npm run coveralls
 env:
   global:
