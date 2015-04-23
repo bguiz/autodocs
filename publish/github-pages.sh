@@ -74,6 +74,9 @@ if test "${FLAG_LATEST_PAGE}" == "true" ; then
   LATEST_DIR="${DOCUMENT_PUBLISH_FOLDER_ROOT}/latest"
   mkdir -p "${LATEST_DIR}"
   { cat "${SCRIPT_DIR}/github-pages-latest.html" | sed "s/${LATEST_REDIRECTREPLACE}/${LATEST_REDIRECTURL}/g" ; } > "${LATEST_DIR}/index.html"
+  LATEST_ASSETS="${LATEST_DIR}"
+else
+  LATEST_ASSETS=""
 fi
 # s/\{\{REDIRECTURL\}\}/0.4/g
 # Test if there are any changes
@@ -81,7 +84,7 @@ NUM_FILES_CHANGED=$( git ls-files -m -o | wc -l )
 if test "${NUM_FILES_CHANGED}" -gt "0" ; then
 
   # Commit and push
-  git add -A "${DOC_PUBLISH_DIR}" ${DOCUMENT_ASSETS}
+  git add -A "${DOC_PUBLISH_DIR}" ${DOCUMENT_ASSETS} ${LATEST_DIR}
   COMMIT_ID=$( git rev-parse --short HEAD )
   COMMIT_MESSAGE="autodocs publish ${TIME_STAMP} ${COMMIT_ID}"
   echo "${COMMIT_MESSAGE}"
