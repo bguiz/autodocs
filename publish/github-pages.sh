@@ -7,6 +7,7 @@
 set -o errexit -o nounset
 
 # Generate the documentation
+cd "${PROJECT_DIR}"
 npm run generatedocs
 
 # Publish documentation to gh-pages
@@ -70,10 +71,9 @@ touch "${DOC_PUBLISH_DIR}"
 if test "${FLAG_LATEST_PAGE}" == "true" ; then
   echo "Generating 'latest' page"
   LATEST_REDIRECTREPLACE="{{REDIRECTURL}}"
-  # LATEST_REDIRECTREPLACE="{{REDIRECTURL}}"
   LATEST_REDIRECTURL="\.\.\/${DOCUMENT_PUBLISH_SUBFOLDER//./\\.}"
   SED_REDIRECT="s/${LATEST_REDIRECTREPLACE}/${LATEST_REDIRECTURL}/g"
-  echo SED_REDIRECT=${SED_REDIRECT}
+  # echo SED_REDIRECT=${SED_REDIRECT}
   LATEST_DIR="${DOCUMENT_PUBLISH_FOLDER_ROOT}/latest"
   mkdir -p "${LATEST_DIR}"
   { cat "${SCRIPT_DIR}/github-pages-latest.html" | sed "s/${LATEST_REDIRECTREPLACE}/${LATEST_REDIRECTURL}/g" ; } > "${LATEST_DIR}/index.html"

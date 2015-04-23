@@ -242,6 +242,8 @@ function environmentVariablesAutodocs() {
    */
   envVar.default('DOCUMENT_ASSETS', '');
 
+  envVar.default('FLAG_TESTING', 'false');
+
   [
     'DOCUMENT_PUBLISH_FOLDER_ROOT',
     'DOCUMENT_PUBLISH_SUBFOLDER',
