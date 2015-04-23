@@ -108,12 +108,20 @@
                         				<li><a href="#prop-DOCUMENT_GENERATED_FOLDER"><span class="ip">DOCUMENT_GENERATED_FOLDER</span></a></li>
                         				<li><a href="#prop-DOCUMENT_JOB_INDEX"><span class="ip">DOCUMENT_JOB_INDEX</span></a></li>
                         				<li><a href="#prop-DOCUMENT_PUBLISH_FOLDER"><span class="ip">DOCUMENT_PUBLISH_FOLDER</span></a></li>
+                        				<li><a href="#prop-DOCUMENT_PUBLISH_FOLDER_ROOT"><span class="ip">DOCUMENT_PUBLISH_FOLDER_ROOT</span></a></li>
+                        				<li><a href="#prop-DOCUMENT_PUBLISH_SUBFOLDER"><span class="ip">DOCUMENT_PUBLISH_SUBFOLDER</span></a></li>
                         				<li><a href="#prop-FLAG_CLEAN_DOCUMENT"><span class="ip">FLAG_CLEAN_DOCUMENT</span></a></li>
                         				<li><a href="#prop-FLAG_COPY_ASSETS"><span class="ip">FLAG_COPY_ASSETS</span></a></li>
+                        				<li><a href="#prop-FLAG_LATEST_PAGE"><span class="ip">FLAG_LATEST_PAGE</span></a></li>
                         				<li><a href="#prop-FLAG_PUBLISH_ON_RELEASE"><span class="ip">FLAG_PUBLISH_ON_RELEASE</span></a></li>
+                        				<li><a href="#prop-FLAG_SKIP_PUSH"><span class="ip">FLAG_SKIP_PUSH</span></a></li>
                         				<li><a href="#prop-FLAG_STRIP_TOKEN_OUTPUT"><span class="ip">FLAG_STRIP_TOKEN_OUTPUT</span></a></li>
                         				<li><a href="#prop-GIT_EMAIL"><span class="ip">GIT_EMAIL</span></a></li>
                         				<li><a href="#prop-GIT_USER"><span class="ip">GIT_USER</span></a></li>
+                        				<li><a href="#prop-MAJOR_VERSION"><span class="ip">MAJOR_VERSION</span></a></li>
+                        				<li><a href="#prop-MINOR_VERSION"><span class="ip">MINOR_VERSION</span></a></li>
+                        				<li><a href="#prop-PATCH_VERSION"><span class="ip">PATCH_VERSION</span></a></li>
+                        				<li><a href="#prop-PROJECT_DIR"><span class="ip">PROJECT_DIR</span></a></li>
                         				<li><a href="#prop-SELECT_CI"><span class="ip">SELECT_CI</span></a></li>
                         				<li><a href="#prop-SELECT_PUBLISH"><span class="ip">SELECT_PUBLISH</span></a></li>
                         			</ul>
@@ -221,7 +229,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l152"><code>autodocs.js:152</code></a>
+                                            <a href="../files/autodocs.js.html#l238"><code>autodocs.js:238</code></a>
                                             </p>
                                     
                                     
@@ -246,7 +254,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l124"><code>autodocs.js:124</code></a>
+                                            <a href="../files/autodocs.js.html#l184"><code>autodocs.js:184</code></a>
                                             </p>
                                     
                                     
@@ -271,7 +279,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l138"><code>autodocs.js:138</code></a>
+                                            <a href="../files/autodocs.js.html#l198"><code>autodocs.js:198</code></a>
                                             </p>
                                     
                                     
@@ -296,7 +304,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l131"><code>autodocs.js:131</code></a>
+                                            <a href="../files/autodocs.js.html#l191"><code>autodocs.js:191</code></a>
                                             </p>
                                     
                                     
@@ -321,17 +329,73 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l145"><code>autodocs.js:145</code></a>
+                                            <a href="../files/autodocs.js.html#l228"><code>autodocs.js:228</code></a>
                                             </p>
                                     
                                     
                                         </div>
                                     
                                         <div class="description">
-                                            
+                                            <p>Joins <code>DOCUMENT_PUBLISH_FOLDER_ROOT</code> with <code>DOCUMENT_PUBLISH_SUBFOLDER</code>
+                                    to get a concrete path to publish the documentation.</p>
+                                    
                                         </div>
                                     
-                                            <p><strong>Default:</strong> &#x27;api/{{MAJOR_VERSION}}.{{MINOR_VERSION}}&#x27;</p>
+                                            <p><strong>Default:</strong> &#x27;{{DOCUMENT_PUBLISH_FOLDER_ROOT}}/{{DOCUMENT_PUBLISH_SUBFOLDER}}&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-DOCUMENT_PUBLISH_FOLDER_ROOT" class="property item">
+                                        <h3 class="name"><code>DOCUMENT_PUBLISH_FOLDER_ROOT</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l205"><code>autodocs.js:205</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>All documentation will be published under this root directory</p>
+                                    <p>This can be used for <strong>non-version-specific</strong> documentation</p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;api&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-DOCUMENT_PUBLISH_SUBFOLDER" class="property item">
+                                        <h3 class="name"><code>DOCUMENT_PUBLISH_SUBFOLDER</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l216"><code>autodocs.js:216</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>The documentation will be published in this subdirectory of the root directory.</p>
+                                    <p>This can be used for <strong>version-specific</strong> documentation</p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;{{MAJOR_VERSION}}.{{MINOR_VERSION}}&#x27;</p>
                                     
                                     
                                     </div>
@@ -346,7 +410,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l110"><code>autodocs.js:110</code></a>
+                                            <a href="../files/autodocs.js.html#l137"><code>autodocs.js:137</code></a>
                                             </p>
                                     
                                     
@@ -371,7 +435,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l96"><code>autodocs.js:96</code></a>
+                                            <a href="../files/autodocs.js.html#l123"><code>autodocs.js:123</code></a>
                                             </p>
                                     
                                     
@@ -382,6 +446,41 @@
                                         </div>
                                     
                                             <p><strong>Default:</strong> &#x27;false&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-FLAG_LATEST_PAGE" class="property item">
+                                        <h3 class="name"><code>FLAG_LATEST_PAGE</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l152"><code>autodocs.js:152</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>By default, this will publish a latest pages,
+                                    whose purpose is simply to redirect to the most recently publish API version</p>
+                                    <p>Assuming default values for other configurations,
+                                    if the version of the project is currently <code>1.2.3</code>,</p>
+                                    <ul>
+                                    <li><code>http://USER.github.io/REPO/api/latest/</code></li>
+                                    <li>This URL will be published with an <code>index.html</code> file that redirects to:</li>
+                                    <li><code>http://USER.github.io/REPO/api/1.2/</code></li>
+                                    </ul>
+                                    <p>Set to <code>false</code> to disable this behaviour.</p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;true&#x27;</p>
                                     
                                     
                                     </div>
@@ -396,7 +495,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l103"><code>autodocs.js:103</code></a>
+                                            <a href="../files/autodocs.js.html#l130"><code>autodocs.js:130</code></a>
                                             </p>
                                     
                                     
@@ -404,6 +503,35 @@
                                     
                                         <div class="description">
                                             
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;false&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-FLAG_SKIP_PUSH" class="property item">
+                                        <h3 class="name"><code>FLAG_SKIP_PUSH</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l171"><code>autodocs.js:171</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>Set to false to do all of the steps in publishing,
+                                    except for the final step of pushing the changes to the git remote.</p>
+                                    <p>This is useful for testing and debugging purposes.
+                                    Leaving this on in a CI environment would defeat the purpose of autodocs</p>
+                                    
                                         </div>
                                     
                                             <p><strong>Default:</strong> &#x27;false&#x27;</p>
@@ -421,7 +549,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l117"><code>autodocs.js:117</code></a>
+                                            <a href="../files/autodocs.js.html#l144"><code>autodocs.js:144</code></a>
                                             </p>
                                     
                                     
@@ -446,7 +574,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l88"><code>autodocs.js:88</code></a>
+                                            <a href="../files/autodocs.js.html#l115"><code>autodocs.js:115</code></a>
                                             </p>
                                     
                                     
@@ -471,7 +599,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l81"><code>autodocs.js:81</code></a>
+                                            <a href="../files/autodocs.js.html#l108"><code>autodocs.js:108</code></a>
                                             </p>
                                     
                                     
@@ -482,6 +610,106 @@
                                         </div>
                                     
                                             <p><strong>Default:</strong> &#x27;autodocs Git User&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-MAJOR_VERSION" class="property item">
+                                        <h3 class="name"><code>MAJOR_VERSION</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l84"><code>autodocs.js:84</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> The major version read in from package.json</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-MINOR_VERSION" class="property item">
+                                        <h3 class="name"><code>MINOR_VERSION</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l92"><code>autodocs.js:92</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> The minor version read in from package.json</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-PATCH_VERSION" class="property item">
+                                        <h3 class="name"><code>PATCH_VERSION</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l100"><code>autodocs.js:100</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> The patch version read in from package.json</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-PROJECT_DIR" class="property item">
+                                        <h3 class="name"><code>PROJECT_DIR</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l75"><code>autodocs.js:75</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> The current working directory</p>
                                     
                                     
                                     </div>

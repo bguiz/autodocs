@@ -118,18 +118,22 @@
                           if (!envVar.exists(&#x27;GH_USER&#x27;) ||
                               !envVar.exists(&#x27;GH_REPO&#x27;)) {
                             var tokens = process.env.REPO_SLUG.split(&#x27;/&#x27;);
+                        
                             /**
                              * @property GH_USER
                              * @type String (Environment Variable)
                              * @default First half of &#x60;REPO_SLUG&#x60;
                              */
                             envVar.default(&#x27;GH_USER&#x27;, tokens[0]);
+                        
                             /**
                              * @property GH_REPO
                              * @type String (Environment Variable)
                              * @default Second half of &#x60;REPO_SLUG&#x60;
                              */
                             envVar.default(&#x27;GH_REPO&#x27;, tokens[1]);
+                        
+                            process.env.SCRIPT_DIR = __dirname;
                           }
                         }
                         
