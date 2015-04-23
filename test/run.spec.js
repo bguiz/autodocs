@@ -83,6 +83,41 @@ describe('[run]', function() {
       done();
     });
 
+    it('Should run when building from branch', function(done) {
+      process.env = envs.buildOnBranch();
+      expect(function() {
+        require('../autodocs').run();
+      }).not.toThrow();
+      done();
+    });
+
+    it('Should run when building from branch, but stop when build index is wrong', function(done) {
+      process.env = envs.buildOnBranch();
+      process.env.TRAVIS_JOB_NUMBER = 'foo.2';
+      expect(function() {
+        require('../autodocs').run();
+      }).not.toThrow();
+      done();
+    });
+
+    it('Should run when building from tag', function(done) {
+      process.env = envs.buildOnRelease();
+      expect(function() {
+        require('../autodocs').run();
+      }).not.toThrow();
+      done();
+    });
+
+    it('Should run when GH_USER and GH_REPO are set manually', function(done) {
+      process.env = envs.buildOnBranch();
+      process.env.GH_USER = 'bguiz';
+      process.env.GH_REPO = 'autodocs';
+      expect(function() {
+        require('../autodocs').run();
+      }).not.toThrow();
+      done();
+    });
+
     describe('[compulsory vars]', function() {
       [
         'GH_TOKEN',
