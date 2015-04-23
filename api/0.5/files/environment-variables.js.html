@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>environment-variables.js - autodocs</title>
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/css/custom.css">
+    <link rel="stylesheet" href="../assets/css/lucid.css">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+</head>
+<body class="yui3-skin-sam">
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <h1 class="brand" style="padding: 10px 16px 10px; height: 20px; line-height: 20px; margin-left: 0;">
+            autodocs
+        </h1>
+	<div class="nav">
+            <li class="divider-vertical"></li>
+            <li>
+                <p class="navbar-text">
+                    API Docs for Version: <b>0.5.0</b>
+                </p>
+            </li>
+        </div>
+        <form class="navbar-form pull-right" style="line-height: 40px; height: 40px;">
+            <input style="margin-top: 0;" type="text" class="search-query" placeholder="Search for classes/modules..." data-obj='["classes/Autodocs", "classes/AutodocsRun", "classes/CiTravis", "classes/EnvironmentVariables", "classes/PublishGithubPages", "modules/Autodocs", "modules/AutodocsCi", "modules/AutodocsPublish"]'>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span3">
+	    <div>
+	        <div id="sidebar">
+	        <div id="classes">
+	            <ul id="api-classes" class="nav nav-list">
+	                    <li><a href="../classes/Autodocs.html">Autodocs</a></li>
+	                    <li><a href="../classes/AutodocsRun.html">AutodocsRun</a></li>
+	                    <li><a href="../classes/CiTravis.html">CiTravis</a></li>
+	                    <li><a href="../classes/EnvironmentVariables.html">EnvironmentVariables</a></li>
+	                    <li><a href="../classes/PublishGithubPages.html">PublishGithubPages</a></li>
+	            </ul>
+	        </div>
+	        </div>
+	    </div>
+        </div>
+        <div class="span9">
+                <form id="options-form" class="form-inline pull-right">
+                    Show:
+                    <label for="api-show-inherited" class="checkbox">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected" class="checkbox">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private" class="checkbox">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated" class="checkbox">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </form>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <div class="page-header">
+                            <h1>environment-variables.js <small>File</small></h1>
+                        </div>
+                        
+                        <div class="file">
+                            <pre class="prettyprint linenums">
+                        &#x27;use strict&#x27;;
+                        
+                        /**
+                         * @class  EnvironmentVariables
+                         * @module  Autodocs
+                         */
+                        
+                        /**
+                         * Test that an environment variable exists
+                         *
+                         * @method exists
+                         * @for  EnvironmentVariables
+                         * @param  {String} name The name of the environment variable
+                         * @return {Boolean} &#x60;true&#x60; when environment variable is defined and **is not** an empty string
+                         */
+                        function existsEnvironmentVariable(name) {
+                          return !!process.env[name];
+                        }
+                        
+                        /**
+                         * Enforce that an environment variable exists
+                         *
+                         * @method require
+                         * @for  EnvironmentVariables
+                         * @param  {String} name The name of the environment variable
+                         * @throws  Throws and error when the environment variable does not exist
+                         */
+                        function requireEnvironmentVariable(name) {
+                          if (!existsEnvironmentVariable(name)) {
+                            throw new Error(&#x27;Environment variable &#x60;&#x27;+name+&#x27;&#x60; not set&#x27;);
+                          }
+                        }
+                        
+                        /**
+                         * Set a default value for an environment variable if it does not exist
+                         *
+                         * @method default
+                         * @for  EnvironmentVariables
+                         * @param  {String} name The name of the environment variable
+                         * @param  {String} value The default value
+                         * @return {String} The value of the existing or newly set environment variable
+                         */
+                        function defaultEnvironmentVariable(name, value) {
+                          if (!existsEnvironmentVariable(name)) {
+                            process.env[name] = value;
+                          }
+                          return process.env[name];
+                        }
+                        
+                        /**
+                         * Substitute the value of other environment variables into the named one.
+                         *
+                         * For example:
+                         *
+                         * &#x60;&#x60;&#x60;javascript
+                         * process.env.MAJOR_VERSION = &quot;0&quot;;
+                         * process.env.MINOR_VERSION = &quot;3&quot;;
+                         * EnvironmentVariables.substitute(&#x27;api/{{MAJOR_VERSION}}.{{MINOR_VERSION}}&#x27;);
+                         * &#x60;&#x60;&#x60;
+                         *
+                         * ... will return &#x60;&#x27;api/0.3&#x27;&#x60;;
+                         *
+                         * Note that if this is done for multiple environment variables,
+                         * the order in which they are done will affect the result.
+                         * It is the responsibility of the caller to this function to ensure that
+                         * the values to be substituted in are already fully resolved:
+                         * this function **is not** recursive.
+                         * Therefore, cycles are also not allowed.
+                         * Any of these will result in indeterminate results, including errors.
+                         *
+                         * @method default
+                         * @for  EnvironmentVariables
+                         * @param  {String} name The name of the environment variable
+                         * @return {String} The value of the existing or newly set environment variable
+                         */
+                        function substituteEnvironmentVariable(name) {
+                          process.env[name] = process.env[name]
+                            .replace(/{{[^{}]+}}/g, function(otherName) {
+                              otherName = otherName.replace(/[{}]+/g, &#x27;&#x27;);
+                              requireEnvironmentVariable(otherName);
+                              return process.env[otherName];
+                            });
+                          return process.env[name];
+                        }
+                        
+                        module.exports = {
+                          exists: existsEnvironmentVariable,
+                          require: requireEnvironmentVariable,
+                          &#x27;default&#x27;: defaultEnvironmentVariable,
+                          substitute: substituteEnvironmentVariable,
+                        };
+                        
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/jquery/jquery-1.8.2.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/yuidoc-bootstrap.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>

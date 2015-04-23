@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>ci/travis.js - autodocs</title>
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/css/custom.css">
+    <link rel="stylesheet" href="../assets/css/lucid.css">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+</head>
+<body class="yui3-skin-sam">
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <h1 class="brand" style="padding: 10px 16px 10px; height: 20px; line-height: 20px; margin-left: 0;">
+            autodocs
+        </h1>
+	<div class="nav">
+            <li class="divider-vertical"></li>
+            <li>
+                <p class="navbar-text">
+                    API Docs for Version: <b>0.5.0</b>
+                </p>
+            </li>
+        </div>
+        <form class="navbar-form pull-right" style="line-height: 40px; height: 40px;">
+            <input style="margin-top: 0;" type="text" class="search-query" placeholder="Search for classes/modules..." data-obj='["classes/Autodocs", "classes/AutodocsRun", "classes/CiTravis", "classes/EnvironmentVariables", "classes/PublishGithubPages", "modules/Autodocs", "modules/AutodocsCi", "modules/AutodocsPublish"]'>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span3">
+	    <div>
+	        <div id="sidebar">
+	        <div id="classes">
+	            <ul id="api-classes" class="nav nav-list">
+	                    <li><a href="../classes/Autodocs.html">Autodocs</a></li>
+	                    <li><a href="../classes/AutodocsRun.html">AutodocsRun</a></li>
+	                    <li><a href="../classes/CiTravis.html">CiTravis</a></li>
+	                    <li><a href="../classes/EnvironmentVariables.html">EnvironmentVariables</a></li>
+	                    <li><a href="../classes/PublishGithubPages.html">PublishGithubPages</a></li>
+	            </ul>
+	        </div>
+	        </div>
+	    </div>
+        </div>
+        <div class="span9">
+                <form id="options-form" class="form-inline pull-right">
+                    Show:
+                    <label for="api-show-inherited" class="checkbox">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected" class="checkbox">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private" class="checkbox">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated" class="checkbox">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </form>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <div class="page-header">
+                            <h1>ci/travis.js <small>File</small></h1>
+                        </div>
+                        
+                        <div class="file">
+                            <pre class="prettyprint linenums">
+                        &#x27;use strict&#x27;;
+                        
+                        var envVar = require(&#x27;../environment-variables&#x27;);
+                        
+                        /**
+                         * @class  CiTravis
+                         * @module  AutodocsCi
+                         */
+                        
+                        /**
+                         * Initialisation step for Travis
+                         *
+                         * Used to check/ set any Travis environment variables
+                         *
+                         * @method init
+                         * @for  CiTravis
+                         */
+                        function environmentVariablesTravis() {
+                          /**
+                           * Used to set value of &#x60;REPO_SLUG&#x60;
+                           *
+                           * @property TRAVIS_REPO_SLUG
+                           * @type String (Environment Variable)
+                           * @default None - throws when not set
+                           */
+                          envVar.require(&#x27;TRAVIS_REPO_SLUG&#x27;);
+                          process.env.REPO_SLUG = process.env.TRAVIS_REPO_SLUG;
+                        
+                          /**
+                           * @property TRAVIS_PULL_REQUEST
+                           * @type String (Environment Variable)
+                           * @default None - throws when not set
+                           */
+                          envVar.require(&#x27;TRAVIS_PULL_REQUEST&#x27;);
+                        
+                          /**
+                           * @property TRAVIS_BRANCH
+                           * @type String (Environment Variable)
+                           * @default None - throws when not set
+                           */
+                          envVar.require(&#x27;TRAVIS_BRANCH&#x27;);
+                        
+                          /**
+                           * @property TRAVIS_BUILD_NUMBER
+                           * @type String (Environment Variable)
+                           * @default None - throws when not set
+                           */
+                          envVar.require(&#x27;TRAVIS_BUILD_NUMBER&#x27;);
+                        
+                          /**
+                           * @property TRAVIS_JOB_NUMBER
+                           * @type String (Environment Variable)
+                           * @default None - throws when not set
+                           */
+                          envVar.require(&#x27;TRAVIS_JOB_NUMBER&#x27;);
+                        }
+                        
+                        /**
+                         * Based on the Travis environment variables,
+                         * determines whether to trigger generation and publishing of documentation.
+                         *
+                         * If &#x60;FLAG_PUBLISH_ON_RELEASE&#x60; is &#x60;true&#x60;,
+                         * then will trigger if Travis says that a tag was pushed.
+                         *
+                         * Otherwise, it will trigger when a branch is pushed,
+                         * if Travis says that this **is not** a pull request,
+                         * and the branch being pushed matches &#x60;DOCUMENT_BRANCH&#x60;.
+                         *
+                         * Both cases also require that the correct build index for the current job
+                         * matches &#x60;DOCUMENT_JOB_INDEX&#x60;.
+                         * This is to ensure that documentation is only published once per successful build.
+                         *
+                         * @method shouldRun
+                         * @return {Boolean} &#x60;true&#x60; when documentation should be generated and published
+                         */
+                        function testShouldPublishTravis() {
+                          var correctBuildIndex =
+                            (process.env.TRAVIS_BUILD_NUMBER+&#x27;.&#x27;+process.env.DOCUMENT_JOB_INDEX ===
+                              process.env.TRAVIS_JOB_NUMBER);
+                          if (!correctBuildIndex) {
+                            return false;
+                          }
+                          else if (process.env.FLAG_PUBLISH_ON_RELEASE === &#x27;true&#x27;) {
+                            /**
+                             * @property TRAVIS_TAG
+                             * @type String (Environment Variable)
+                             * @default None
+                             */
+                            return (envVar.exists(&#x27;TRAVIS_TAG&#x27;));
+                          }
+                          else {
+                            return (
+                              process.env.TRAVIS_PULL_REQUEST === &#x27;false&#x27; &amp;&amp;
+                              process.env.TRAVIS_BRANCH === process.env.DOCUMENT_BRANCH);
+                          }
+                        }
+                        
+                        module.exports = {
+                          init: environmentVariablesTravis,
+                          shouldRun: testShouldPublishTravis,
+                        };
+                        
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/jquery/jquery-1.8.2.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/yuidoc-bootstrap.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>
