@@ -40,6 +40,7 @@ fi
 
 #NOTE The var `DOCUMENT_PUBLISH_FOLDER` is processed and is based on other vars
 # It defaults to `api/${MAJOR_VERSION}.${MINOR_VERSION}`
+DOC_PUBLISH_ROOT_DIR="${GHPAGES_DIR}/${DOCUMENT_PUBLISH_FOLDER_ROOT}"
 DOC_PUBLISH_DIR="${GHPAGES_DIR}/${DOCUMENT_PUBLISH_FOLDER}"
 mkdir -p "${DOC_PUBLISH_DIR}"
 rm -rf ${DOC_PUBLISH_DIR}/*
@@ -58,11 +59,23 @@ else
   echo "Not copying assets"
   DOCUMENT_ASSETS=""
 fi
+touch "${DOC_PUBLISH_ROOT_DIR}"
 touch "${DOC_PUBLISH_DIR}"
 
 # TODO generate an index page to list all available API documentation versions
 # TODO alias "latest" or "current" to the one currently being generated
-
+if test "${FLAG_LATEST_PAGE}" == "true" ; then
+  echo "Generating 'latest' page"
+  LATEST_REDIRECTREPLACE="{{REDIRECTURL}}"
+  # LATEST_REDIRECTREPLACE="{{REDIRECTURL}}"
+  LATEST_REDIRECTURL="\.\.\/${DOCUMENT_PUBLISH_SUBFOLDER//./\\.}"
+  SED_REDIRECT="s/${LATEST_REDIRECTREPLACE}/${LATEST_REDIRECTURL}/g"
+  echo SED_REDIRECT=${SED_REDIRECT}
+  LATEST_DIR="${DOCUMENT_PUBLISH_FOLDER_ROOT}/latest"
+  mkdir -p "${LATEST_DIR}"
+  { cat "${SCRIPT_DIR}/github-pages-latest.html" | sed "s/${LATEST_REDIRECTREPLACE}/${LATEST_REDIRECTURL}/g" ; } > "${LATEST_DIR}/index.html"
+fi
+# s/\{\{REDIRECTURL\}\}/0.4/g
 # Test if there are any changes
 NUM_FILES_CHANGED=$( git ls-files -m -o | wc -l )
 if test "${NUM_FILES_CHANGED}" -gt "0" ; then
@@ -73,18 +86,22 @@ if test "${NUM_FILES_CHANGED}" -gt "0" ; then
   COMMIT_MESSAGE="autodocs publish ${TIME_STAMP} ${COMMIT_ID}"
   echo "${COMMIT_MESSAGE}"
   git commit -m "${COMMIT_MESSAGE}"
-  # discard all output, because it contains the github access token
-  # unless, opted out, using `FLAG_QUIET_PUSH`
-  if test "${FLAG_STRIP_TOKEN_OUTPUT}" == "false" ; then
-    # Show output, unmodified.
-    # This should *not* be done in CI, only for local testing
-    git push upstream HEAD:gh-pages
+  if test "${FLAG_SKIP_PUSH}" == "true" ;  then
+    echo "Skipping push to github pages"
   else
-    # Use `sed` to replace any instances of the Github token in both stdout and stderr
-    SED_STRIP_TOKEN="s/${GH_TOKEN}/\[SECURE\]/g"
-    { git push upstream HEAD:gh-pages 2>&1 >&3 | sed ${SED_STRIP_TOKEN} ; } 3>&1
+    # discard all output, because it contains the github access token
+    # unless, opted out, using `FLAG_QUIET_PUSH`
+    if test "${FLAG_STRIP_TOKEN_OUTPUT}" == "false" ; then
+      # Show output, unmodified.
+      # This should *not* be done in CI, only for local testing
+      git push upstream HEAD:gh-pages
+    else
+      # Use `sed` to replace any instances of the Github token in both stdout and stderr
+      SED_STRIP_TOKEN="s/${GH_TOKEN}/\[SECURE\]/g"
+      { git push upstream HEAD:gh-pages 2>&1 >&3 | sed ${SED_STRIP_TOKEN} ; } 3>&1
+    fi
+    echo "Successfully pushed documentation to gh-pages"
   fi
-  echo "Successfully pushed documentation to gh-pages"
 
 else
 
