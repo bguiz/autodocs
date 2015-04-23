@@ -152,14 +152,20 @@
                          * @for  PublishGithubPages
                          */
                         function publishGithubPages() {
-                          var childProcess = require(&#x27;child_process&#x27;);
-                          var script = childProcess.spawn(path.join(__dirname, &#x27;github-pages.sh&#x27;), [], {
-                            stdio: &#x27;inherit&#x27;,
-                          });
-                          script.on(&#x27;close&#x27;, function(code) {
-                            outputUrls();
-                            process.exit(code);
-                          });
+                          if (process.env.FLAG_TESTING !== &#x27;true&#x27;) {
+                            var childProcess = require(&#x27;child_process&#x27;);
+                            var script = childProcess.spawn(path.join(__dirname, &#x27;github-pages.sh&#x27;), [], {
+                              stdio: &#x27;inherit&#x27;,
+                            });
+                            script.on(&#x27;close&#x27;, function(code) {
+                              if (code === 0) {
+                                outputUrls();
+                              }
+                              process.nextTick(function() {
+                                process.exit(code);
+                              });
+                            });
+                          }
                         }
                         
                         /**

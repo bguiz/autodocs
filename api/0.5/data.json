@@ -322,7 +322,7 @@
         },
         {
             "file": "publish/github-pages.js",
-            "line": 83,
+            "line": 89,
             "description": "Outputs the base URL and the API URL at which the documentation should be published.\n\nUses `CNAME` file based on best guess,\notherwise defaults to `*.github/*`",
             "itemtype": "method",
             "name": "outputUrls",
