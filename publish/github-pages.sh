@@ -29,11 +29,13 @@ git remote add upstream "${REPO_URL_AUTH}"
 
 # Detect if this repo has a gh-pages branch
 NUM_GHPAGES_BRANCHES=$( git ls-remote --heads ${REPO_URL_UNAUTH} | grep 'refs\/heads\/gh-pages' | wc -l )
+git ls-remote --heads ${REPO_URL_UNAUTH}
+echo "NUM_GHPAGES_BRANCHES ${NUM_GHPAGES_BRANCHES}"
 if test "${NUM_GHPAGES_BRANCHES}" == "0" ; then
-  # Create a new gh-pages branch otherwise
+  echo "Creating new gh-pages branch"
   git checkout --orphan gh-pages
 else
-  # Fetch the existing gh-pages branch where it exists
+  echo "Using existing gh-pages"
   git fetch upstream gh-pages
   git checkout gh-pages
 fi
