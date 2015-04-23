@@ -70,7 +70,7 @@ function environmentVariablesGithub() {
  * @for  PublishGithubPages
  */
 function publishGithubPages() {
-  if (process.env.FLAG_TESTING != 'true') {
+  if (process.env.FLAG_TESTING !== 'true') {
     var childProcess = require('child_process');
     var script = childProcess.spawn(path.join(__dirname, 'github-pages.sh'), [], {
       stdio: 'inherit',
