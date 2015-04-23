@@ -29,13 +29,13 @@ git remote add upstream "${REPO_URL_AUTH}"
 
 # Detect if this repo has a gh-pages branch
 NUM_GHPAGES_BRANCHES=$( git ls-remote --heads ${REPO_URL_UNAUTH} | grep 'refs\/heads\/gh-pages' | wc -l )
-if test "${NUM_GHPAGES_BRANCHES}" -gt "0" ; then
+if test "${NUM_GHPAGES_BRANCHES}" == "0" ; then
+  # Create a new gh-pages branch otherwise
+  git checkout --orphan gh-pages
+else
   # Fetch the existing gh-pages branch where it exists
   git fetch upstream gh-pages
   git checkout gh-pages
-else
-  # Create a new gh-pages branch otherwise
-  git checkout --orphan gh-pages
 fi
 
 #NOTE The var `DOCUMENT_PUBLISH_FOLDER` is processed and is based on other vars
