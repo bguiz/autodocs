@@ -152,6 +152,8 @@
                          * @for  PublishGithubPages
                          */
                         function publishGithubPages() {
+                          /* istanbul ignore if :
+                             shell script is NOT instrumented or tested */
                           if (process.env.FLAG_TESTING !== &#x27;true&#x27;) {
                             var childProcess = require(&#x27;child_process&#x27;);
                             var script = childProcess.spawn(path.join(__dirname, &#x27;github-pages.sh&#x27;), [], {
@@ -178,6 +180,8 @@
                          * @for  PublishGithubPages
                          * @private
                          */
+                        /* istanbul ignore next :
+                           function will never get called during testing, because shell script is not run */
                         function outputUrls() {
                           var CNAME;
                           if (process.env.FLAG_COPY_ASSETS === &#x27;true&#x27; &amp;&amp;
