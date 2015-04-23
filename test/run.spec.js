@@ -25,5 +25,21 @@ describe('[run]', function() {
       }).toThrowError( /Environment variable `[^\]]+` not set/ );
       done();
     });
+
+    it('Should fail when selected CI is not supported', function(done) {
+      process.env.SELECT_CI = 'unicorn-ci';
+      expect(function() {
+        require('../autodocs').run();
+      }).toThrowError( /Cannot find module \'[^\']+\'/ );
+      done();
+    });
+
+    it('Should fail when selected publish is not supported', function(done) {
+      process.env.SELECT_CI = 'unicorn-publish';
+      expect(function() {
+        require('../autodocs').run();
+      }).toThrowError( /Cannot find module \'[^\']+\'/ );
+      done();
+    });
   });
 });

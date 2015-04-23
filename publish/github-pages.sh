@@ -81,14 +81,15 @@ if test "${FLAG_LATEST_PAGE}" == "true" ; then
 else
   LATEST_ASSETS=""
 fi
-# s/\{\{REDIRECTURL\}\}/0.4/g
+
 # Test if there are any changes
+cd "${GHPAGES_DIR}"
 NUM_FILES_CHANGED=$( git ls-files -m -o | wc -l )
 if test "${NUM_FILES_CHANGED}" -gt "0" ; then
 
   # Commit and push
   GIT_ADDITIONS="${DOC_PUBLISH_DIR} ${DOCUMENT_ASSETS} ${LATEST_DIR}"
-  git add -A "${GIT_ADDITIONS}"
+  git add -A ${GIT_ADDITIONS}
   COMMIT_MESSAGE="autodocs publish ${TIME_STAMP} ${COMMIT_ID}"
   echo "${COMMIT_MESSAGE}"
   git commit -m "${COMMIT_MESSAGE}"
