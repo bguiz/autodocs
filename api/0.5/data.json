@@ -2,7 +2,7 @@
     "project": {
         "name": "autodocs",
         "description": "Automates publishing API docs for NodeJs projects, useful for continuous integration",
-        "version": "0.5.1"
+        "version": "0.5.2"
     },
     "files": {
         "ci/travis.js": {
