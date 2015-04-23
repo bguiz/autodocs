@@ -71,11 +71,38 @@ function environmentVariablesAutodocs() {
   console.log('projectPath', projectPath);
   var projectPackageJson = require(path.resolve(projectPath, 'package.json'));
   var projectVersion = projectPackageJson.version;
+
+  /**
+   * @property PROJECT_DIR
+   * @type String (Environment Variable)
+   * @default The current working directory
+   * @readOnly
+   */
   process.env.PROJECT_DIR = projectPath;
-  process.env.MAJOR_MINOR_PATCH_VERSION = projectVersion;
   var projectVersionTokens = projectVersion.split('.');
+
+  /**
+   * @property MAJOR_VERSION
+   * @type String (Environment Variable)
+   * @default The major version read in from package.json
+   * @readOnly
+   */
   process.env.MAJOR_VERSION = projectVersionTokens[0];
+
+  /**
+   * @property MINOR_VERSION
+   * @type String (Environment Variable)
+   * @default The minor version read in from package.json
+   * @readOnly
+   */
   process.env.MINOR_VERSION = projectVersionTokens[1];
+
+  /**
+   * @property PATCH_VERSION
+   * @type String (Environment Variable)
+   * @default The patch version read in from package.json
+   * @readOnly
+   */
   process.env.PATCH_VERSION = projectVersionTokens.slice(2).join('.');
 
   /**
@@ -121,6 +148,39 @@ function environmentVariablesAutodocs() {
    */
   envVar.default('FLAG_STRIP_TOKEN_OUTPUT', 'true');
 
+
+  /**
+   * By default, this will publish a latest pages,
+   * whose purpose is simply to redirect to the most recently publish API version
+   *
+   * Assuming default values for other configurations,
+   * if the version of the project is currently `1.2.3`,
+   *
+   * - `http://USER.github.io/REPO/api/latest/`
+   * - This URL will be published with an `index.html` file that redirects to:
+   * - `http://USER.github.io/REPO/api/1.2/`
+   *
+   * Set to `false` to disable this behaviour.
+   *
+   * @property FLAG_LATEST_PAGE
+   * @type String (Environment Variable)
+   * @default 'true'
+   */
+  envVar.default('FLAG_LATEST_PAGE', 'true');
+
+  /**
+   * Set to false to do all of the steps in publishing,
+   * except for the final step of pushing the changes to the git remote.
+   *
+   * This is useful for testing and debugging purposes.
+   * Leaving this on in a CI environment would defeat the purpose of autodocs
+   *
+   * @property FLAG_SKIP_PUSH
+   * @type String (Environment Variable)
+   * @default 'false'
+   */
+  envVar.default('FLAG_SKIP_PUSH', 'false');
+
   /**
    * @property DOCUMENT_BRANCH
    * @type String (Environment Variable)
@@ -143,11 +203,37 @@ function environmentVariablesAutodocs() {
   envVar.default('DOCUMENT_GENERATED_FOLDER', 'documentation');
 
   /**
+   * All documentation will be published under this root directory
+   *
+   * This can be used for **non-version-specific** documentation
+   *
+   * @property DOCUMENT_PUBLISH_FOLDER_ROOT
+   * @type String (Environment Variable)
+   * @default 'api'
+   */
+  envVar.default('DOCUMENT_PUBLISH_FOLDER_ROOT', 'api');
+
+  /**
+   * The documentation will be published in this subdirectory of the root directory.
+   *
+   * This can be used for **version-specific** documentation
+   *
+   * @property DOCUMENT_PUBLISH_SUBFOLDER
+   * @type String (Environment Variable)
+   * @default '{{MAJOR_VERSION}}.{{MINOR_VERSION}}'
+   */
+  envVar.default('DOCUMENT_PUBLISH_SUBFOLDER', '{{MAJOR_VERSION}}.{{MINOR_VERSION}}');
+
+
+  /**
+   * Joins `DOCUMENT_PUBLISH_FOLDER_ROOT` with `DOCUMENT_PUBLISH_SUBFOLDER`
+   * to get a concrete path to publish the documentation.
+   *
    * @property DOCUMENT_PUBLISH_FOLDER
    * @type String (Environment Variable)
-   * @default 'api/{{MAJOR_VERSION}}.{{MINOR_VERSION}}'
+   * @default '{{DOCUMENT_PUBLISH_FOLDER_ROOT}}/{{DOCUMENT_PUBLISH_SUBFOLDER}}'
    */
-  envVar.default('DOCUMENT_PUBLISH_FOLDER', 'api/{{MAJOR_VERSION}}.{{MINOR_VERSION}}');
+  envVar.default('DOCUMENT_PUBLISH_FOLDER', '{{DOCUMENT_PUBLISH_FOLDER_ROOT}}/{{DOCUMENT_PUBLISH_SUBFOLDER}}');
 
   /**
    * @property DOCUMENT_ASSETS
@@ -157,6 +243,8 @@ function environmentVariablesAutodocs() {
   envVar.default('DOCUMENT_ASSETS', '');
 
   [
+    'DOCUMENT_PUBLISH_FOLDER_ROOT',
+    'DOCUMENT_PUBLISH_SUBFOLDER',
     'DOCUMENT_PUBLISH_FOLDER'
   ].forEach(envVar.substitute);
 }
