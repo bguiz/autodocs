@@ -36,18 +36,22 @@ function environmentVariablesGithub() {
   if (!envVar.exists('GH_USER') ||
       !envVar.exists('GH_REPO')) {
     var tokens = process.env.REPO_SLUG.split('/');
+
     /**
      * @property GH_USER
      * @type String (Environment Variable)
      * @default First half of `REPO_SLUG`
      */
     envVar.default('GH_USER', tokens[0]);
+
     /**
      * @property GH_REPO
      * @type String (Environment Variable)
      * @default Second half of `REPO_SLUG`
      */
     envVar.default('GH_REPO', tokens[1]);
+
+    process.env.SCRIPT_DIR = __dirname;
   }
 }
 
