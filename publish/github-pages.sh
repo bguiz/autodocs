@@ -11,21 +11,33 @@ npm run generatedocs
 
 # Publish documentation to gh-pages
 
-# Git repo init and update gh-pages branch
+# Set up vars
 TIME_STAMP=$( date +%Y-%m-%d-%H-%M-%S )
 GHPAGES_DIR="${PROJECT_DIR}/autodocs/ghpages-${TIME_STAMP}"
 GENERATED_DIR="${PROJECT_DIR}/${DOCUMENT_GENERATED_FOLDER}"
+REPO_URL_AUTH="https://${GH_USER}:${GH_TOKEN}@github.com/${GH_USER}/${GH_REPO}.git"
+REPO_URL_UNAUTH="https://github.com/${GH_USER}/${GH_REPO}"
+
+# Git repo init and update gh-pages branch
 rm -rf "${GHPAGES_DIR}"
 mkdir -p "${GHPAGES_DIR}"
 cd "${GHPAGES_DIR}"
 git init
 git config user.name "${GIT_USER}"
 git config user.email "${GIT_EMAIL}"
-git remote add upstream "https://${GH_USER}:${GH_TOKEN}@github.com/${GH_USER}/${GH_REPO}.git"
+git remote add upstream "${REPO_URL_AUTH}"
 
-# TODO check if gh-pages branch exists, otherwise create on first
-git fetch upstream gh-pages
-git checkout gh-pages
+# Detect if this repo has a gh-pages branch
+NUM_GHPAGES_BRANCHES=$( git ls-remote --heads ${REPO_URL_UNAUTH} | grep 'refs\/heads\/gh-pages' | wc -l )
+if test "${NUM_GHPAGES_BRANCHES}" -gt "0" ; then
+  # Fetch the existing gh-pages branch where it exists
+  git fetch upstream gh-pages
+  git checkout gh-pages
+else
+  # Create a new gh-pages branch otherwise
+  git checkout --orphan gh-pages
+fi
+
 #NOTE The var `DOCUMENT_PUBLISH_FOLDER` is processed and is based on other vars
 # It defaults to `api/${MAJOR_VERSION}.${MINOR_VERSION}`
 DOC_PUBLISH_DIR="${GHPAGES_DIR}/${DOCUMENT_PUBLISH_FOLDER}"
