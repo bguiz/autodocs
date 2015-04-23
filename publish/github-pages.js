@@ -70,14 +70,20 @@ function environmentVariablesGithub() {
  * @for  PublishGithubPages
  */
 function publishGithubPages() {
-  var childProcess = require('child_process');
-  var script = childProcess.spawn(path.join(__dirname, 'github-pages.sh'), [], {
-    stdio: 'inherit',
-  });
-  script.on('close', function(code) {
-    outputUrls();
-    process.exit(code);
-  });
+  if (process.env.FLAG_TESTING != 'true') {
+    var childProcess = require('child_process');
+    var script = childProcess.spawn(path.join(__dirname, 'github-pages.sh'), [], {
+      stdio: 'inherit',
+    });
+    script.on('close', function(code) {
+      if (code === 0) {
+        outputUrls();
+      }
+      process.nextTick(function() {
+        process.exit(code);
+      });
+    });
+  }
 }
 
 /**

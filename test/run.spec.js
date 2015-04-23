@@ -1,19 +1,30 @@
 'use strict';
 
+var path = require('path');
+
+var original = {
+  PATH: process.env.PATH,
+};
 var envs = {
   buildOnBranch: function() {
     return {
+      PATH: original.PATH,
+
       TRAVIS_REPO_SLUG: 'bguiz/autodocs',
       TRAVIS_PULL_REQUEST: 'false',
       TRAVIS_BRANCH: 'master',
       TRAVIS_BUILD_NUMBER: 'foo',
       TRAVIS_JOB_NUMBER: 'foo.1',
       GH_TOKEN: 'unicorns',
+
+      FLAG_TESTING: 'true',
       FLAG_SKIP_PUSH: 'true',
     };
   },
   buildOnRelease: function() {
     return {
+      PATH: original.PATH,
+
       TRAVIS_REPO_SLUG: 'bguiz/autodocs',
       TRAVIS_PULL_REQUEST: 'false',
       TRAVIS_BRANCH: 'unicorn-branch',
@@ -22,6 +33,8 @@ var envs = {
       TRAVIS_TAG: 'anythingotherthanfalse',
       FLAG_PUBLISH_ON_RELEASE: 'true',
       GH_TOKEN: 'unicorns',
+
+      FLAG_TESTING: 'true',
       FLAG_SKIP_PUSH: 'true',
     };
   },
@@ -70,7 +83,7 @@ describe('[run]', function() {
       done();
     });
 
-    describe('[compulsory tokens]', function() {
+    describe('[compulsory vars]', function() {
       [
         'GH_TOKEN',
         'TRAVIS_REPO_SLUG',
@@ -90,6 +103,38 @@ describe('[run]', function() {
       });
     });
 
+    describe('[default vars]', function() {
+      beforeEach(function(done) {
+        process.env = envs.buildOnBranch();
+        require('../autodocs').run();
+        done();
+      });
+
+      [
+        { name: 'GIT_USER', value: 'autodocs Git User', },
+        { name: 'GIT_EMAIL', value: 'autodocs-git-user@bguiz.com', },
+        { name: 'FLAG_COPY_ASSETS', value: 'false', },
+        { name: 'FLAG_PUBLISH_ON_RELEASE', value: 'false', },
+        { name: 'FLAG_CLEAN_DOCUMENT', value: 'false', },
+        { name: 'FLAG_STRIP_TOKEN_OUTPUT', value: 'true', },
+        { name: 'FLAG_LATEST_PAGE', value: 'true', },
+        // { name: 'FLAG_SKIP_PUSH', value: 'false', }, //because we manually set this to prevent publishing during tests
+        { name: 'DOCUMENT_BRANCH', value: 'master', },
+        { name: 'DOCUMENT_JOB_INDEX', value: '1', },
+        { name: 'DOCUMENT_GENERATED_FOLDER', value: 'documentation', },
+        { name: 'DOCUMENT_PUBLISH_FOLDER_ROOT', value: 'api', },
+        //TODO test that these substitutions are done correctly
+        // { name: 'DOCUMENT_PUBLISH_SUBFOLDER', value: '{{MAJOR_VERSION}}.{{MINOR_VERSION}}', },
+        // { name: 'DOCUMENT_PUBLISH_FOLDER', value: '{{DOCUMENT_PUBLISH_FOLDER_ROOT}}/{{DOCUMENT_PUBLISH_SUBFOLDER}}', },
+        { name: 'DOCUMENT_ASSETS', value: '', },
+        { name: 'PROJECT_DIR', value: path.resolve(__dirname, '..') }
+      ].forEach(function(pair) {
+        it('Should set default value for '+pair.name, function(done) {
+          expect(process.env[pair.name]).toEqual(pair.value);
+          done();
+        });
+      });
+    });
 
   });
 });
