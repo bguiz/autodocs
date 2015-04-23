@@ -12,6 +12,7 @@ npm run generatedocs
 # Publish documentation to gh-pages
 
 # Set up vars
+COMMIT_ID=$( git rev-parse --short HEAD )
 TIME_STAMP=$( date +%Y-%m-%d-%H-%M-%S )
 GHPAGES_DIR="${PROJECT_DIR}/autodocs/ghpages-${TIME_STAMP}"
 GENERATED_DIR="${PROJECT_DIR}/${DOCUMENT_GENERATED_FOLDER}"
@@ -86,8 +87,8 @@ NUM_FILES_CHANGED=$( git ls-files -m -o | wc -l )
 if test "${NUM_FILES_CHANGED}" -gt "0" ; then
 
   # Commit and push
-  git add -A "${DOC_PUBLISH_DIR}" ${DOCUMENT_ASSETS} ${LATEST_DIR}
-  COMMIT_ID=$( git rev-parse --short HEAD )
+  GIT_ADDITIONS="${DOC_PUBLISH_DIR} ${DOCUMENT_ASSETS} ${LATEST_DIR}"
+  git add -A "${GIT_ADDITIONS}"
   COMMIT_MESSAGE="autodocs publish ${TIME_STAMP} ${COMMIT_ID}"
   echo "${COMMIT_MESSAGE}"
   git commit -m "${COMMIT_MESSAGE}"
