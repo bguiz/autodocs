@@ -3,8 +3,6 @@
 var fs = require('fs');
 var path = require('path');
 
-var envVar = require('../environment-variables');
-
 /**
  * @class  PublishGithubPages
  * @module  AutodocsPublish
@@ -18,7 +16,9 @@ var envVar = require('../environment-variables');
  * @method  init
  * @for  PublishGithubPages
  */
-function environmentVariablesGithub() {
+function environmentVariablesGithub(context, callback) {
+  var envVar = context.environmentVariables;
+
   /**
    * @property GH_TOKEN
    * @type String (Environment Variable)
@@ -69,12 +69,14 @@ function environmentVariablesGithub() {
  * @method run
  * @for  PublishGithubPages
  */
-function publishGithubPages() {
+function publishGithubPages(context, callback) {
+  var envVar = context.environmentVariables;
+
   /* istanbul ignore if :
      shell script is NOT instrumented or tested */
   if (process.env.FLAG_TESTING !== 'true') {
     var childProcess = require('child_process');
-    var script = childProcess.spawn(path.join(__dirname, 'github-pages.sh'), [], {
+    var script = childProcess.spawn(path.join(__dirname, 'index.sh'), [], {
       stdio: 'inherit',
     });
     script.on('close', function(code) {
@@ -82,9 +84,18 @@ function publishGithubPages() {
         outputUrls();
       }
       process.nextTick(function() {
+        if (code !== 0) {
+          callback('Publish script exited with error code: '+code);
+        }
+        else {
+          callback();
+        }
         process.exit(code);
       });
     });
+  }
+  else {
+    callback();
   }
 }
 
@@ -100,7 +111,9 @@ function publishGithubPages() {
  */
 /* istanbul ignore next :
    function will never get called during testing, because shell script is not run */
-function outputUrls() {
+function outputUrls(context, callback) {
+  var envVar = context.environmentVariables;
+
   var CNAME;
   if (process.env.FLAG_COPY_ASSETS === 'true' &&
       process.env.DOCUMENT_ASSETS.split(' ').indexOf('CNAME') >= 0) {

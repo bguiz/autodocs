@@ -1,7 +1,5 @@
 'use strict';
 
-var envVar = require('../environment-variables');
-
 /**
  * @class  CiTravis
  * @module  AutodocsCi
@@ -15,7 +13,9 @@ var envVar = require('../environment-variables');
  * @method init
  * @for  CiTravis
  */
-function environmentVariablesTravis() {
+function environmentVariablesTravis(context, callback) {
+  var envVar = context.environmentVariables;
+
   /**
    * Used to set value of `REPO_SLUG`
    *
@@ -73,7 +73,9 @@ function environmentVariablesTravis() {
  * @method shouldRun
  * @return {Boolean} `true` when documentation should be generated and published
  */
-function testShouldPublishTravis() {
+function testShouldPublishTravis(context, callback) {
+  var envVar = context.environmentVariables;
+
   var correctBuildIndex =
     (process.env.TRAVIS_BUILD_NUMBER+'.'+process.env.DOCUMENT_JOB_INDEX ===
       process.env.TRAVIS_JOB_NUMBER);

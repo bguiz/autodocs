@@ -76,7 +76,7 @@ if test "${FLAG_LATEST_PAGE}" == "true" ; then
   # echo SED_REDIRECT=${SED_REDIRECT}
   LATEST_DIR="${DOCUMENT_PUBLISH_FOLDER_ROOT}/latest"
   mkdir -p "${LATEST_DIR}"
-  { cat "${SCRIPT_DIR}/github-pages-latest.html" | sed "s/${LATEST_REDIRECTREPLACE}/${LATEST_REDIRECTURL}/g" ; } > "${LATEST_DIR}/index.html"
+  { cat "${SCRIPT_DIR}/latest.html" | sed "s/${LATEST_REDIRECTREPLACE}/${LATEST_REDIRECTURL}/g" ; } > "${LATEST_DIR}/index.html"
   LATEST_ASSETS="${LATEST_DIR}"
 else
   LATEST_ASSETS=""
