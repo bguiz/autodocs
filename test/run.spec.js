@@ -170,7 +170,8 @@ describe('[run]', function() {
         { name: 'FLAG_CLEAN_DOCUMENT', value: 'false', },
         { name: 'FLAG_STRIP_TOKEN_OUTPUT', value: 'true', },
         { name: 'FLAG_LATEST_PAGE', value: 'true', },
-        // { name: 'FLAG_SKIP_PUSH', value: 'false', }, //because we manually set this to prevent publishing during tests
+        //because we manually set FLAG_SKIP_PUSH to prevent publishing during tests
+        // { name: 'FLAG_SKIP_PUSH', value: 'false', },
         { name: 'DOCUMENT_BRANCH', value: 'master', },
         { name: 'DOCUMENT_JOB_INDEX', value: '1', },
         { name: 'DOCUMENT_GENERATED_FOLDER', value: 'documentation', },
