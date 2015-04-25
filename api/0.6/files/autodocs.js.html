@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>autodocs.js - autodocs</title>
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/css/custom.css">
+    <link rel="stylesheet" href="../assets/css/lucid.css">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+</head>
+<body class="yui3-skin-sam">
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <h1 class="brand" style="padding: 10px 16px 10px; height: 20px; line-height: 20px; margin-left: 0;">
+            autodocs
+        </h1>
+	<div class="nav">
+            <li class="divider-vertical"></li>
+            <li>
+                <p class="navbar-text">
+                    API Docs for Version: <b>0.6.0-rc</b>
+                </p>
+            </li>
+        </div>
+        <form class="navbar-form pull-right" style="line-height: 40px; height: 40px;">
+            <input style="margin-top: 0;" type="text" class="search-query" placeholder="Search for classes/modules..." data-obj='["classes/Autodocs", "classes/AutodocsRun", "classes/CiTravis", "classes/EnvironmentVariables", "classes/PublishGithubPages", "modules/Autodocs", "modules/AutodocsCi", "modules/AutodocsPublish"]'>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span3">
+	    <div>
+	        <div id="sidebar">
+	        <div id="classes">
+	            <ul id="api-classes" class="nav nav-list">
+	                    <li><a href="../classes/Autodocs.html">Autodocs</a></li>
+	                    <li><a href="../classes/AutodocsRun.html">AutodocsRun</a></li>
+	                    <li><a href="../classes/CiTravis.html">CiTravis</a></li>
+	                    <li><a href="../classes/EnvironmentVariables.html">EnvironmentVariables</a></li>
+	                    <li><a href="../classes/PublishGithubPages.html">PublishGithubPages</a></li>
+	            </ul>
+	        </div>
+	        </div>
+	    </div>
+        </div>
+        <div class="span9">
+                <form id="options-form" class="form-inline pull-right">
+                    Show:
+                    <label for="api-show-inherited" class="checkbox">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected" class="checkbox">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private" class="checkbox">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated" class="checkbox">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </form>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <div class="page-header">
+                            <h1>autodocs.js <small>File</small></h1>
+                        </div>
+                        
+                        <div class="file">
+                            <pre class="prettyprint linenums">
+                        &#x27;use strict&#x27;;
+                        
+                        var path = require(&#x27;path&#x27;);
+                        
+                        /**
+                         * @module  Autodocs
+                         */
+                        
+                        /**
+                         * @class  Autodocs
+                         * @module  Autodocs
+                         */
+                        
+                        /**
+                         * Will determine which continuous integration environment and publishing environment to use,
+                         * and then run those appropriately.
+                         *
+                         * Currently, the supported ones are:
+                         *
+                         * - Continuous Integration (&#x60;SELECT_CI&#x60;):
+                         *   - &#x60;travis&#x60;
+                         * - Publishing Environment (&#x60;SELECT_PUBLISH&#x60;):
+                         *   - &#x60;github-pages&#x60;
+                         *
+                         * Runs various environment variables checks and sets defaults where appropriate.
+                         * Then tests whether this particular build should trigger publishing the documentation,
+                         * and if so fires the publish script
+                         *
+                         * @method run
+                         * @for  Autodocs
+                         */
+                        function runAutodocs(context, callback) {
+                          if (typeof callback !== &#x27;function&#x27;) {
+                            throw new Error(&#x27;Expected callback function&#x27;);
+                          }
+                          try {
+                            context = context || {};
+                        
+                            context.environmentVariables = require(&#x27;./environment-variables&#x27;);
+                        
+                            runAutodocsImpl(context, callback);
+                          }
+                          catch (ex) {
+                            callback(ex);
+                            throw ex;
+                          }
+                        }
+                        
+                        function runAutodocsImpl(context, callback) {
+                          var envVar = context.environmentVariables;
+                        
+                          /**
+                           * @property SELECT_CI
+                           * @type String (Environment Variable)
+                           * @default &#x27;travis&#x27;
+                           */
+                          var ciName = envVar.default(&#x27;SELECT_CI&#x27;, &#x27;travis&#x27;);
+                          /**
+                           * @property SELECT_PUBLISH
+                           * @type String (Environment Variable)
+                           * @default &#x27;github-pages&#x27;
+                           */
+                          var publishName = envVar.default(&#x27;SELECT_PUBLISH&#x27;, &#x27;github-pages&#x27;);
+                          var ci = require(&#x27;./ci/&#x27;+ciName);
+                          var publish = require(&#x27;./publish/&#x27;+publishName);
+                          ci.init(context, callback);
+                          publish.init(context, callback);
+                          environmentVariablesAutodocs(context, callback);
+                          if (ci.shouldRun(context, callback)) {
+                            console.log(&#x27;This build will generate new documentation&#x27;);
+                            publish.run(context, callback);
+                          }
+                          else {
+                            console.log(&#x27;This build does not need to generate new documentation&#x27;);
+                            callback();
+                          }
+                        }
+                        
+                        /**
+                         * Initialisation step for Autodocs
+                         *
+                         * Used to check/ set any Autodocs environment variables
+                         *
+                         * @method init
+                         * @for  Autodocs
+                         */
+                        function environmentVariablesAutodocs(context, callback) {
+                          var envVar = context.environmentVariables;
+                        
+                          var projectPath = path.resolve(&#x27;.&#x27;);
+                          console.log(&#x27;projectPath&#x27;, projectPath);
+                          var projectPackageJson = require(path.resolve(projectPath, &#x27;package.json&#x27;));
+                          var projectVersion = projectPackageJson.version;
+                        
+                          /**
+                           * @property PROJECT_DIR
+                           * @type String (Environment Variable)
+                           * @default The current working directory
+                           * @readOnly
+                           */
+                          process.env.PROJECT_DIR = projectPath;
+                          var projectVersionTokens = projectVersion.split(&#x27;.&#x27;);
+                        
+                          /**
+                           * @property MAJOR_VERSION
+                           * @type String (Environment Variable)
+                           * @default The major version read in from package.json
+                           * @readOnly
+                           */
+                          process.env.MAJOR_VERSION = projectVersionTokens[0];
+                        
+                          /**
+                           * @property MINOR_VERSION
+                           * @type String (Environment Variable)
+                           * @default The minor version read in from package.json
+                           * @readOnly
+                           */
+                          process.env.MINOR_VERSION = projectVersionTokens[1];
+                        
+                          /**
+                           * @property PATCH_VERSION
+                           * @type String (Environment Variable)
+                           * @default The patch version read in from package.json
+                           * @readOnly
+                           */
+                          process.env.PATCH_VERSION = projectVersionTokens.slice(2).join(&#x27;.&#x27;);
+                        
+                          /**
+                           * @property GIT_USER
+                           * @type String (Environment Variable)
+                           * @default &#x27;autodocs Git User&#x27;
+                           */
+                          envVar.default(&#x27;GIT_USER&#x27;, &#x27;autodocs Git User&#x27;);
+                        
+                          /**
+                           * @property GIT_EMAIL
+                           * @type String (Environment Variable)
+                           * @default &#x27;autodocs-git-user@bguiz.com&#x27;
+                           */
+                          envVar.default(&#x27;GIT_EMAIL&#x27;, &#x27;autodocs-git-user@bguiz.com&#x27;);
+                        
+                        
+                          /**
+                           * @property FLAG_COPY_ASSETS
+                           * @type String (Environment Variable)
+                           * @default &#x27;false&#x27;
+                           */
+                          envVar.default(&#x27;FLAG_COPY_ASSETS&#x27;, &#x27;false&#x27;);
+                        
+                          /**
+                           * @property FLAG_PUBLISH_ON_RELEASE
+                           * @type String (Environment Variable)
+                           * @default &#x27;false&#x27;
+                           */
+                          envVar.default(&#x27;FLAG_PUBLISH_ON_RELEASE&#x27;, &#x27;false&#x27;);
+                        
+                          /**
+                           * @property FLAG_CLEAN_DOCUMENT
+                           * @type String (Environment Variable)
+                           * @default &#x27;false&#x27;
+                           */
+                          envVar.default(&#x27;FLAG_CLEAN_DOCUMENT&#x27;, &#x27;false&#x27;);
+                        
+                          /**
+                           * @property FLAG_STRIP_TOKEN_OUTPUT
+                           * @type String (Environment Variable)
+                           * @default &#x27;true&#x27;
+                           */
+                          envVar.default(&#x27;FLAG_STRIP_TOKEN_OUTPUT&#x27;, &#x27;true&#x27;);
+                        
+                        
+                          /**
+                           * By default, this will publish a latest pages,
+                           * whose purpose is simply to redirect to the most recently publish API version
+                           *
+                           * Assuming default values for other configurations,
+                           * if the version of the project is currently &#x60;1.2.3&#x60;,
+                           *
+                           * - &#x60;http://USER.github.io/REPO/api/latest/&#x60;
+                           * - This URL will be published with an &#x60;index.html&#x60; file that redirects to:
+                           * - &#x60;http://USER.github.io/REPO/api/1.2/&#x60;
+                           *
+                           * Set to &#x60;false&#x60; to disable this behaviour.
+                           *
+                           * @property FLAG_LATEST_PAGE
+                           * @type String (Environment Variable)
+                           * @default &#x27;true&#x27;
+                           */
+                          envVar.default(&#x27;FLAG_LATEST_PAGE&#x27;, &#x27;true&#x27;);
+                        
+                          /**
+                           * Set to false to do all of the steps in publishing,
+                           * except for the final step of pushing the changes to the git remote.
+                           *
+                           * This is useful for testing and debugging purposes.
+                           * Leaving this on in a CI environment would defeat the purpose of autodocs
+                           *
+                           * @property FLAG_SKIP_PUSH
+                           * @type String (Environment Variable)
+                           * @default &#x27;false&#x27;
+                           */
+                          envVar.default(&#x27;FLAG_SKIP_PUSH&#x27;, &#x27;false&#x27;);
+                        
+                          /**
+                           * @property DOCUMENT_BRANCH
+                           * @type String (Environment Variable)
+                           * @default &#x27;master&#x27;
+                           */
+                          envVar.default(&#x27;DOCUMENT_BRANCH&#x27;, &#x27;master&#x27;);
+                        
+                          /**
+                           * @property DOCUMENT_JOB_INDEX
+                           * @type String (Environment Variable)
+                           * @default &#x27;1&#x27;
+                           */
+                          envVar.default(&#x27;DOCUMENT_JOB_INDEX&#x27;, &#x27;1&#x27;);
+                        
+                          /**
+                           * @property DOCUMENT_GENERATED_FOLDER
+                           * @type String (Environment Variable)
+                           * @default &#x27;documentation&#x27;
+                           */
+                          envVar.default(&#x27;DOCUMENT_GENERATED_FOLDER&#x27;, &#x27;documentation&#x27;);
+                        
+                          /**
+                           * All documentation will be published under this root directory
+                           *
+                           * This can be used for **non-version-specific** documentation
+                           *
+                           * @property DOCUMENT_PUBLISH_FOLDER_ROOT
+                           * @type String (Environment Variable)
+                           * @default &#x27;api&#x27;
+                           */
+                          envVar.default(&#x27;DOCUMENT_PUBLISH_FOLDER_ROOT&#x27;, &#x27;api&#x27;);
+                        
+                          /**
+                           * The documentation will be published in this subdirectory of the root directory.
+                           *
+                           * This can be used for **version-specific** documentation
+                           *
+                           * @property DOCUMENT_PUBLISH_SUBFOLDER
+                           * @type String (Environment Variable)
+                           * @default &#x27;{{MAJOR_VERSION}}.{{MINOR_VERSION}}&#x27;
+                           */
+                          envVar.default(&#x27;DOCUMENT_PUBLISH_SUBFOLDER&#x27;, &#x27;{{MAJOR_VERSION}}.{{MINOR_VERSION}}&#x27;);
+                        
+                        
+                          /**
+                           * Joins &#x60;DOCUMENT_PUBLISH_FOLDER_ROOT&#x60; with &#x60;DOCUMENT_PUBLISH_SUBFOLDER&#x60;
+                           * to get a concrete path to publish the documentation.
+                           *
+                           * @property DOCUMENT_PUBLISH_FOLDER
+                           * @type String (Environment Variable)
+                           * @default &#x27;{{DOCUMENT_PUBLISH_FOLDER_ROOT}}/{{DOCUMENT_PUBLISH_SUBFOLDER}}&#x27;
+                           */
+                          envVar.default(&#x27;DOCUMENT_PUBLISH_FOLDER&#x27;, &#x27;{{DOCUMENT_PUBLISH_FOLDER_ROOT}}/{{DOCUMENT_PUBLISH_SUBFOLDER}}&#x27;);
+                        
+                          /**
+                           * @property DOCUMENT_ASSETS
+                           * @type String (Environment Variable)
+                           * @default &#x27;&#x27;
+                           */
+                          envVar.default(&#x27;DOCUMENT_ASSETS&#x27;, &#x27;&#x27;);
+                        
+                          envVar.default(&#x27;FLAG_TESTING&#x27;, &#x27;false&#x27;);
+                        
+                          [
+                            &#x27;DOCUMENT_PUBLISH_FOLDER_ROOT&#x27;,
+                            &#x27;DOCUMENT_PUBLISH_SUBFOLDER&#x27;,
+                            &#x27;DOCUMENT_PUBLISH_FOLDER&#x27;
+                          ].forEach(envVar.substitute);
+                        }
+                        
+                        module.exports = {
+                          init: environmentVariablesAutodocs,
+                          run: runAutodocs,
+                        };
+                        
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/jquery/jquery-1.8.2.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/yuidoc-bootstrap.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>

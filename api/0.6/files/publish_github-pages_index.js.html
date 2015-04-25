@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>publish/github-pages/index.js - autodocs</title>
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/css/custom.css">
+    <link rel="stylesheet" href="../assets/css/lucid.css">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+</head>
+<body class="yui3-skin-sam">
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <h1 class="brand" style="padding: 10px 16px 10px; height: 20px; line-height: 20px; margin-left: 0;">
+            autodocs
+        </h1>
+	<div class="nav">
+            <li class="divider-vertical"></li>
+            <li>
+                <p class="navbar-text">
+                    API Docs for Version: <b>0.6.0-rc</b>
+                </p>
+            </li>
+        </div>
+        <form class="navbar-form pull-right" style="line-height: 40px; height: 40px;">
+            <input style="margin-top: 0;" type="text" class="search-query" placeholder="Search for classes/modules..." data-obj='["classes/Autodocs", "classes/AutodocsRun", "classes/CiTravis", "classes/EnvironmentVariables", "classes/PublishGithubPages", "modules/Autodocs", "modules/AutodocsCi", "modules/AutodocsPublish"]'>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span3">
+	    <div>
+	        <div id="sidebar">
+	        <div id="classes">
+	            <ul id="api-classes" class="nav nav-list">
+	                    <li><a href="../classes/Autodocs.html">Autodocs</a></li>
+	                    <li><a href="../classes/AutodocsRun.html">AutodocsRun</a></li>
+	                    <li><a href="../classes/CiTravis.html">CiTravis</a></li>
+	                    <li><a href="../classes/EnvironmentVariables.html">EnvironmentVariables</a></li>
+	                    <li><a href="../classes/PublishGithubPages.html">PublishGithubPages</a></li>
+	            </ul>
+	        </div>
+	        </div>
+	    </div>
+        </div>
+        <div class="span9">
+                <form id="options-form" class="form-inline pull-right">
+                    Show:
+                    <label for="api-show-inherited" class="checkbox">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected" class="checkbox">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private" class="checkbox">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated" class="checkbox">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </form>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <div class="page-header">
+                            <h1>publish/github-pages/index.js <small>File</small></h1>
+                        </div>
+                        
+                        <div class="file">
+                            <pre class="prettyprint linenums">
+                        &#x27;use strict&#x27;;
+                        
+                        var fs = require(&#x27;fs&#x27;);
+                        var path = require(&#x27;path&#x27;);
+                        var childProcess = require(&#x27;child_process&#x27;);
+                        
+                        /**
+                         * @class  PublishGithubPages
+                         * @module  AutodocsPublish
+                         */
+                        
+                        var execute = childProcess.exec;
+                        
+                        /**
+                         * Initialisation step for Github Pages
+                         *
+                         * Used to check/ set any Github Pages environment variables
+                         *
+                         * @method  init
+                         * @for  PublishGithubPages
+                         */
+                        function environmentVariablesGithub(context, callback) {
+                          var envVar = context.environmentVariables;
+                        
+                          /**
+                           * @property GH_TOKEN
+                           * @type String (Environment Variable)
+                           * @default None - throws when not set
+                           */
+                          envVar.require(&#x27;GH_TOKEN&#x27;);
+                        
+                          /**
+                           * @property REPO_SLUG
+                           * @type String (Environment Variable)
+                           * @default None - throws when not set
+                           */
+                          envVar.require(&#x27;REPO_SLUG&#x27;);
+                        
+                          if (!envVar.exists(&#x27;GH_USER&#x27;) ||
+                              !envVar.exists(&#x27;GH_REPO&#x27;)) {
+                            var tokens = process.env.REPO_SLUG.split(&#x27;/&#x27;);
+                        
+                            /**
+                             * @property GH_USER
+                             * @type String (Environment Variable)
+                             * @default First half of &#x60;REPO_SLUG&#x60;
+                             */
+                            envVar.default(&#x27;GH_USER&#x27;, tokens[0]);
+                        
+                            /**
+                             * @property GH_REPO
+                             * @type String (Environment Variable)
+                             * @default Second half of &#x60;REPO_SLUG&#x60;
+                             */
+                            envVar.default(&#x27;GH_REPO&#x27;, tokens[1]);
+                        
+                            process.env.SCRIPT_DIR = __dirname;
+                          }
+                        }
+                        
+                        /**
+                         * Performs the required steps for publishing to Github pages
+                         *
+                         * - runs &#x60;npm run generatedocs&#x60;
+                         * - &#x60;git fetch&#x60;es the &#x60;gh-pages&#x60; branch of the project into a throwaway git repository
+                         * - copies the documentation generated by the &#x60;generatedocs&#x60; script into the &#x60;gh-pages&#x60; branch
+                         * - copies any additional files required into the gh-pages branch
+                         * - if any files have changed, &#x60;git commit&#x60;s &#x60;git push&#x60;es on the &#x60;gh-pages&#x60; branch
+                         *   - this is when the files actually succeed in publishing
+                         * - if necessary, cleans up the throwaway git repository
+                         *
+                         * @method run
+                         * @for  PublishGithubPages
+                         */
+                        function publishGithubPages(context, callback) {
+                          var envVar = context.environmentVariables;
+                        
+                          var projectDir = process.env.PROJECT_DIR;
+                        
+                          runGeneratedocs();
+                        
+                          function runGeneratedocs() {
+                            // Generate the documentation
+                            console.log(&#x27;Generating documentation&#x27;);
+                            execute(&#x27;npm run generatedocs&#x27;, {
+                              cwd: projectDir,
+                              env: process.env,
+                            }, function(err, stdout, stderr) {
+                              console.log(stdout);
+                              console.log(stderr);
+                              if (err) {
+                                console.log(&#x27;err: &#x27;+err);
+                                callback(err);
+                              }
+                              else {
+                                setUpVars();
+                              }
+                            });
+                          }
+                        
+                          var vars = envVar.selected([
+                            &#x27;PATH&#x27;,
+                            &#x27;PROJECT_DIR&#x27;,
+                            &#x27;GH_TOKEN&#x27;,
+                            &#x27;GH_USER&#x27;,
+                            &#x27;GH_REPO&#x27;,
+                            &#x27;DOCUMENT_GENERATED_FOLDER&#x27;,
+                            &#x27;DOCUMENT_PUBLISH_FOLDER_ROOT&#x27;,
+                            &#x27;DOCUMENT_PUBLISH_FOLDER&#x27;,
+                            &#x27;DOCUMENT_PUBLISH_SUBFOLDER&#x27;
+                          ]);
+                        
+                          function setUpVars() {
+                            console.log(&#x27;Set up vars&#x27;);
+                            execute(path.join(__dirname, &#x27;set-up-vars.sh&#x27;), {
+                              cwd: projectDir,
+                              env: vars,
+                            }, function(err, stdout, stderr) {
+                              vars = envVar.parsePrintenv(stdout, vars);
+                              console.log(&#x27;vars&#x27;, vars);
+                              if (err) {
+                                console.log(&#x27;err: &#x27;+err);
+                                callback(err);
+                              }
+                              else {
+                                setUpRepo();
+                              }
+                            });
+                          }
+                        
+                          function setUpRepo() {
+                            console.log(&#x27;Set up repo&#x27;);
+                            execute(path.join(__dirname, &#x27;set-up-repo.sh&#x27;), {
+                              cwd: projectDir,
+                              env: vars,
+                            }, function(err, stdout, stderr) {
+                              if (err) {
+                                console.log(&#x27;err: &#x27;+err);
+                                callback(err);
+                              }
+                              else {
+                                ghpagesBranch();
+                              }
+                            });
+                            // # Git repo init and update gh-pages branch
+                            // rm -rf &quot;${GHPAGES_DIR}&quot;
+                            // mkdir -p &quot;${GHPAGES_DIR}&quot;
+                            // cd &quot;${GHPAGES_DIR}&quot;
+                            // git init
+                            // git config user.name &quot;${GIT_USER}&quot;
+                            // git config user.email &quot;${GIT_EMAIL}&quot;
+                            // git remote add upstream &quot;${REPO_URL_AUTH}&quot;
+                          }
+                        
+                          function ghpagesBranch() {
+                            callback(); //TODO
+                            process.exit(0);
+                            // # Detect if this repo has a gh-pages branch
+                            // NUM_GHPAGES_BRANCHES=$( git ls-remote --heads ${REPO_URL_UNAUTH} | grep &#x27;refs\/heads\/gh-pages&#x27; | wc -l )
+                            // git ls-remote --heads ${REPO_URL_UNAUTH}
+                            // echo &quot;NUM_GHPAGES_BRANCHES ${NUM_GHPAGES_BRANCHES}&quot;
+                            // if test &quot;${NUM_GHPAGES_BRANCHES}&quot; == &quot;0&quot; ; then
+                            //   echo &quot;Creating new gh-pages branch&quot;
+                            //   git checkout --orphan gh-pages
+                            // else
+                            //   echo &quot;Using existing gh-pages&quot;
+                            //   git fetch upstream gh-pages
+                            //   git checkout gh-pages
+                            // fi
+                          }
+                        
+                          function copyGeneratedFiles() {
+                            // #NOTE The var &#x60;DOCUMENT_PUBLISH_FOLDER&#x60; is processed and is based on other vars
+                            // # It defaults to &#x60;api/${MAJOR_VERSION}.${MINOR_VERSION}&#x60;
+                            // DOC_PUBLISH_ROOT_DIR=&quot;${GHPAGES_DIR}/${DOCUMENT_PUBLISH_FOLDER_ROOT}&quot;
+                            // DOC_PUBLISH_DIR=&quot;${GHPAGES_DIR}/${DOCUMENT_PUBLISH_FOLDER}&quot;
+                            // mkdir -p &quot;${DOC_PUBLISH_DIR}&quot;
+                            // rm -rf ${DOC_PUBLISH_DIR}/*
+                            // cp -r ${GENERATED_DIR}/* &quot;${DOC_PUBLISH_DIR}&quot;
+                          }
+                        
+                          function copyAssets() {
+                            // # Specify a set of folders/ files to copy across to the root folder
+                            // if test &quot;${FLAG_COPY_ASSETS}&quot; == &quot;true&quot; ; then
+                            //   echo &quot;Copying assets: ${DOCUMENT_ASSETS}&quot;
+                            //   cd &quot;${PROJECT_DIR}&quot;
+                            //   # Use tar and pipe to untar to preserve directory structure
+                            //   # because &#x60;cp -r&#x60; does not do this well.
+                            //   # A viable alternative is to use &#x60;rsync&#x60;, for future reference
+                            //   tar cf - ${DOCUMENT_ASSETS} | ( cd &quot;${GHPAGES_DIR}&quot; ; tar xf - )
+                            //   cd &quot;${GHPAGES_DIR}&quot;
+                            // else
+                            //   echo &quot;Not copying assets&quot;
+                            //   DOCUMENT_ASSETS=&quot;&quot;
+                            // fi
+                            // touch &quot;${DOC_PUBLISH_ROOT_DIR}&quot;
+                            // touch &quot;${DOC_PUBLISH_DIR}&quot;
+                          }
+                        
+                          function createIndexPage() {
+                            // # TODO generate an index page to list all available API documentation versions
+                          }
+                        
+                          function createLatestAlias() {
+                            // # TODO alias &quot;latest&quot; or &quot;current&quot; to the one currently being generated
+                            // if test &quot;${FLAG_LATEST_PAGE}&quot; == &quot;true&quot; ; then
+                            //   echo &quot;Generating &#x27;latest&#x27; page&quot;
+                            //   LATEST_REDIRECTREPLACE=&quot;{{REDIRECTURL}}&quot;
+                            //   LATEST_REDIRECTURL=&quot;\.\.\/${DOCUMENT_PUBLISH_SUBFOLDER//./\\.}&quot;
+                            //   SED_REDIRECT=&quot;s/${LATEST_REDIRECTREPLACE}/${LATEST_REDIRECTURL}/g&quot;
+                            //   # echo SED_REDIRECT=${SED_REDIRECT}
+                            //   LATEST_DIR=&quot;${DOCUMENT_PUBLISH_FOLDER_ROOT}/latest&quot;
+                            //   mkdir -p &quot;${LATEST_DIR}&quot;
+                            //   { cat &quot;${SCRIPT_DIR}/latest.html&quot; | sed &quot;s/${LATEST_REDIRECTREPLACE}/${LATEST_REDIRECTURL}/g&quot; ; } &gt; &quot;${LATEST_DIR}/index.html&quot;
+                            //   LATEST_ASSETS=&quot;${LATEST_DIR}&quot;
+                            // else
+                            //   LATEST_ASSETS=&quot;&quot;
+                            // fi
+                          }
+                        
+                          function commitAndPush() {
+                            // # Test if there are any changes
+                            // cd &quot;${GHPAGES_DIR}&quot;
+                            // NUM_FILES_CHANGED=$( git ls-files -m -o | wc -l )
+                            // if test &quot;${NUM_FILES_CHANGED}&quot; -gt &quot;0&quot; ; then
+                            //   # Commit and push
+                            //   GIT_ADDITIONS=&quot;${DOC_PUBLISH_DIR} ${DOCUMENT_ASSETS} ${LATEST_DIR}&quot;
+                            //   git add -A ${GIT_ADDITIONS}
+                            //   COMMIT_MESSAGE=&quot;autodocs publish ${TIME_STAMP} ${COMMIT_ID}&quot;
+                            //   echo &quot;${COMMIT_MESSAGE}&quot;
+                            //   git commit -m &quot;${COMMIT_MESSAGE}&quot;
+                            //   if test &quot;${FLAG_SKIP_PUSH}&quot; == &quot;true&quot; ;  then
+                            //     echo &quot;Skipping push to github pages&quot;
+                            //   else
+                            //     # discard all output, because it contains the github access token
+                            //     # unless, opted out, using &#x60;FLAG_QUIET_PUSH&#x60;
+                            //     if test &quot;${FLAG_STRIP_TOKEN_OUTPUT}&quot; == &quot;false&quot; ; then
+                            //       # Show output, unmodified.
+                            //       # This should *not* be done in CI, only for local testing
+                            //       git push upstream HEAD:gh-pages
+                            //     else
+                            //       # Use &#x60;sed&#x60; to replace any instances of the Github token in both stdout and stderr
+                            //       SED_STRIP_TOKEN=&quot;s/${GH_TOKEN}/\[SECURE\]/g&quot;
+                            //       { git push upstream HEAD:gh-pages 2&gt;&amp;1 &gt;&amp;3 | sed ${SED_STRIP_TOKEN} ; } 3&gt;&amp;1
+                            //     fi
+                            //     echo &quot;Successfully pushed documentation to gh-pages&quot;
+                            //   fi
+                            // else
+                            //   echo &quot;Documentation unchanged, no need to publish&quot;
+                            // fi
+                          }
+                        
+                          function cleanUp() {
+                            // if &quot;${FLAG_CLEAN_DOCUMENT}&quot; == &quot;true&quot; ; then
+                            //   echo &quot;Cleaning up git repo at ${GHPAGES_DIR}&quot;
+                            //   rm -rf &quot;${GHPAGES_DIR}&quot;
+                            // fi
+                          }
+                        
+                          /* istanbul ignore if :
+                             shell script is NOT instrumented or tested */
+                          // if (process.env.FLAG_TESTING !== &#x27;true&#x27;) {
+                          //   var childProcess = require(&#x27;child_process&#x27;);
+                          //   var script = childProcess.spawn(path.join(__dirname, &#x27;index.sh&#x27;), [], {
+                          //     stdio: &#x27;inherit&#x27;,
+                          //   });
+                          //   script.on(&#x27;close&#x27;, function(code) {
+                          //     if (code === 0) {
+                          //       outputUrls(context, callback);
+                          //     }
+                          //     process.nextTick(function() {
+                          //       if (code !== 0) {
+                          //         callback(&#x27;Publish script exited with error code: &#x27;+code);
+                          //       }
+                          //       else {
+                          //         callback();
+                          //       }
+                          //       process.exit(code);
+                          //     });
+                          //   });
+                          // }
+                          // else {
+                          //   callback();
+                          //   process.exit(0);
+                          // }
+                        }
+                        
+                        /**
+                         * Outputs the base URL and the API URL at which the documentation should be published.
+                         *
+                         * Uses &#x60;CNAME&#x60; file based on best guess,
+                         * otherwise defaults to &#x60;*.github/*&#x60;
+                         *
+                         * @method  outputUrls
+                         * @for  PublishGithubPages
+                         * @private
+                         */
+                        /* istanbul ignore next :
+                           function will never get called during testing, because shell script is not run */
+                        function outputUrls(context, callback) {
+                          var envVar = context.environmentVariables;
+                        
+                          var CNAME;
+                          if (process.env.FLAG_COPY_ASSETS === &#x27;true&#x27; &amp;&amp;
+                              process.env.DOCUMENT_ASSETS.split(&#x27; &#x27;).indexOf(&#x27;CNAME&#x27;) &gt;= 0) {
+                            // Best guess that CNAME file was copied in
+                            try {
+                              var CNAMEfile = path.join(process.env.PROJECT_DIR, &#x27;CNAME&#x27;);
+                              CNAME = fs.readFileSync(CNAMEfile).toString().trim();
+                            }
+                            catch (e) {
+                              // Do nothing
+                            }
+                          }
+                          CNAME = CNAME || (process.env.GH_USER+&#x27;.github.io&#x27;);
+                          var publishDomain = &#x27;http://&#x27;+CNAME;
+                          var publishUrl = publishDomain+&#x27;/&#x27;+process.env.GH_REPO;
+                          var publishApiUrl = publishUrl+&#x27;/&#x27;+process.env.DOCUMENT_PUBLISH_FOLDER;
+                          console.log(&#x27;Base URL: &#x27;+publishUrl);
+                          console.log(&#x27;API  URL: &#x27;+publishApiUrl);
+                        }
+                        
+                        module.exports = {
+                          init: environmentVariablesGithub,
+                          run: publishGithubPages,
+                        };
+                        
+                        
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/jquery/jquery-1.8.2.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/yuidoc-bootstrap.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>
