@@ -113,13 +113,32 @@ function publishGithubPages(context, callback) {
   var vars = envVar.selected([
     'PATH',
     'PROJECT_DIR',
-    'GH_TOKEN',
-    'GH_USER',
-    'GH_REPO',
+    'MAJOR_VERSION',
+    'MINOR_VERSION',
+    'PATCH_VERSION',
+    'GIT_USER',
+    'GIT_EMAIL',
+    'FLAG_COPY_ASSETS',
+    'FLAG_PUBLISH_ON_RELEASE',
+    'FLAG_CLEAN_DOCUMENT',
+    'FLAG_STRIP_TOKEN_OUTPUT',
+    'FLAG_LATEST_PAGE',
+    'FLAG_SKIP_PUSH',
+    'FLAG_SKIP_GENERATE',
+    'FLAG_SKIP_PUBLISH_RUN',
+    'DOCUMENT_BRANCH',
+    'DOCUMENT_JOB_INDEX',
     'DOCUMENT_GENERATED_FOLDER',
     'DOCUMENT_PUBLISH_FOLDER_ROOT',
     'DOCUMENT_PUBLISH_FOLDER',
-    'DOCUMENT_PUBLISH_SUBFOLDER'
+    'DOCUMENT_PUBLISH_SUBFOLDER',
+    'DOCUMENT_ASSETS',
+    'DOCUMENT_PUBLISH_FOLDER_ROOT',
+    'DOCUMENT_PUBLISH_SUBFOLDER',
+    'DOCUMENT_PUBLISH_FOLDER',
+    'GH_TOKEN',
+    'GH_USER',
+    'GH_REPO'
   ]);
   // console.log('vars before', vars);
   var repoDir;
