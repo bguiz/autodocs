@@ -318,9 +318,42 @@ function publishGithubPages(context, callback) {
   }
 
   function createIndexPage() {
-    console.log('Create index page - skipped');
-    // # TODO generate an index page to list all available API documentation versions
-    createLatestAlias();
+    if (vars.FLAG_ALL_PAGE === 'true') {
+      console.log('Create an all page');
+      fs.readdir(path.resolve(repoDir, vars.DOCUMENT_PUBLISH_FOLDER_ROOT), function(err, files) {
+        if (err) {
+          console.log('err: '+err);
+          callback(err);
+        }
+        else {
+          console.log('files', files);
+          var testFiles = files.filter(function(file) {
+            return (file.indexOf('all') < 0 &&
+              file.indexOf('latest') < 0);
+          });
+          console.log('testFiles', testFiles);
+          var versionsHtmlFragment = files.filter(function(file) {
+            return (file.indexOf('all') < 0 &&
+              file.indexOf('latest') < 0 &&
+              !!fs.statSync(path.resolve(repoDir, vars.DOCUMENT_PUBLISH_FOLDER_ROOT), file).isDirectory());
+          }).map(function(version) {
+            return '<li><a href="../'+version+'/">'+version+'</a></li>';
+          }).join('\n');
+          versionsHtmlFragment = '<ul>'+versionsHtmlFragment+'</ul>';
+          var inHtml = fs.readFileSync(path.resolve(vars.SCRIPT_DIR, 'all.html'));
+          var outHtml = inHtml.toString().replace('{{VERSIONLIST}}', versionsHtmlFragment);
+          fs.mkdirSync(path.resolve(repoDir, vars.ALL_DIR));
+          fs.writeFileSync(path.resolve(repoDir, vars.ALL_DIR, 'index.html'), outHtml);
+          vars.ALL_ASSETS = vars.ALL_DIR;
+          createLatestAlias();
+        }
+      });
+    }
+    else {
+      console.log('Not creating an all page');
+      vars.ALL_ASSETS = '';
+      createLatestAlias();
+    }
   }
 
   function createLatestAlias() {
