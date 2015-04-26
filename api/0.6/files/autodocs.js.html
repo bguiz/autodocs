@@ -250,9 +250,8 @@
                            */
                           envVar.default(&#x27;FLAG_STRIP_TOKEN_OUTPUT&#x27;, &#x27;true&#x27;);
                         
-                        
                           /**
-                           * By default, this will publish a latest pages,
+                           * By default, this will publish a latest page,
                            * whose purpose is simply to redirect to the most recently publish API version
                            *
                            * Assuming default values for other configurations,
@@ -269,6 +268,28 @@
                            * @default &#x27;true&#x27;
                            */
                           envVar.default(&#x27;FLAG_LATEST_PAGE&#x27;, &#x27;true&#x27;);
+                        
+                          /**
+                           * By default, this will publish an all page,
+                           * whose purpose is simply to list and link to all published API versions
+                           *
+                           * Assuming default values for other configurations,
+                           * if the versions of the project are currently &#x60;0.1&#x60;, &#x60;0.2&#x60;, &#x60;0.3&#x60;, and &#x60;1.0&#x60;
+                           *
+                           * - &#x60;http://USER.github.io/REPO/api/all/&#x60;
+                           * - This URL will be published with an &#x60;index.html&#x60; file that links to:
+                           *   - &#x60;http://USER.github.io/REPO/api/0.1/&#x60;
+                           *   - &#x60;http://USER.github.io/REPO/api/0.2/&#x60;
+                           *   - &#x60;http://USER.github.io/REPO/api/0.3/&#x60;
+                           *   - &#x60;http://USER.github.io/REPO/api/1.0/&#x60;
+                           *
+                           * Set to &#x60;false&#x60; to disable this behaviour.
+                           *
+                           * @property FLAG_ALL_PAGE
+                           * @type String (Environment Variable)
+                           * @default &#x27;true&#x27;
+                           */
+                          envVar.default(&#x27;FLAG_ALL_PAGE&#x27;, &#x27;true&#x27;);
                         
                           /**
                            * Set to false to do all of the steps in publishing,

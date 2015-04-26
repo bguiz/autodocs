@@ -110,6 +110,7 @@
                         				<li><a href="#prop-DOCUMENT_PUBLISH_FOLDER"><span class="ip">DOCUMENT_PUBLISH_FOLDER</span></a></li>
                         				<li><a href="#prop-DOCUMENT_PUBLISH_FOLDER_ROOT"><span class="ip">DOCUMENT_PUBLISH_FOLDER_ROOT</span></a></li>
                         				<li><a href="#prop-DOCUMENT_PUBLISH_SUBFOLDER"><span class="ip">DOCUMENT_PUBLISH_SUBFOLDER</span></a></li>
+                        				<li><a href="#prop-FLAG_ALL_PAGE"><span class="ip">FLAG_ALL_PAGE</span></a></li>
                         				<li><a href="#prop-FLAG_CLEAN_DOCUMENT"><span class="ip">FLAG_CLEAN_DOCUMENT</span></a></li>
                         				<li><a href="#prop-FLAG_COPY_ASSETS"><span class="ip">FLAG_COPY_ASSETS</span></a></li>
                         				<li><a href="#prop-FLAG_LATEST_PAGE"><span class="ip">FLAG_LATEST_PAGE</span></a></li>
@@ -231,7 +232,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l286"><code>autodocs.js:286</code></a>
+                                            <a href="../files/autodocs.js.html#l307"><code>autodocs.js:307</code></a>
                                             </p>
                                     
                                     
@@ -256,7 +257,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l232"><code>autodocs.js:232</code></a>
+                                            <a href="../files/autodocs.js.html#l253"><code>autodocs.js:253</code></a>
                                             </p>
                                     
                                     
@@ -281,7 +282,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l246"><code>autodocs.js:246</code></a>
+                                            <a href="../files/autodocs.js.html#l267"><code>autodocs.js:267</code></a>
                                             </p>
                                     
                                     
@@ -306,7 +307,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l239"><code>autodocs.js:239</code></a>
+                                            <a href="../files/autodocs.js.html#l260"><code>autodocs.js:260</code></a>
                                             </p>
                                     
                                     
@@ -331,7 +332,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l276"><code>autodocs.js:276</code></a>
+                                            <a href="../files/autodocs.js.html#l297"><code>autodocs.js:297</code></a>
                                             </p>
                                     
                                     
@@ -358,7 +359,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l253"><code>autodocs.js:253</code></a>
+                                            <a href="../files/autodocs.js.html#l274"><code>autodocs.js:274</code></a>
                                             </p>
                                     
                                     
@@ -385,7 +386,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l264"><code>autodocs.js:264</code></a>
+                                            <a href="../files/autodocs.js.html#l285"><code>autodocs.js:285</code></a>
                                             </p>
                                     
                                     
@@ -398,6 +399,47 @@
                                         </div>
                                     
                                             <p><strong>Default:</strong> &#x27;{{MAJOR_VERSION}}.{{MINOR_VERSION}}&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-FLAG_ALL_PAGE" class="property item">
+                                        <h3 class="name"><code>FLAG_ALL_PAGE</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l190"><code>autodocs.js:190</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>By default, this will publish an all page,
+                                    whose purpose is simply to list and link to all published API versions</p>
+                                    <p>Assuming default values for other configurations,
+                                    if the versions of the project are currently <code>0.1</code>, <code>0.2</code>, <code>0.3</code>, and <code>1.0</code></p>
+                                    <ul>
+                                    <li><code>http://USER.github.io/REPO/api/all/</code></li>
+                                    <li>This URL will be published with an <code>index.html</code> file that links to:
+                                    <ul>
+                                    <li><code>http://USER.github.io/REPO/api/0.1/</code></li>
+                                    <li><code>http://USER.github.io/REPO/api/0.2/</code></li>
+                                    <li><code>http://USER.github.io/REPO/api/0.3/</code></li>
+                                    <li><code>http://USER.github.io/REPO/api/1.0/</code></li>
+                                    </ul>
+                                    </li>
+                                    </ul>
+                                    <p>Set to <code>false</code> to disable this behaviour.</p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;true&#x27;</p>
                                     
                                     
                                     </div>
@@ -462,14 +504,14 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l172"><code>autodocs.js:172</code></a>
+                                            <a href="../files/autodocs.js.html#l171"><code>autodocs.js:171</code></a>
                                             </p>
                                     
                                     
                                         </div>
                                     
                                         <div class="description">
-                                            <p>By default, this will publish a latest pages,
+                                            <p>By default, this will publish a latest page,
                                     whose purpose is simply to redirect to the most recently publish API version</p>
                                     <p>Assuming default values for other configurations,
                                     if the version of the project is currently <code>1.2.3</code>,</p>
@@ -522,7 +564,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l204"><code>autodocs.js:204</code></a>
+                                            <a href="../files/autodocs.js.html#l225"><code>autodocs.js:225</code></a>
                                             </p>
                                     
                                     
@@ -551,7 +593,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l218"><code>autodocs.js:218</code></a>
+                                            <a href="../files/autodocs.js.html#l239"><code>autodocs.js:239</code></a>
                                             </p>
                                     
                                     
@@ -581,7 +623,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l191"><code>autodocs.js:191</code></a>
+                                            <a href="../files/autodocs.js.html#l212"><code>autodocs.js:212</code></a>
                                             </p>
                                     
                                     

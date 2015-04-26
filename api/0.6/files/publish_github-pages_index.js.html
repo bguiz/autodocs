@@ -400,9 +400,42 @@
                           }
                         
                           function createIndexPage() {
-                            console.log(&#x27;Create index page - skipped&#x27;);
-                            // # TODO generate an index page to list all available API documentation versions
-                            createLatestAlias();
+                            if (vars.FLAG_ALL_PAGE === &#x27;true&#x27;) {
+                              console.log(&#x27;Create an all page&#x27;);
+                              fs.readdir(path.resolve(repoDir, vars.DOCUMENT_PUBLISH_FOLDER_ROOT), function(err, files) {
+                                if (err) {
+                                  console.log(&#x27;err: &#x27;+err);
+                                  callback(err);
+                                }
+                                else {
+                                  console.log(&#x27;files&#x27;, files);
+                                  var testFiles = files.filter(function(file) {
+                                    return (file.indexOf(&#x27;all&#x27;) &lt; 0 &amp;&amp;
+                                      file.indexOf(&#x27;latest&#x27;) &lt; 0);
+                                  });
+                                  console.log(&#x27;testFiles&#x27;, testFiles);
+                                  var versionsHtmlFragment = files.filter(function(file) {
+                                    return (file.indexOf(&#x27;all&#x27;) &lt; 0 &amp;&amp;
+                                      file.indexOf(&#x27;latest&#x27;) &lt; 0 &amp;&amp;
+                                      !!fs.statSync(path.resolve(repoDir, vars.DOCUMENT_PUBLISH_FOLDER_ROOT), file).isDirectory());
+                                  }).map(function(version) {
+                                    return &#x27;&lt;li&gt;&lt;a href=&quot;../&#x27;+version+&#x27;/&quot;&gt;&#x27;+version+&#x27;&lt;/a&gt;&lt;/li&gt;&#x27;;
+                                  }).join(&#x27;\n&#x27;);
+                                  versionsHtmlFragment = &#x27;&lt;ul&gt;&#x27;+versionsHtmlFragment+&#x27;&lt;/ul&gt;&#x27;;
+                                  var inHtml = fs.readFileSync(path.resolve(vars.SCRIPT_DIR, &#x27;all.html&#x27;));
+                                  var outHtml = inHtml.toString().replace(&#x27;{{VERSIONLIST}}&#x27;, versionsHtmlFragment);
+                                  fs.mkdirSync(path.resolve(repoDir, vars.ALL_DIR));
+                                  fs.writeFileSync(path.resolve(repoDir, vars.ALL_DIR, &#x27;index.html&#x27;), outHtml);
+                                  vars.ALL_ASSETS = vars.ALL_DIR;
+                                  createLatestAlias();
+                                }
+                              });
+                            }
+                            else {
+                              console.log(&#x27;Not creating an all page&#x27;);
+                              vars.ALL_ASSETS = &#x27;&#x27;;
+                              createLatestAlias();
+                            }
                           }
                         
                           function createLatestAlias() {

@@ -322,7 +322,7 @@
         },
         {
             "file": "publish/github-pages/index.js",
-            "line": 482,
+            "line": 515,
             "description": "Outputs the base URL and the API URL at which the documentation should be published.\n\nUses `CNAME` file based on best guess,\notherwise defaults to `*.github/*`",
             "itemtype": "method",
             "name": "outputUrls",
@@ -475,8 +475,8 @@
         },
         {
             "file": "autodocs.js",
-            "line": 172,
-            "description": "By default, this will publish a latest pages,\nwhose purpose is simply to redirect to the most recently publish API version\n\nAssuming default values for other configurations,\nif the version of the project is currently `1.2.3`,\n\n- `http://USER.github.io/REPO/api/latest/`\n- This URL will be published with an `index.html` file that redirects to:\n- `http://USER.github.io/REPO/api/1.2/`\n\nSet to `false` to disable this behaviour.",
+            "line": 171,
+            "description": "By default, this will publish a latest page,\nwhose purpose is simply to redirect to the most recently publish API version\n\nAssuming default values for other configurations,\nif the version of the project is currently `1.2.3`,\n\n- `http://USER.github.io/REPO/api/latest/`\n- This URL will be published with an `index.html` file that redirects to:\n- `http://USER.github.io/REPO/api/1.2/`\n\nSet to `false` to disable this behaviour.",
             "itemtype": "property",
             "name": "FLAG_LATEST_PAGE",
             "type": "String (Environment Variable)",
@@ -486,7 +486,18 @@
         },
         {
             "file": "autodocs.js",
-            "line": 191,
+            "line": 190,
+            "description": "By default, this will publish an all page,\nwhose purpose is simply to list and link to all published API versions\n\nAssuming default values for other configurations,\nif the versions of the project are currently `0.1`, `0.2`, `0.3`, and `1.0`\n\n- `http://USER.github.io/REPO/api/all/`\n- This URL will be published with an `index.html` file that links to:\n  - `http://USER.github.io/REPO/api/0.1/`\n  - `http://USER.github.io/REPO/api/0.2/`\n  - `http://USER.github.io/REPO/api/0.3/`\n  - `http://USER.github.io/REPO/api/1.0/`\n\nSet to `false` to disable this behaviour.",
+            "itemtype": "property",
+            "name": "FLAG_ALL_PAGE",
+            "type": "String (Environment Variable)",
+            "default": "'true'",
+            "class": "Autodocs",
+            "module": "Autodocs"
+        },
+        {
+            "file": "autodocs.js",
+            "line": 212,
             "description": "Set to false to do all of the steps in publishing,\nexcept for the final step of pushing the changes to the git remote.\n\nThis is useful for testing and debugging purposes.\nLeaving this on in a CI environment would defeat the purpose of autodocs",
             "itemtype": "property",
             "name": "FLAG_SKIP_PUSH",
@@ -497,7 +508,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 204,
+            "line": 225,
             "description": "Set to true to skip step where documentation is generated. i.e. Do not run\n\n`npm run generatedocs`\n\nThis is useful for testing and debugging purposes.\nLeaving this on in a CI environment would defeat the purpose of autodocs",
             "itemtype": "property",
             "name": "FLAG_SKIP_GENERATE",
@@ -508,7 +519,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 218,
+            "line": 239,
             "description": "Set to true to skips the entirety of the CI publish run function.\n**None** of the publishing related step will occur,\nexcept for setting any required environment variables.\n\nThis is useful for testing and debugging purposes.\nLeaving this on in a CI environment would defeat the purpose of autodocs",
             "itemtype": "property",
             "name": "FLAG_SKIP_PUBLISH_RUN",
@@ -519,7 +530,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 232,
+            "line": 253,
             "itemtype": "property",
             "name": "DOCUMENT_BRANCH",
             "type": "String (Environment Variable)",
@@ -529,7 +540,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 239,
+            "line": 260,
             "itemtype": "property",
             "name": "DOCUMENT_JOB_INDEX",
             "type": "String (Environment Variable)",
@@ -539,7 +550,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 246,
+            "line": 267,
             "itemtype": "property",
             "name": "DOCUMENT_GENERATED_FOLDER",
             "type": "String (Environment Variable)",
@@ -549,7 +560,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 253,
+            "line": 274,
             "description": "All documentation will be published under this root directory\n\nThis can be used for **non-version-specific** documentation",
             "itemtype": "property",
             "name": "DOCUMENT_PUBLISH_FOLDER_ROOT",
@@ -560,7 +571,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 264,
+            "line": 285,
             "description": "The documentation will be published in this subdirectory of the root directory.\n\nThis can be used for **version-specific** documentation",
             "itemtype": "property",
             "name": "DOCUMENT_PUBLISH_SUBFOLDER",
@@ -571,7 +582,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 276,
+            "line": 297,
             "description": "Joins `DOCUMENT_PUBLISH_FOLDER_ROOT` with `DOCUMENT_PUBLISH_SUBFOLDER`\nto get a concrete path to publish the documentation.",
             "itemtype": "property",
             "name": "DOCUMENT_PUBLISH_FOLDER",
@@ -582,7 +593,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 286,
+            "line": 307,
             "itemtype": "property",
             "name": "DOCUMENT_ASSETS",
             "type": "String (Environment Variable)",
