@@ -33,12 +33,6 @@ npm install --save-dev yuidocjs autodocs
 }
 ```
 
-## API
-
-[API documentation for `autodocs`](http://bguiz.github.io/autodocs/api/latest/).
-
-You might be pleased to hear that `autodocs` generates its own documentation.
-
 ## Usage
 
 Configure your CI environment to run the `autodocs` script
@@ -53,6 +47,20 @@ after_success:
 Remember that `autodocs` will run `generatedocs` when it deems that there is a need,
 so there is **no need** to include `generatedocs` in your CI script -
 only `autodocs` is necessary here.
+
+## API
+
+You might be pleased to hear that `autodocs` **generates its own documentation**.
+
+The API that `autodocs` exposes is designed to be fully operable by means of
+environment variables.
+This is the case because that is what continuous integrations environments,
+which is where `autodocs` should be getting invoked from most of the time,
+use.
+
+The [API documentation for `autodocs`](http://bguiz.github.io/autodocs/api/latest/)
+documents the **full set** of options available.
+The list below is **merely a subset** - just the most important ones.
 
 In addition to this, publishing also needs a few environment variables to be set:
 
@@ -104,18 +112,6 @@ In addition to this, publishing also needs a few environment variables to be set
   - default: ``
   - list of files and folders (bash style) to copy into the root of the `gh-pages` branch
   - these files will be copied to the **root**, not the `DOCUMENT_PUBLISH_FOLDER`
-- `FLAG_PUBLISH_ON_RELEASE`
-  - default: `false`
-  - If set to `true` publishing does not happen when any branches are pushed,
-    instead, publishing will happen when tags are pushed
-- `FLAG_CLEAN_DOCUMENT`
-  - default: `false`
-  - If set to `true` the `gh-pages` folder/ repository are deleted
-- `FLAG_STRIP_TOKEN_OUTPUT`
-  - default: `true`
-  - If set to false, the output stream from the push will **not** filter out the token
-    This is not recommended except when running locally,
-    and definitely should not be used in a CI environment
 
 Your Git repository can have many different branches being pushed,
 but you only have one published documentation,
@@ -127,27 +123,35 @@ it makes the most sense to leave this as `master`.
 ## Published Result
 
 If your project has built successfully on CI,
+and you have not overridden the default values for publish folder,
 visit `http://GH_USER.github.io/GH_REPO/api/VERSION`.
 
-For example: [bguiz.github.io/plugin-registry/api/0.2](http://bguiz.github.io/plugin-registry/api/0.2/)
+For example: [bguiz.github.io/plugin-registry/api/0.6](http://bguiz.github.io/plugin-registry/api/latest/)
 
 The value of `VERSION` includes the major and minor versions only,
 because semver (semantic versioning) principles state that
 if there are any API changes, the major or minor version numbers should be bumped;
-and conversly, that when a patch version number is bumped,
+and conversely, that when a patch version number is bumped,
 it implies that there have **not** been any API changes.
 
-This is done so as to be able to provide references for multiple versions
+This is done so as to be able to provide **references for multiple versions**
 of your projects at the same time,
 which can be handy for users who are unable to upgrade,
 and also for users determining what has changed from the version
 they are currently using to the one they wish to switch to.
+
+This is just the **default behaviour**,
+and **can be configured** to do something else via environment variables.
+See the API documentation for the details.
 
 ## Contributing
 
 This repository uses the **git flow** branching strategy.
 If you wish to contribute, please branch from the **develop** branch -
 pull requests will only be requested if they request merging into the develop branch.
+
+When contributing see also the items described in the
+[**roadmap**](https://github.com/bguiz/autodocs/labels/roadmap).
 
 ## Author
 

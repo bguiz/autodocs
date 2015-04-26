@@ -168,9 +168,8 @@ function environmentVariablesAutodocs(context, callback) {
    */
   envVar.default('FLAG_STRIP_TOKEN_OUTPUT', 'true');
 
-
   /**
-   * By default, this will publish a latest pages,
+   * By default, this will publish a latest page,
    * whose purpose is simply to redirect to the most recently publish API version
    *
    * Assuming default values for other configurations,
@@ -187,6 +186,28 @@ function environmentVariablesAutodocs(context, callback) {
    * @default 'true'
    */
   envVar.default('FLAG_LATEST_PAGE', 'true');
+
+  /**
+   * By default, this will publish an all page,
+   * whose purpose is simply to list and link to all published API versions
+   *
+   * Assuming default values for other configurations,
+   * if the versions of the project are currently `0.1`, `0.2`, `0.3`, and `1.0`
+   *
+   * - `http://USER.github.io/REPO/api/all/`
+   * - This URL will be published with an `index.html` file that links to:
+   *   - `http://USER.github.io/REPO/api/0.1/`
+   *   - `http://USER.github.io/REPO/api/0.2/`
+   *   - `http://USER.github.io/REPO/api/0.3/`
+   *   - `http://USER.github.io/REPO/api/1.0/`
+   *
+   * Set to `false` to disable this behaviour.
+   *
+   * @property FLAG_ALL_PAGE
+   * @type String (Environment Variable)
+   * @default 'true'
+   */
+  envVar.default('FLAG_ALL_PAGE', 'true');
 
   /**
    * Set to false to do all of the steps in publishing,
