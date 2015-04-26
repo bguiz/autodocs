@@ -324,8 +324,8 @@ function publishGithubPages(context, callback) {
   }
 
   function createLatestAlias() {
-    console.log('Create latest alias');
     if (vars.FLAG_LATEST_PAGE === 'true') {
+      console.log('Create latest alias');
       var executeStatement = 'mkdir -p "'+vars.LATEST_DIR+
         '" && { cat "'+vars.SCRIPT_DIR+
         '/latest.html" | sed "s/'+vars.LATEST_REDIRECTREPLACE+
@@ -348,6 +348,7 @@ function publishGithubPages(context, callback) {
       });
     }
     else {
+      console.log('Not creating page for latest alias');
       vars.LATEST_ASSETS = '';
       commitAndPush();
     }
