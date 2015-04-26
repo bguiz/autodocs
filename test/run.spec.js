@@ -2,195 +2,40 @@
 
 var path = require('path');
 
-var original = {
-  PATH: process.env.PATH,
-};
-var envs = {
-  buildOnBranch: function() {
-    return {
-      PATH: original.PATH,
+var autodocs = require('../autodocs');
 
-      TRAVIS_REPO_SLUG: 'bguiz/autodocs',
-      TRAVIS_PULL_REQUEST: 'false',
-      TRAVIS_BRANCH: 'master',
-      TRAVIS_BUILD_NUMBER: 'foo',
-      TRAVIS_JOB_NUMBER: 'foo.1',
-      GH_TOKEN: 'unicorns',
-
-      FLAG_TESTING: 'true',
-      FLAG_SKIP_PUSH: 'true',
-      FLAG_SKIP_GENERATE: 'true',
-      FLAG_SKIP_PUBLISH_RUN: 'true',
-    };
-  },
-  buildOnRelease: function() {
-    return {
-      PATH: original.PATH,
-
-      TRAVIS_REPO_SLUG: 'bguiz/autodocs',
-      TRAVIS_PULL_REQUEST: 'false',
-      TRAVIS_BRANCH: 'unicorn-branch',
-      TRAVIS_BUILD_NUMBER: 'foo',
-      TRAVIS_JOB_NUMBER: 'foo.1',
-      TRAVIS_TAG: 'anythingotherthanfalse',
-      FLAG_PUBLISH_ON_RELEASE: 'true',
-      GH_TOKEN: 'unicorns',
-
-      FLAG_TESTING: 'true',
-      FLAG_SKIP_PUSH: 'true',
-      FLAG_SKIP_GENERATE: 'true',
-      FLAG_SKIP_PUBLISH_RUN: 'true',
-    };
-  },
-};
+var envs = require('./environments');
 
 describe('[run]', function() {
-  describe('[validation]', function() {
+  describe('[generate]', function() {
     var savedEnv;
+    var originalTimeout;
 
     beforeEach(function() {
+      originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+      jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000; //ms
       savedEnv = process.env;
       process.env = {};
     });
 
     afterEach(function() {
+      jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
       process.env = savedEnv;
       savedEnv = undefined;
     });
 
-
-    it('Should verify that environment is empty', function(done) {
-      expect(process.env).toEqual({});
-      done();
-    });
-
-    it('Should fail when running without a callback function', function(done) {
-      expect(function() {
-        require('../autodocs').run({});
-      }).toThrowError('Expected callback function');
-      done();
-    });
-
-    it('Should fail when running without any env vars', function(done) {
-      expect(function() {
-        require('../autodocs').run({}, done);
-      }).toThrowError( /Environment variable `[^\]]+` not set/ );
-      // done();
-    });
-
-    it('Should fail when selected CI is not supported', function(done) {
-      process.env.SELECT_CI = 'unicorn-ci';
-      expect(function() {
-        require('../autodocs').run({}, done);
-      }).toThrowError( /Cannot find module \'[^\']+\'/ );
-      // done();
-    });
-
-    it('Should fail when selected publish is not supported', function(done) {
-      process.env.SELECT_CI = 'unicorn-publish';
-      expect(function() {
-        require('../autodocs').run({}, done);
-      }).toThrowError( /Cannot find module \'[^\']+\'/ );
-      // done();
-    });
-  });
-
-  describe('[execution]', function() {
-    it('Should run when no context is specified', function(done) {
+    it('Should do publish run but skip generate', function(done) {
       process.env = envs.buildOnBranch();
+      process.env.FLAG_SKIP_PUBLISH_RUN = 'false';
+      process.env.FLAG_SKIP_GENERATE = 'true';
       expect(function() {
-        require('../autodocs').run(undefined, done);
+        autodocs.run(undefined, done);
       }).not.toThrow();
-      // done();
     });
 
-    it('Should run when building from branch', function(done) {
-      process.env = envs.buildOnBranch();
-      expect(function() {
-        require('../autodocs').run({}, done);
-      }).not.toThrow();
-      // done();
-    });
-
-    it('Should run when building from branch, but stop when build index is wrong', function(done) {
-      process.env = envs.buildOnBranch();
-      process.env.TRAVIS_JOB_NUMBER = 'foo.2';
-      expect(function() {
-        require('../autodocs').run({}, done);
-      }).not.toThrow();
-      // done();
-    });
-
-    it('Should run when building from tag', function(done) {
-      process.env = envs.buildOnRelease();
-      expect(function() {
-        require('../autodocs').run({}, done);
-      }).not.toThrow();
-      // done();
-    });
-
-    it('Should run when GH_USER and GH_REPO are set manually', function(done) {
-      process.env = envs.buildOnBranch();
-      process.env.GH_USER = 'bguiz';
-      process.env.GH_REPO = 'autodocs';
-      expect(function() {
-        require('../autodocs').run({}, done);
-      }).not.toThrow();
-      // done();
-    });
-
-    describe('[compulsory vars]', function() {
-      [
-        'GH_TOKEN',
-        'TRAVIS_REPO_SLUG',
-        'TRAVIS_PULL_REQUEST',
-        'TRAVIS_BRANCH',
-        'TRAVIS_BUILD_NUMBER',
-        'TRAVIS_JOB_NUMBER',
-      ].forEach(function(name) {
-        it('Should fail when '+name+' is not set', function(done) {
-          process.env = envs.buildOnBranch();
-          process.env[name] = undefined;
-          expect(function() {
-            require('../autodocs').run({}, done);
-          }).toThrowError(new RegExp('Environment variable `'+name+'` not set'));
-          // done();
-        });
-      });
-    });
-
-    describe('[default vars]', function() {
-      beforeEach(function(done) {
-        process.env = envs.buildOnBranch();
-        require('../autodocs').run({}, done);
-        // done();
-      });
-
-      [
-        { name: 'GIT_USER', value: 'autodocs Git User', },
-        { name: 'GIT_EMAIL', value: 'autodocs-git-user@bguiz.com', },
-        { name: 'FLAG_COPY_ASSETS', value: 'false', },
-        { name: 'FLAG_PUBLISH_ON_RELEASE', value: 'false', },
-        { name: 'FLAG_CLEAN_DOCUMENT', value: 'false', },
-        { name: 'FLAG_STRIP_TOKEN_OUTPUT', value: 'true', },
-        { name: 'FLAG_LATEST_PAGE', value: 'true', },
-        //because we manually set FLAG_SKIP_PUSH to prevent publishing during tests
-        // { name: 'FLAG_SKIP_PUSH', value: 'false', },
-        { name: 'DOCUMENT_BRANCH', value: 'master', },
-        { name: 'DOCUMENT_JOB_INDEX', value: '1', },
-        { name: 'DOCUMENT_GENERATED_FOLDER', value: 'documentation', },
-        { name: 'DOCUMENT_PUBLISH_FOLDER_ROOT', value: 'api', },
-        //TODO test that these substitutions are done correctly
-        // { name: 'DOCUMENT_PUBLISH_SUBFOLDER', value: '{{MAJOR_VERSION}}.{{MINOR_VERSION}}', },
-        // { name: 'DOCUMENT_PUBLISH_FOLDER', value: '{{DOCUMENT_PUBLISH_FOLDER_ROOT}}/{{DOCUMENT_PUBLISH_SUBFOLDER}}', },
-        { name: 'DOCUMENT_ASSETS', value: '', },
-        { name: 'PROJECT_DIR', value: path.resolve(__dirname, '..') }
-      ].forEach(function(pair) {
-        it('Should set default value for '+pair.name, function(done) {
-          expect(process.env[pair.name]).toEqual(pair.value);
-          done();
-        });
-      });
-    });
+    //TODO write more tests to cover
+    //
+    //- different combinations of flags
+    //- error thrown cases
   });
 });
