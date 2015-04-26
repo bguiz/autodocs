@@ -2,50 +2,10 @@
 
 var path = require('path');
 
-var original = {
-  PATH: process.env.PATH,
-};
-var envs = {
-  buildOnBranch: function() {
-    return {
-      PATH: original.PATH,
+var envs = require('./environments');
 
-      TRAVIS_REPO_SLUG: 'bguiz/autodocs',
-      TRAVIS_PULL_REQUEST: 'false',
-      TRAVIS_BRANCH: 'master',
-      TRAVIS_BUILD_NUMBER: 'foo',
-      TRAVIS_JOB_NUMBER: 'foo.1',
-      GH_TOKEN: 'unicorns',
-
-      FLAG_TESTING: 'true',
-      FLAG_SKIP_PUSH: 'true',
-      FLAG_SKIP_GENERATE: 'true',
-      FLAG_SKIP_PUBLISH_RUN: 'true',
-    };
-  },
-  buildOnRelease: function() {
-    return {
-      PATH: original.PATH,
-
-      TRAVIS_REPO_SLUG: 'bguiz/autodocs',
-      TRAVIS_PULL_REQUEST: 'false',
-      TRAVIS_BRANCH: 'unicorn-branch',
-      TRAVIS_BUILD_NUMBER: 'foo',
-      TRAVIS_JOB_NUMBER: 'foo.1',
-      TRAVIS_TAG: 'anythingotherthanfalse',
-      FLAG_PUBLISH_ON_RELEASE: 'true',
-      GH_TOKEN: 'unicorns',
-
-      FLAG_TESTING: 'true',
-      FLAG_SKIP_PUSH: 'true',
-      FLAG_SKIP_GENERATE: 'true',
-      FLAG_SKIP_PUBLISH_RUN: 'true',
-    };
-  },
-};
-
-describe('[run]', function() {
-  describe('[validation]', function() {
+describe('[validation]', function() {
+  describe('[errors]', function() {
     var savedEnv;
 
     beforeEach(function() {
@@ -75,7 +35,6 @@ describe('[run]', function() {
       expect(function() {
         require('../autodocs').run({}, done);
       }).toThrowError( /Environment variable `[^\]]+` not set/ );
-      // done();
     });
 
     it('Should fail when selected CI is not supported', function(done) {
@@ -83,7 +42,6 @@ describe('[run]', function() {
       expect(function() {
         require('../autodocs').run({}, done);
       }).toThrowError( /Cannot find module \'[^\']+\'/ );
-      // done();
     });
 
     it('Should fail when selected publish is not supported', function(done) {
@@ -91,17 +49,15 @@ describe('[run]', function() {
       expect(function() {
         require('../autodocs').run({}, done);
       }).toThrowError( /Cannot find module \'[^\']+\'/ );
-      // done();
     });
   });
 
-  describe('[execution]', function() {
+  describe('[ok]', function() {
     it('Should run when no context is specified', function(done) {
       process.env = envs.buildOnBranch();
       expect(function() {
         require('../autodocs').run(undefined, done);
       }).not.toThrow();
-      // done();
     });
 
     it('Should run when building from branch', function(done) {
@@ -109,7 +65,6 @@ describe('[run]', function() {
       expect(function() {
         require('../autodocs').run({}, done);
       }).not.toThrow();
-      // done();
     });
 
     it('Should run when building from branch, but stop when build index is wrong', function(done) {
@@ -118,7 +73,6 @@ describe('[run]', function() {
       expect(function() {
         require('../autodocs').run({}, done);
       }).not.toThrow();
-      // done();
     });
 
     it('Should run when building from tag', function(done) {
@@ -126,7 +80,6 @@ describe('[run]', function() {
       expect(function() {
         require('../autodocs').run({}, done);
       }).not.toThrow();
-      // done();
     });
 
     it('Should run when GH_USER and GH_REPO are set manually', function(done) {
@@ -136,7 +89,6 @@ describe('[run]', function() {
       expect(function() {
         require('../autodocs').run({}, done);
       }).not.toThrow();
-      // done();
     });
 
     describe('[compulsory vars]', function() {
@@ -154,7 +106,6 @@ describe('[run]', function() {
           expect(function() {
             require('../autodocs').run({}, done);
           }).toThrowError(new RegExp('Environment variable `'+name+'` not set'));
-          // done();
         });
       });
     });
@@ -163,7 +114,6 @@ describe('[run]', function() {
       beforeEach(function(done) {
         process.env = envs.buildOnBranch();
         require('../autodocs').run({}, done);
-        // done();
       });
 
       [
