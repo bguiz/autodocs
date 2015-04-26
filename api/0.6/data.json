@@ -2,7 +2,7 @@
     "project": {
         "name": "autodocs",
         "description": "Automates publishing API docs for NodeJs projects, useful for continuous integration",
-        "version": "0.6.1"
+        "version": "0.6.2"
     },
     "files": {
         "ci/travis/index.js": {
@@ -322,7 +322,7 @@
         },
         {
             "file": "publish/github-pages/index.js",
-            "line": 481,
+            "line": 482,
             "description": "Outputs the base URL and the API URL at which the documentation should be published.\n\nUses `CNAME` file based on best guess,\notherwise defaults to `*.github/*`",
             "itemtype": "method",
             "name": "outputUrls",

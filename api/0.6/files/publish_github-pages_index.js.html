@@ -21,7 +21,7 @@
             <li class="divider-vertical"></li>
             <li>
                 <p class="navbar-text">
-                    API Docs for Version: <b>0.6.1</b>
+                    API Docs for Version: <b>0.6.2</b>
                 </p>
             </li>
         </div>
@@ -406,8 +406,8 @@
                           }
                         
                           function createLatestAlias() {
-                            console.log(&#x27;Create latest alias&#x27;);
                             if (vars.FLAG_LATEST_PAGE === &#x27;true&#x27;) {
+                              console.log(&#x27;Create latest alias&#x27;);
                               var executeStatement = &#x27;mkdir -p &quot;&#x27;+vars.LATEST_DIR+
                                 &#x27;&quot; &amp;&amp; { cat &quot;&#x27;+vars.SCRIPT_DIR+
                                 &#x27;/latest.html&quot; | sed &quot;s/&#x27;+vars.LATEST_REDIRECTREPLACE+
@@ -430,6 +430,7 @@
                               });
                             }
                             else {
+                              console.log(&#x27;Not creating page for latest alias&#x27;);
                               vars.LATEST_ASSETS = &#x27;&#x27;;
                               commitAndPush();
                             }
