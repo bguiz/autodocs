@@ -35,7 +35,7 @@ npm install --save-dev yuidocjs autodocs
 
 ## API
 
-[API documentation for `autodocs`](http://bguiz.github.io/autodocs/api/0.4/).
+[API documentation for `autodocs`](http://bguiz.github.io/autodocs/api/latest/).
 
 You might be pleased to hear that `autodocs` generates its own documentation.
 

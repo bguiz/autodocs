@@ -202,6 +202,34 @@ function environmentVariablesAutodocs(context, callback) {
   envVar.default('FLAG_SKIP_PUSH', 'false');
 
   /**
+   * Set to true to skip step where documentation is generated. i.e. Do not run
+   *
+   * `npm run generatedocs`
+   *
+   * This is useful for testing and debugging purposes.
+   * Leaving this on in a CI environment would defeat the purpose of autodocs
+   *
+   * @property FLAG_SKIP_GENERATE
+   * @type String (Environment Variable)
+   * @default 'false'
+   */
+  envVar.default('FLAG_SKIP_GENERATE', 'false');
+
+  /**
+   * Set to true to skips the entirety of the CI publish run function.
+   * **None** of the publishing related step will occur,
+   * except for setting any required environment variables.
+   *
+   * This is useful for testing and debugging purposes.
+   * Leaving this on in a CI environment would defeat the purpose of autodocs
+   *
+   * @property FLAG_SKIP_PUBLISH_RUN
+   * @type String (Environment Variable)
+   * @default 'false'
+   */
+  envVar.default('FLAG_SKIP_PUBLISH_RUN', 'false');
+
+  /**
    * @property DOCUMENT_BRANCH
    * @type String (Environment Variable)
    * @default 'master'

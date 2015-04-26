@@ -77,26 +77,37 @@ function publishGithubPages(context, callback) {
 
   var projectDir = process.env.PROJECT_DIR;
 
-  // runGeneratedocs(); //TODO skipping for debug pruposes
-  setUpVars();
+  if (process.env.FLAG_SKIP_PUBLISH_RUN === 'true') {
+    allComplete();
+  }
+  else {
+    runGeneratedocs();
+  }
 
   function runGeneratedocs() {
     // Generate the documentation
     console.log('Generating documentation');
-    execute('npm run generatedocs', {
-      cwd: projectDir,
-      env: process.env,
-    }, function(err, stdout, stderr) {
-      console.log(stdout);
-      console.log(stderr);
-      if (err) {
-        console.log('err: '+err);
-        callback(err);
-      }
-      else {
-        setUpVars();
-      }
-    });
+    if (process.env.FLAG_SKIP_GENERATE === 'true') {
+      console.log('Invoking "generatedocs" script');
+      execute('npm run generatedocs', {
+        cwd: projectDir,
+        env: process.env,
+      }, function(err, stdout, stderr) {
+        console.log(stdout);
+        console.log(stderr);
+        if (err) {
+          console.log('err: '+err);
+          callback(err);
+        }
+        else {
+          setUpVars();
+        }
+      });
+    }
+    else {
+      console.log('Re-using previously generated documentation');
+      setUpVars();
+    }
   }
 
   var vars = envVar.selected([

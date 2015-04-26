@@ -19,6 +19,8 @@ var envs = {
 
       FLAG_TESTING: 'true',
       FLAG_SKIP_PUSH: 'true',
+      FLAG_SKIP_GENERATE: 'true',
+      FLAG_SKIP_PUBLISH_RUN: 'true',
     };
   },
   buildOnRelease: function() {
@@ -36,6 +38,8 @@ var envs = {
 
       FLAG_TESTING: 'true',
       FLAG_SKIP_PUSH: 'true',
+      FLAG_SKIP_GENERATE: 'true',
+      FLAG_SKIP_PUBLISH_RUN: 'true',
     };
   },
 };
