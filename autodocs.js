@@ -2,8 +2,6 @@
 
 var path = require('path');
 
-var envVar = require('./environment-variables');
-
 /**
  * @module  Autodocs
  */
@@ -31,7 +29,26 @@ var envVar = require('./environment-variables');
  * @method run
  * @for  Autodocs
  */
-function runAutodocs() {
+function runAutodocs(context, callback) {
+  if (typeof callback !== 'function') {
+    throw new Error('Expected callback function');
+  }
+  try {
+    context = context || {};
+
+    context.environmentVariables = require('./environment-variables');
+
+    runAutodocsImpl(context, callback);
+  }
+  catch (ex) {
+    callback(ex);
+    throw ex;
+  }
+}
+
+function runAutodocsImpl(context, callback) {
+  var envVar = context.environmentVariables;
+
   /**
    * @property SELECT_CI
    * @type String (Environment Variable)
@@ -46,15 +63,16 @@ function runAutodocs() {
   var publishName = envVar.default('SELECT_PUBLISH', 'github-pages');
   var ci = require('./ci/'+ciName);
   var publish = require('./publish/'+publishName);
-  ci.init();
-  publish.init();
-  environmentVariablesAutodocs();
-  if (ci.shouldRun()) {
+  ci.init(context, callback);
+  publish.init(context, callback);
+  environmentVariablesAutodocs(context, callback);
+  if (ci.shouldRun(context, callback)) {
     console.log('This build will generate new documentation');
-    publish.run();
+    publish.run(context, callback);
   }
   else {
     console.log('This build does not need to generate new documentation');
+    callback();
   }
 }
 
@@ -66,7 +84,9 @@ function runAutodocs() {
  * @method init
  * @for  Autodocs
  */
-function environmentVariablesAutodocs() {
+function environmentVariablesAutodocs(context, callback) {
+  var envVar = context.environmentVariables;
+
   var projectPath = path.resolve('.');
   console.log('projectPath', projectPath);
   var projectPackageJson = require(path.resolve(projectPath, 'package.json'));
@@ -180,6 +200,34 @@ function environmentVariablesAutodocs() {
    * @default 'false'
    */
   envVar.default('FLAG_SKIP_PUSH', 'false');
+
+  /**
+   * Set to true to skip step where documentation is generated. i.e. Do not run
+   *
+   * `npm run generatedocs`
+   *
+   * This is useful for testing and debugging purposes.
+   * Leaving this on in a CI environment would defeat the purpose of autodocs
+   *
+   * @property FLAG_SKIP_GENERATE
+   * @type String (Environment Variable)
+   * @default 'false'
+   */
+  envVar.default('FLAG_SKIP_GENERATE', 'false');
+
+  /**
+   * Set to true to skips the entirety of the CI publish run function.
+   * **None** of the publishing related step will occur,
+   * except for setting any required environment variables.
+   *
+   * This is useful for testing and debugging purposes.
+   * Leaving this on in a CI environment would defeat the purpose of autodocs
+   *
+   * @property FLAG_SKIP_PUBLISH_RUN
+   * @type String (Environment Variable)
+   * @default 'false'
+   */
+  envVar.default('FLAG_SKIP_PUBLISH_RUN', 'false');
 
   /**
    * @property DOCUMENT_BRANCH

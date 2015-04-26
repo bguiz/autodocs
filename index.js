@@ -12,4 +12,9 @@ var autodocs = require('./autodocs');
  * @module  Autodocs
  */
 
-autodocs.run();
+autodocs.run({}, function(err) {
+  if (err) {
+    console.log('ERR: ', err);
+  }
+  console.log('autodocs done');
+});
