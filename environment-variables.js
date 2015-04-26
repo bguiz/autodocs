@@ -83,9 +83,34 @@ function substituteEnvironmentVariable(name) {
   return process.env[name];
 }
 
+function selectedEnvironmentVariable(names) {
+  var out = {};
+  names.forEach(function(name) {
+    out[name] = process.env[name];
+  });
+  return out;
+}
+
+function parsePrintenv(stdout, out) {
+  out = out || {};
+  var lines = stdout.toString().split('\n');
+  lines.forEach(function(line) {
+    var splitIdx = line.indexOf('=');
+    if (splitIdx > 0) {
+      var name = line.slice(0, splitIdx);
+      var value = line.slice(splitIdx + 1);
+      out[name] = value;
+      // console.log('NEW '+name+'='+value);
+    }
+  });
+  return out;
+}
+
 module.exports = {
   exists: existsEnvironmentVariable,
   require: requireEnvironmentVariable,
   'default': defaultEnvironmentVariable,
   substitute: substituteEnvironmentVariable,
+  selected: selectedEnvironmentVariable,
+  parsePrintenv: parsePrintenv,
 };
