@@ -2,7 +2,7 @@
     "project": {
         "name": "autodocs",
         "description": "Automates publishing API docs for NodeJs projects, useful for continuous integration",
-        "version": "0.6.0-rc"
+        "version": "0.6.1"
     },
     "files": {
         "ci/travis/index.js": {
@@ -322,7 +322,7 @@
         },
         {
             "file": "publish/github-pages/index.js",
-            "line": 288,
+            "line": 481,
             "description": "Outputs the base URL and the API URL at which the documentation should be published.\n\nUses `CNAME` file based on best guess,\notherwise defaults to `*.github/*`",
             "itemtype": "method",
             "name": "outputUrls",
@@ -498,6 +498,28 @@
         {
             "file": "autodocs.js",
             "line": 204,
+            "description": "Set to true to skip step where documentation is generated. i.e. Do not run\n\n`npm run generatedocs`\n\nThis is useful for testing and debugging purposes.\nLeaving this on in a CI environment would defeat the purpose of autodocs",
+            "itemtype": "property",
+            "name": "FLAG_SKIP_GENERATE",
+            "type": "String (Environment Variable)",
+            "default": "'false'",
+            "class": "Autodocs",
+            "module": "Autodocs"
+        },
+        {
+            "file": "autodocs.js",
+            "line": 218,
+            "description": "Set to true to skips the entirety of the CI publish run function.\n**None** of the publishing related step will occur,\nexcept for setting any required environment variables.\n\nThis is useful for testing and debugging purposes.\nLeaving this on in a CI environment would defeat the purpose of autodocs",
+            "itemtype": "property",
+            "name": "FLAG_SKIP_PUBLISH_RUN",
+            "type": "String (Environment Variable)",
+            "default": "'false'",
+            "class": "Autodocs",
+            "module": "Autodocs"
+        },
+        {
+            "file": "autodocs.js",
+            "line": 232,
             "itemtype": "property",
             "name": "DOCUMENT_BRANCH",
             "type": "String (Environment Variable)",
@@ -507,7 +529,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 211,
+            "line": 239,
             "itemtype": "property",
             "name": "DOCUMENT_JOB_INDEX",
             "type": "String (Environment Variable)",
@@ -517,7 +539,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 218,
+            "line": 246,
             "itemtype": "property",
             "name": "DOCUMENT_GENERATED_FOLDER",
             "type": "String (Environment Variable)",
@@ -527,7 +549,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 225,
+            "line": 253,
             "description": "All documentation will be published under this root directory\n\nThis can be used for **non-version-specific** documentation",
             "itemtype": "property",
             "name": "DOCUMENT_PUBLISH_FOLDER_ROOT",
@@ -538,7 +560,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 236,
+            "line": 264,
             "description": "The documentation will be published in this subdirectory of the root directory.\n\nThis can be used for **version-specific** documentation",
             "itemtype": "property",
             "name": "DOCUMENT_PUBLISH_SUBFOLDER",
@@ -549,7 +571,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 248,
+            "line": 276,
             "description": "Joins `DOCUMENT_PUBLISH_FOLDER_ROOT` with `DOCUMENT_PUBLISH_SUBFOLDER`\nto get a concrete path to publish the documentation.",
             "itemtype": "property",
             "name": "DOCUMENT_PUBLISH_FOLDER",
@@ -560,7 +582,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 258,
+            "line": 286,
             "itemtype": "property",
             "name": "DOCUMENT_ASSETS",
             "type": "String (Environment Variable)",

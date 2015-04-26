@@ -21,7 +21,7 @@
             <li class="divider-vertical"></li>
             <li>
                 <p class="navbar-text">
-                    API Docs for Version: <b>0.6.0-rc</b>
+                    API Docs for Version: <b>0.6.1</b>
                 </p>
             </li>
         </div>
@@ -114,6 +114,8 @@
                         				<li><a href="#prop-FLAG_COPY_ASSETS"><span class="ip">FLAG_COPY_ASSETS</span></a></li>
                         				<li><a href="#prop-FLAG_LATEST_PAGE"><span class="ip">FLAG_LATEST_PAGE</span></a></li>
                         				<li><a href="#prop-FLAG_PUBLISH_ON_RELEASE"><span class="ip">FLAG_PUBLISH_ON_RELEASE</span></a></li>
+                        				<li><a href="#prop-FLAG_SKIP_GENERATE"><span class="ip">FLAG_SKIP_GENERATE</span></a></li>
+                        				<li><a href="#prop-FLAG_SKIP_PUBLISH_RUN"><span class="ip">FLAG_SKIP_PUBLISH_RUN</span></a></li>
                         				<li><a href="#prop-FLAG_SKIP_PUSH"><span class="ip">FLAG_SKIP_PUSH</span></a></li>
                         				<li><a href="#prop-FLAG_STRIP_TOKEN_OUTPUT"><span class="ip">FLAG_STRIP_TOKEN_OUTPUT</span></a></li>
                         				<li><a href="#prop-GIT_EMAIL"><span class="ip">GIT_EMAIL</span></a></li>
@@ -229,7 +231,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l258"><code>autodocs.js:258</code></a>
+                                            <a href="../files/autodocs.js.html#l286"><code>autodocs.js:286</code></a>
                                             </p>
                                     
                                     
@@ -254,7 +256,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l204"><code>autodocs.js:204</code></a>
+                                            <a href="../files/autodocs.js.html#l232"><code>autodocs.js:232</code></a>
                                             </p>
                                     
                                     
@@ -279,7 +281,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l218"><code>autodocs.js:218</code></a>
+                                            <a href="../files/autodocs.js.html#l246"><code>autodocs.js:246</code></a>
                                             </p>
                                     
                                     
@@ -304,7 +306,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l211"><code>autodocs.js:211</code></a>
+                                            <a href="../files/autodocs.js.html#l239"><code>autodocs.js:239</code></a>
                                             </p>
                                     
                                     
@@ -329,7 +331,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l248"><code>autodocs.js:248</code></a>
+                                            <a href="../files/autodocs.js.html#l276"><code>autodocs.js:276</code></a>
                                             </p>
                                     
                                     
@@ -356,7 +358,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l225"><code>autodocs.js:225</code></a>
+                                            <a href="../files/autodocs.js.html#l253"><code>autodocs.js:253</code></a>
                                             </p>
                                     
                                     
@@ -383,7 +385,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l236"><code>autodocs.js:236</code></a>
+                                            <a href="../files/autodocs.js.html#l264"><code>autodocs.js:264</code></a>
                                             </p>
                                     
                                     
@@ -503,6 +505,65 @@
                                     
                                         <div class="description">
                                             
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;false&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-FLAG_SKIP_GENERATE" class="property item">
+                                        <h3 class="name"><code>FLAG_SKIP_GENERATE</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l204"><code>autodocs.js:204</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>Set to true to skip step where documentation is generated. i.e. Do not run</p>
+                                    <p><code>npm run generatedocs</code></p>
+                                    <p>This is useful for testing and debugging purposes.
+                                    Leaving this on in a CI environment would defeat the purpose of autodocs</p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;false&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-FLAG_SKIP_PUBLISH_RUN" class="property item">
+                                        <h3 class="name"><code>FLAG_SKIP_PUBLISH_RUN</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l218"><code>autodocs.js:218</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>Set to true to skips the entirety of the CI publish run function.
+                                    <strong>None</strong> of the publishing related step will occur,
+                                    except for setting any required environment variables.</p>
+                                    <p>This is useful for testing and debugging purposes.
+                                    Leaving this on in a CI environment would defeat the purpose of autodocs</p>
+                                    
                                         </div>
                                     
                                             <p><strong>Default:</strong> &#x27;false&#x27;</p>

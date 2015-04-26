@@ -21,7 +21,7 @@
             <li class="divider-vertical"></li>
             <li>
                 <p class="navbar-text">
-                    API Docs for Version: <b>0.6.0-rc</b>
+                    API Docs for Version: <b>0.6.1</b>
                 </p>
             </li>
         </div>
@@ -159,38 +159,71 @@
                         
                           var projectDir = process.env.PROJECT_DIR;
                         
-                          runGeneratedocs();
+                          if (process.env.FLAG_SKIP_PUBLISH_RUN === &#x27;true&#x27;) {
+                            allComplete();
+                          }
+                          else {
+                            runGeneratedocs();
+                          }
                         
                           function runGeneratedocs() {
                             // Generate the documentation
                             console.log(&#x27;Generating documentation&#x27;);
-                            execute(&#x27;npm run generatedocs&#x27;, {
-                              cwd: projectDir,
-                              env: process.env,
-                            }, function(err, stdout, stderr) {
-                              console.log(stdout);
-                              console.log(stderr);
-                              if (err) {
-                                console.log(&#x27;err: &#x27;+err);
-                                callback(err);
-                              }
-                              else {
-                                setUpVars();
-                              }
-                            });
+                            if (process.env.FLAG_SKIP_GENERATE === &#x27;true&#x27;) {
+                              console.log(&#x27;Invoking &quot;generatedocs&quot; script&#x27;);
+                              execute(&#x27;npm run generatedocs&#x27;, {
+                                cwd: projectDir,
+                                env: process.env,
+                              }, function(err, stdout, stderr) {
+                                console.log(stdout);
+                                console.log(stderr);
+                                if (err) {
+                                  console.log(&#x27;err: &#x27;+err);
+                                  callback(err);
+                                }
+                                else {
+                                  setUpVars();
+                                }
+                              });
+                            }
+                            else {
+                              console.log(&#x27;Re-using previously generated documentation&#x27;);
+                              setUpVars();
+                            }
                           }
                         
                           var vars = envVar.selected([
                             &#x27;PATH&#x27;,
                             &#x27;PROJECT_DIR&#x27;,
-                            &#x27;GH_TOKEN&#x27;,
-                            &#x27;GH_USER&#x27;,
-                            &#x27;GH_REPO&#x27;,
+                            &#x27;MAJOR_VERSION&#x27;,
+                            &#x27;MINOR_VERSION&#x27;,
+                            &#x27;PATCH_VERSION&#x27;,
+                            &#x27;GIT_USER&#x27;,
+                            &#x27;GIT_EMAIL&#x27;,
+                            &#x27;FLAG_COPY_ASSETS&#x27;,
+                            &#x27;FLAG_PUBLISH_ON_RELEASE&#x27;,
+                            &#x27;FLAG_CLEAN_DOCUMENT&#x27;,
+                            &#x27;FLAG_STRIP_TOKEN_OUTPUT&#x27;,
+                            &#x27;FLAG_LATEST_PAGE&#x27;,
+                            &#x27;FLAG_SKIP_PUSH&#x27;,
+                            &#x27;FLAG_SKIP_GENERATE&#x27;,
+                            &#x27;FLAG_SKIP_PUBLISH_RUN&#x27;,
+                            &#x27;DOCUMENT_BRANCH&#x27;,
+                            &#x27;DOCUMENT_JOB_INDEX&#x27;,
                             &#x27;DOCUMENT_GENERATED_FOLDER&#x27;,
                             &#x27;DOCUMENT_PUBLISH_FOLDER_ROOT&#x27;,
                             &#x27;DOCUMENT_PUBLISH_FOLDER&#x27;,
-                            &#x27;DOCUMENT_PUBLISH_SUBFOLDER&#x27;
+                            &#x27;DOCUMENT_PUBLISH_SUBFOLDER&#x27;,
+                            &#x27;DOCUMENT_ASSETS&#x27;,
+                            &#x27;DOCUMENT_PUBLISH_FOLDER_ROOT&#x27;,
+                            &#x27;DOCUMENT_PUBLISH_SUBFOLDER&#x27;,
+                            &#x27;DOCUMENT_PUBLISH_FOLDER&#x27;,
+                            &#x27;GH_TOKEN&#x27;,
+                            &#x27;GH_USER&#x27;,
+                            &#x27;GH_REPO&#x27;
                           ]);
+                          // console.log(&#x27;vars before&#x27;, vars);
+                          var repoDir;
                         
                           function setUpVars() {
                             console.log(&#x27;Set up vars&#x27;);
@@ -199,7 +232,8 @@
                               env: vars,
                             }, function(err, stdout, stderr) {
                               vars = envVar.parsePrintenv(stdout, vars);
-                              console.log(&#x27;vars&#x27;, vars);
+                              repoDir = vars.GHPAGES_DIR;
+                              // console.log(&#x27;vars after&#x27;, vars);
                               if (err) {
                                 console.log(&#x27;err: &#x27;+err);
                                 callback(err);
@@ -210,12 +244,14 @@
                             });
                           }
                         
+                        
                           function setUpRepo() {
                             console.log(&#x27;Set up repo&#x27;);
                             execute(path.join(__dirname, &#x27;set-up-repo.sh&#x27;), {
                               cwd: projectDir,
                               env: vars,
                             }, function(err, stdout, stderr) {
+                              console.log(stdout);
                               if (err) {
                                 console.log(&#x27;err: &#x27;+err);
                                 callback(err);
@@ -234,9 +270,29 @@
                             // git remote add upstream &quot;${REPO_URL_AUTH}&quot;
                           }
                         
+                          var numGhpagesBranches;
+                        
                           function ghpagesBranch() {
-                            callback(); //TODO
-                            process.exit(0);
+                            console.log(&#x27;Set up branch&#x27;);
+                            execute(&quot;git ls-remote --heads ${REPO_URL_UNAUTH} | grep &#x27;refs\\\/heads\\\/gh-pages&#x27; | wc -l&quot;, {
+                              cwd: projectDir,
+                              env: vars,
+                            }, function(err, stdout, stderr) {
+                              console.log(&#x27;NUM_GHPAGES_BRANCHES&#x27;, stdout);
+                              if (err) {
+                                console.log(&#x27;err: &#x27;+err);
+                                callback(err);
+                              }
+                              else {
+                                try {
+                                  numGhpagesBranches = parseInt(stdout.toString().trim(), 10);
+                                }
+                                catch (ex) {
+                                  return callback(&#x27;Could not determine whether repo has a gh-pages branch&#x27;);
+                                }
+                                ghpagesBranchImpl();
+                              }
+                            });
                             // # Detect if this repo has a gh-pages branch
                             // NUM_GHPAGES_BRANCHES=$( git ls-remote --heads ${REPO_URL_UNAUTH} | grep &#x27;refs\/heads\/gh-pages&#x27; | wc -l )
                             // git ls-remote --heads ${REPO_URL_UNAUTH}
@@ -251,17 +307,81 @@
                             // fi
                           }
                         
+                          function ghpagesBranchImpl() {
+                            var execStatement;
+                            if (numGhpagesBranches === 0) {
+                              console.log(&#x27;Creating new gh-pages branch&#x27;);
+                              execStatement = &#x27;git checkout --orphan gh-pages&#x27;;
+                            }
+                            else {
+                              console.log(&#x27;Using existing gh-pages branch&#x27;);
+                              execStatement = &#x27;git fetch upstream gh-pages &amp;&amp; git checkout gh-pages&#x27;;
+                            }
+                            execute(execStatement, {
+                              cwd: repoDir,
+                              env: vars,
+                            }, function(err, stdout, stderr) {
+                              console.log(stdout);
+                              console.log(stderr);
+                              if (err) {
+                                console.log(&#x27;err: &#x27;+err);
+                                callback(err);
+                              }
+                              else {
+                                copyGeneratedFiles();
+                              }
+                            });
+                          }
+                        
                           function copyGeneratedFiles() {
+                            //TODO this step could be done without using shell scripts
+                            console.log(&#x27;Copy generated files&#x27;);
+                            execute(path.join(__dirname, &#x27;copy-generated-files.sh&#x27;), {
+                              cwd: projectDir,
+                              env: vars,
+                            }, function(err, stdout, stderr) {
+                              console.log(stdout);
+                              console.log(stderr);
+                              if (err) {
+                                console.log(&#x27;err: &#x27;+err);
+                                callback(err);
+                              }
+                              else {
+                                copyAssets();
+                              }
+                            });
                             // #NOTE The var &#x60;DOCUMENT_PUBLISH_FOLDER&#x60; is processed and is based on other vars
                             // # It defaults to &#x60;api/${MAJOR_VERSION}.${MINOR_VERSION}&#x60;
-                            // DOC_PUBLISH_ROOT_DIR=&quot;${GHPAGES_DIR}/${DOCUMENT_PUBLISH_FOLDER_ROOT}&quot;
-                            // DOC_PUBLISH_DIR=&quot;${GHPAGES_DIR}/${DOCUMENT_PUBLISH_FOLDER}&quot;
                             // mkdir -p &quot;${DOC_PUBLISH_DIR}&quot;
                             // rm -rf ${DOC_PUBLISH_DIR}/*
                             // cp -r ${GENERATED_DIR}/* &quot;${DOC_PUBLISH_DIR}&quot;
                           }
                         
                           function copyAssets() {
+                            console.log(&#x27;Copy assets&#x27;);
+                            if (vars.FLAG_COPY_ASSETS === &#x27;true&#x27;) {
+                              console.log(&#x27;Copying assets: &#x27;+vars.DOCUMENT_ASSETS);
+                              var executeStatement = &#x27;tar cf - &#x27;+vars.DOCUMENT_ASSETS+&#x27; | ( cd &quot;&#x27;+repoDir+&#x27;&quot; ; tar xf - )&#x27;;
+                              execute(executeStatement, {
+                                cwd: repoDir,
+                                env: vars,
+                              }, function(err, stdout, stderr) {
+                                console.log(stdout);
+                                console.log(stderr);
+                                if (err) {
+                                  console.log(&#x27;err: &#x27;+err);
+                                  callback(err);
+                                }
+                                else {
+                                  createIndexPage();
+                                }
+                              });
+                            }
+                            else {
+                              console.log(&#x27;Not copying assets&#x27;);
+                              vars.DOCUMENT_ASSETS = &#x27;&#x27;;
+                              createIndexPage();
+                            }
                             // # Specify a set of folders/ files to copy across to the root folder
                             // if test &quot;${FLAG_COPY_ASSETS}&quot; == &quot;true&quot; ; then
                             //   echo &quot;Copying assets: ${DOCUMENT_ASSETS}&quot;
@@ -280,18 +400,43 @@
                           }
                         
                           function createIndexPage() {
+                            console.log(&#x27;Create index page - skipped&#x27;);
                             // # TODO generate an index page to list all available API documentation versions
+                            createLatestAlias();
                           }
                         
                           function createLatestAlias() {
+                            console.log(&#x27;Create latest alias&#x27;);
+                            if (vars.FLAG_LATEST_PAGE === &#x27;true&#x27;) {
+                              var executeStatement = &#x27;mkdir -p &quot;&#x27;+vars.LATEST_DIR+
+                                &#x27;&quot; &amp;&amp; { cat &quot;&#x27;+vars.SCRIPT_DIR+
+                                &#x27;/latest.html&quot; | sed &quot;s/&#x27;+vars.LATEST_REDIRECTREPLACE+
+                                &#x27;/&#x27;+vars.LATEST_REDIRECTURL+
+                                &#x27;/g&quot; ; } &gt; &quot;&#x27;+vars.LATEST_DIR+&#x27;/index.html&quot;&#x27;;
+                              execute(executeStatement, {
+                                cwd: repoDir,
+                                env: vars,
+                              }, function(err, stdout, stderr) {
+                                console.log(stdout);
+                                console.log(stderr);
+                                if (err) {
+                                  console.log(&#x27;err: &#x27;+err);
+                                  callback(err);
+                                }
+                                else {
+                                  vars.LATEST_ASSETS = vars.LATEST_DIR;
+                                  commitAndPush();
+                                }
+                              });
+                            }
+                            else {
+                              vars.LATEST_ASSETS = &#x27;&#x27;;
+                              commitAndPush();
+                            }
                             // # TODO alias &quot;latest&quot; or &quot;current&quot; to the one currently being generated
                             // if test &quot;${FLAG_LATEST_PAGE}&quot; == &quot;true&quot; ; then
                             //   echo &quot;Generating &#x27;latest&#x27; page&quot;
-                            //   LATEST_REDIRECTREPLACE=&quot;{{REDIRECTURL}}&quot;
-                            //   LATEST_REDIRECTURL=&quot;\.\.\/${DOCUMENT_PUBLISH_SUBFOLDER//./\\.}&quot;
-                            //   SED_REDIRECT=&quot;s/${LATEST_REDIRECTREPLACE}/${LATEST_REDIRECTURL}/g&quot;
                             //   # echo SED_REDIRECT=${SED_REDIRECT}
-                            //   LATEST_DIR=&quot;${DOCUMENT_PUBLISH_FOLDER_ROOT}/latest&quot;
                             //   mkdir -p &quot;${LATEST_DIR}&quot;
                             //   { cat &quot;${SCRIPT_DIR}/latest.html&quot; | sed &quot;s/${LATEST_REDIRECTREPLACE}/${LATEST_REDIRECTURL}/g&quot; ; } &gt; &quot;${LATEST_DIR}/index.html&quot;
                             //   LATEST_ASSETS=&quot;${LATEST_DIR}&quot;
@@ -300,71 +445,119 @@
                             // fi
                           }
                         
+                          var numFilesChanged;
                           function commitAndPush() {
+                            console.log(&#x27;Commit and push&#x27;);
+                            execute(&quot;git ls-files -m -o | wc -l&quot;, {
+                              cwd: repoDir,
+                              env: vars,
+                            }, function(err, stdout, stderr) {
+                              console.log(&#x27;NUM_FILES_CHANGED&#x27;, stdout);
+                              if (err) {
+                                console.log(&#x27;err: &#x27;+err);
+                                callback(err);
+                              }
+                              else {
+                                try {
+                                  numFilesChanged = parseInt(stdout.toString().trim(), 10);
+                                }
+                                catch (ex) {
+                                  return callback(&#x27;Could not determine whether repo has a gh-pages branch&#x27;);
+                                }
+                                commitAndPushImpl();
+                              }
+                            });
                             // # Test if there are any changes
                             // cd &quot;${GHPAGES_DIR}&quot;
                             // NUM_FILES_CHANGED=$( git ls-files -m -o | wc -l )
                             // if test &quot;${NUM_FILES_CHANGED}&quot; -gt &quot;0&quot; ; then
-                            //   # Commit and push
-                            //   GIT_ADDITIONS=&quot;${DOC_PUBLISH_DIR} ${DOCUMENT_ASSETS} ${LATEST_DIR}&quot;
-                            //   git add -A ${GIT_ADDITIONS}
-                            //   COMMIT_MESSAGE=&quot;autodocs publish ${TIME_STAMP} ${COMMIT_ID}&quot;
-                            //   echo &quot;${COMMIT_MESSAGE}&quot;
-                            //   git commit -m &quot;${COMMIT_MESSAGE}&quot;
-                            //   if test &quot;${FLAG_SKIP_PUSH}&quot; == &quot;true&quot; ;  then
-                            //     echo &quot;Skipping push to github pages&quot;
-                            //   else
-                            //     # discard all output, because it contains the github access token
-                            //     # unless, opted out, using &#x60;FLAG_QUIET_PUSH&#x60;
-                            //     if test &quot;${FLAG_STRIP_TOKEN_OUTPUT}&quot; == &quot;false&quot; ; then
-                            //       # Show output, unmodified.
-                            //       # This should *not* be done in CI, only for local testing
-                            //       git push upstream HEAD:gh-pages
-                            //     else
-                            //       # Use &#x60;sed&#x60; to replace any instances of the Github token in both stdout and stderr
-                            //       SED_STRIP_TOKEN=&quot;s/${GH_TOKEN}/\[SECURE\]/g&quot;
-                            //       { git push upstream HEAD:gh-pages 2&gt;&amp;1 &gt;&amp;3 | sed ${SED_STRIP_TOKEN} ; } 3&gt;&amp;1
-                            //     fi
-                            //     echo &quot;Successfully pushed documentation to gh-pages&quot;
-                            //   fi
+                              // # Commit and push
+                              // GIT_ADDITIONS=&quot;${DOC_PUBLISH_DIR} ${DOCUMENT_ASSETS} ${LATEST_ASSETS}&quot;
+                              // git add -A ${GIT_ADDITIONS}
+                              // COMMIT_MESSAGE=&quot;autodocs publish ${TIME_STAMP} ${COMMIT_ID}&quot;
+                              // echo &quot;${COMMIT_MESSAGE}&quot;
+                              // git commit -m &quot;${COMMIT_MESSAGE}&quot;
+                              // if test &quot;${FLAG_SKIP_PUSH}&quot; == &quot;true&quot; ;  then
+                              //   echo &quot;Skipping push to github pages&quot;
+                              // else
+                              //   # discard all output, because it contains the github access token
+                              //   # unless, opted out, using &#x60;FLAG_QUIET_PUSH&#x60;
+                              //   if test &quot;${FLAG_STRIP_TOKEN_OUTPUT}&quot; == &quot;false&quot; ; then
+                              //     # Show output, unmodified.
+                              //     # This should *not* be done in CI, only for local testing
+                              //     git push upstream HEAD:gh-pages
+                              //   else
+                              //     # Use &#x60;sed&#x60; to replace any instances of the Github token in both stdout and stderr
+                              //     SED_STRIP_TOKEN=&quot;s/${GH_TOKEN}/\[SECURE\]/g&quot;
+                              //     { git push upstream HEAD:gh-pages 2&gt;&amp;1 &gt;&amp;3 | sed ${SED_STRIP_TOKEN} ; } 3&gt;&amp;1
+                              //   fi
+                              //   echo &quot;Successfully pushed documentation to gh-pages&quot;
+                              // fi
                             // else
                             //   echo &quot;Documentation unchanged, no need to publish&quot;
                             // fi
                           }
                         
+                          function commitAndPushImpl() {
+                            if (numFilesChanged &lt; 1) {
+                              console.log(&#x27;Documentation unchanged, no need to publish&#x27;);
+                              cleanUp();
+                              return;
+                            }
+                            console.log(&#x27;Publishing changes to documentation&#x27;);
+                            execute(path.join(__dirname, &#x27;commit-and-push.sh&#x27;), {
+                              cwd: repoDir,
+                              env: vars,
+                            }, function(err, stdout, stderr) {
+                              console.log(stdout);
+                              console.log(stderr);
+                              if (err) {
+                                console.log(&#x27;err: &#x27;+err);
+                                callback(err);
+                              }
+                              else {
+                                cleanUp();
+                              }
+                            });
+                          }
+                        
                           function cleanUp() {
+                            if (vars.FLAG_CLEAN_DOCUMENT === &#x27;true&#x27;) {
+                              console.log(&#x27;Cleaning up git repo at &#x27;+repoDir);
+                              //TODO this could be done without using a shell command
+                              execute(path.join(&#x27;rm -rf &quot;&#x27;+repoDir+&#x27;&quot;&#x27;), {
+                                cwd: projectDir,
+                                env: vars,
+                              }, function(err, stdout, stderr) {
+                                console.log(stdout);
+                                console.log(stderr);
+                                if (err) {
+                                  console.log(&#x27;err: &#x27;+err);
+                                  callback(err);
+                                }
+                                else {
+                                  allComplete();
+                                }
+                              });
+                            }
+                            else {
+                              console.log(&#x27;Leaving git repo as is at &#x27;+repoDir);
+                              allComplete();
+                            }
                             // if &quot;${FLAG_CLEAN_DOCUMENT}&quot; == &quot;true&quot; ; then
                             //   echo &quot;Cleaning up git repo at ${GHPAGES_DIR}&quot;
                             //   rm -rf &quot;${GHPAGES_DIR}&quot;
                             // fi
+                        
                           }
                         
-                          /* istanbul ignore if :
-                             shell script is NOT instrumented or tested */
-                          // if (process.env.FLAG_TESTING !== &#x27;true&#x27;) {
-                          //   var childProcess = require(&#x27;child_process&#x27;);
-                          //   var script = childProcess.spawn(path.join(__dirname, &#x27;index.sh&#x27;), [], {
-                          //     stdio: &#x27;inherit&#x27;,
-                          //   });
-                          //   script.on(&#x27;close&#x27;, function(code) {
-                          //     if (code === 0) {
-                          //       outputUrls(context, callback);
-                          //     }
-                          //     process.nextTick(function() {
-                          //       if (code !== 0) {
-                          //         callback(&#x27;Publish script exited with error code: &#x27;+code);
-                          //       }
-                          //       else {
-                          //         callback();
-                          //       }
-                          //       process.exit(code);
-                          //     });
-                          //   });
-                          // }
-                          // else {
-                          //   callback();
-                          //   process.exit(0);
-                          // }
+                          function allComplete() {
+                            outputUrls(context, callback);
+                            process.nextTick(function() {
+                              callback();
+                              // process.exit(0);
+                            });
+                          }
                         }
                         
                         /**
@@ -377,8 +570,6 @@
                          * @for  PublishGithubPages
                          * @private
                          */
-                        /* istanbul ignore next :
-                           function will never get called during testing, because shell script is not run */
                         function outputUrls(context, callback) {
                           var envVar = context.environmentVariables;
                         

@@ -21,7 +21,7 @@
             <li class="divider-vertical"></li>
             <li>
                 <p class="navbar-text">
-                    API Docs for Version: <b>0.6.0-rc</b>
+                    API Docs for Version: <b>0.6.1</b>
                 </p>
             </li>
         </div>
@@ -174,14 +174,15 @@
                         }
                         
                         function parsePrintenv(stdout, out) {
-                          var lines = stdout.toString().split(&#x27;\n&#x27;);
                           out = out || {};
+                          var lines = stdout.toString().split(&#x27;\n&#x27;);
                           lines.forEach(function(line) {
                             var splitIdx = line.indexOf(&#x27;=&#x27;);
                             if (splitIdx &gt; 0) {
                               var name = line.slice(0, splitIdx);
                               var value = line.slice(splitIdx + 1);
                               out[name] = value;
+                              // console.log(&#x27;NEW &#x27;+name+&#x27;=&#x27;+value);
                             }
                           });
                           return out;

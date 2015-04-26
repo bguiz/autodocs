@@ -21,7 +21,7 @@
             <li class="divider-vertical"></li>
             <li>
                 <p class="navbar-text">
-                    API Docs for Version: <b>0.6.0-rc</b>
+                    API Docs for Version: <b>0.6.1</b>
                 </p>
             </li>
         </div>
@@ -282,6 +282,34 @@
                            * @default &#x27;false&#x27;
                            */
                           envVar.default(&#x27;FLAG_SKIP_PUSH&#x27;, &#x27;false&#x27;);
+                        
+                          /**
+                           * Set to true to skip step where documentation is generated. i.e. Do not run
+                           *
+                           * &#x60;npm run generatedocs&#x60;
+                           *
+                           * This is useful for testing and debugging purposes.
+                           * Leaving this on in a CI environment would defeat the purpose of autodocs
+                           *
+                           * @property FLAG_SKIP_GENERATE
+                           * @type String (Environment Variable)
+                           * @default &#x27;false&#x27;
+                           */
+                          envVar.default(&#x27;FLAG_SKIP_GENERATE&#x27;, &#x27;false&#x27;);
+                        
+                          /**
+                           * Set to true to skips the entirety of the CI publish run function.
+                           * **None** of the publishing related step will occur,
+                           * except for setting any required environment variables.
+                           *
+                           * This is useful for testing and debugging purposes.
+                           * Leaving this on in a CI environment would defeat the purpose of autodocs
+                           *
+                           * @property FLAG_SKIP_PUBLISH_RUN
+                           * @type String (Environment Variable)
+                           * @default &#x27;false&#x27;
+                           */
+                          envVar.default(&#x27;FLAG_SKIP_PUBLISH_RUN&#x27;, &#x27;false&#x27;);
                         
                           /**
                            * @property DOCUMENT_BRANCH
