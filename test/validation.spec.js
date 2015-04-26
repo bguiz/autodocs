@@ -18,7 +18,6 @@ describe('[validation]', function() {
       savedEnv = undefined;
     });
 
-
     it('Should verify that environment is empty', function(done) {
       expect(process.env).toEqual({});
       done();
