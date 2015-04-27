@@ -66,12 +66,15 @@ function runAutodocsImpl(context, callback) {
   ci.init(context, callback);
   publish.init(context, callback);
   environmentVariablesAutodocs(context, callback);
-  if (ci.shouldRun(context, callback)) {
+  var shouldRun = ci.shouldRun(context, callback);
+  if (!!shouldRun.flag) {
     console.log('This build will generate new documentation');
+    console.log(shouldRun.message);
     publish.run(context, callback);
   }
   else {
     console.log('This build does not need to generate new documentation');
+    console.log('Reason:', shouldRun.message);
     callback();
   }
 }

@@ -7,7 +7,7 @@ set -o errexit -o nounset
 # Set up vars
 export COMMIT_ID=$( git rev-parse --short HEAD )
 export TIME_STAMP=$( date +%Y-%m-%d-%H-%M-%S )
-export GHPAGES_DIR="${PROJECT_DIR}/autodocs/ghpages-${TIME_STAMP}"
+export GHPAGES_DIR="${PROJECT_DIR}/autodocs/${GH_PUBLISH_BRANCH}-${TIME_STAMP}"
 export GENERATED_DIR="${PROJECT_DIR}/${DOCUMENT_GENERATED_FOLDER}"
 export REPO_URL_AUTH="https://${GH_USER}:${GH_TOKEN}@github.com/${GH_USER}/${GH_REPO}.git"
 export REPO_URL_UNAUTH="https://github.com/${GH_USER}/${GH_REPO}"
