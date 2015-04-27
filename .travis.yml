@@ -13,9 +13,8 @@ after_success:
 - npm run coveralls
 env:
   global:
-  # - secure: PBbQBujvmahalekuM9mx/dqwsD61CAgnARauTIBkwWjOwoN8ojW+PFP0GehHo3KOqKZB5UtujcrT75Viy0OYqhefo/EmFwH+ViRn9d6Ga47lKBuQ93PyEOFkx7q/Q6eQ2ac3IZESStPF10+uS24CAIdiL60FWuB9/4Jp1+H0s6A=
+  - secure: PBbQBujvmahalekuM9mx/dqwsD61CAgnARauTIBkwWjOwoN8ojW+PFP0GehHo3KOqKZB5UtujcrT75Viy0OYqhefo/EmFwH+ViRn9d6Ga47lKBuQ93PyEOFkx7q/Q6eQ2ac3IZESStPF10+uS24CAIdiL60FWuB9/4Jp1+H0s6A=
   # - FLAG_PUBLISH_ON_RELEASE: 'true'
   - DOCUMENT_BRANCH: ${TRAVIS_BRANCH}
   - FLAG_CLEAN_DOCUMENT: 'true'
-  - secure: Iuaw/4qN7rNEC1vlcJrmZa4ak+WdXSP/PXkf1bffDuvR9JT08PTcLPF9eNrOnTkuyD6zM6P1V0o5l9uIUWyZ+Q8sqin2fDWOvx55OFropxzLWDkn3pFtKmKc3zUMnWfE3cdz8V/fiB5BFTuHV/QRcSbieB5hykNG6Hhulk8WgEU=
   - REPO_SLUG: bguiz/autodocs-demo
