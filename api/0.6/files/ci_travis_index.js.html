@@ -21,7 +21,7 @@
             <li class="divider-vertical"></li>
             <li>
                 <p class="navbar-text">
-                    API Docs for Version: <b>0.6.2</b>
+                    API Docs for Version: <b>0.6.3</b>
                 </p>
             </li>
         </div>
@@ -106,7 +106,15 @@
                            * @default None - throws when not set
                            */
                           envVar.require(&#x27;TRAVIS_REPO_SLUG&#x27;);
-                          process.env.REPO_SLUG = process.env.TRAVIS_REPO_SLUG;
+                        
+                          /**
+                           * Used to set value of &#x60;REPO_SLUG&#x60;
+                           *
+                           * @property TRAVIS_REPO_SLUG
+                           * @type String (Environment Variable)
+                           * @default None - throws when not set
+                           */
+                          envVar.default(&#x27;REPO_SLUG&#x27;, process.env.TRAVIS_REPO_SLUG);
                         
                           /**
                            * @property TRAVIS_PULL_REQUEST
@@ -159,24 +167,40 @@
                           var envVar = context.environmentVariables;
                         
                           var correctBuildIndex =
-                            (process.env.TRAVIS_BUILD_NUMBER+&#x27;.&#x27;+process.env.DOCUMENT_JOB_INDEX ===
+                            ((process.env.TRAVIS_BUILD_NUMBER+&#x27;.&#x27;+process.env.DOCUMENT_JOB_INDEX) ===
                               process.env.TRAVIS_JOB_NUMBER);
-                          if (!correctBuildIndex) {
-                            return false;
-                          }
-                          else if (process.env.FLAG_PUBLISH_ON_RELEASE === &#x27;true&#x27;) {
+                          var out = {
+                            flag: true,
+                            message: undefined,
+                          };
+                          if (process.env.FLAG_PUBLISH_ON_RELEASE === &#x27;true&#x27;) {
+                            out.message = &#x27;Publish on release&#x27;;
                             /**
                              * @property TRAVIS_TAG
                              * @type String (Environment Variable)
                              * @default None
                              */
-                            return (envVar.exists(&#x27;TRAVIS_TAG&#x27;));
+                            if (!envVar.exists(&#x27;TRAVIS_TAG&#x27;)) {
+                              out.flag = false;
+                              out.message += &#x27;\n- travis tag exists failure&#x27;;
+                            }
                           }
                           else {
-                            return (
-                              process.env.TRAVIS_PULL_REQUEST === &#x27;false&#x27; &amp;&amp;
-                              process.env.TRAVIS_BRANCH === process.env.DOCUMENT_BRANCH);
+                            out.message = &#x27;Publish on branch&#x27;;
+                            if (process.env.TRAVIS_PULL_REQUEST !== &#x27;false&#x27;) {
+                              out.flag = false;
+                              out.message += &#x27;\n- is not a pull request failure&#x27;;
+                            }
+                            if (process.env.TRAVIS_BRANCH !== process.env.DOCUMENT_BRANCH) {
+                              out.flag = false;
+                              out.message += &#x27;\n- branch name match failure&#x27;;
+                            }
                           }
+                          if (!correctBuildIndex) {
+                            out.flag = false;
+                            out.message += &#x27;\n- job index match failure&#x27;;
+                          }
+                          return out;
                         }
                         
                         module.exports = {

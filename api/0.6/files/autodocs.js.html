@@ -21,7 +21,7 @@
             <li class="divider-vertical"></li>
             <li>
                 <p class="navbar-text">
-                    API Docs for Version: <b>0.6.2</b>
+                    API Docs for Version: <b>0.6.3</b>
                 </p>
             </li>
         </div>
@@ -148,12 +148,15 @@
                           ci.init(context, callback);
                           publish.init(context, callback);
                           environmentVariablesAutodocs(context, callback);
-                          if (ci.shouldRun(context, callback)) {
+                          var shouldRun = ci.shouldRun(context, callback);
+                          if (!!shouldRun.flag) {
                             console.log(&#x27;This build will generate new documentation&#x27;);
+                            console.log(shouldRun.message);
                             publish.run(context, callback);
                           }
                           else {
                             console.log(&#x27;This build does not need to generate new documentation&#x27;);
+                            console.log(&#x27;Reason:&#x27;, shouldRun.message);
                             callback();
                           }
                         }
