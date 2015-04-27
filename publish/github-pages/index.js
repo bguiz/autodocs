@@ -30,6 +30,18 @@ function environmentVariablesGithub(context, callback) {
   envVar.require('GH_TOKEN');
 
   /**
+   * All documentation will be published under to this branch.
+   *
+   * For most repositories, the default `gh-pages` will do.
+   * However, for user or organisation pages, `master` could also be appropriate
+   *
+   * @property GH_PUBLISH_BRANCH
+   * @type String (Environment Variable)
+   * @default 'gh-pages'
+   */
+  envVar.default('GH_PUBLISH_BRANCH', 'gh-pages');
+
+  /**
    * @property REPO_SLUG
    * @type String (Environment Variable)
    * @default None - throws when not set
@@ -54,8 +66,9 @@ function environmentVariablesGithub(context, callback) {
      */
     envVar.default('GH_REPO', tokens[1]);
 
-    process.env.SCRIPT_DIR = __dirname;
   }
+
+  process.env.SCRIPT_DIR = __dirname;
 }
 
 /**
@@ -112,12 +125,15 @@ function publishGithubPages(context, callback) {
 
   var vars = envVar.selected([
     'PATH',
+
     'PROJECT_DIR',
     'MAJOR_VERSION',
     'MINOR_VERSION',
     'PATCH_VERSION',
     'GIT_USER',
     'GIT_EMAIL',
+    'REPO_SLUG',
+
     'FLAG_COPY_ASSETS',
     'FLAG_PUBLISH_ON_RELEASE',
     'FLAG_CLEAN_DOCUMENT',
@@ -126,6 +142,7 @@ function publishGithubPages(context, callback) {
     'FLAG_SKIP_PUSH',
     'FLAG_SKIP_GENERATE',
     'FLAG_SKIP_PUBLISH_RUN',
+
     'DOCUMENT_BRANCH',
     'DOCUMENT_JOB_INDEX',
     'DOCUMENT_GENERATED_FOLDER',
@@ -136,11 +153,12 @@ function publishGithubPages(context, callback) {
     'DOCUMENT_PUBLISH_FOLDER_ROOT',
     'DOCUMENT_PUBLISH_SUBFOLDER',
     'DOCUMENT_PUBLISH_FOLDER',
+
+    'GH_PUBLISH_BRANCH',
     'GH_TOKEN',
     'GH_USER',
     'GH_REPO'
   ]);
-  // console.log('vars before', vars);
   var repoDir;
 
   function setUpVars() {
@@ -151,7 +169,6 @@ function publishGithubPages(context, callback) {
     }, function(err, stdout, stderr) {
       vars = envVar.parsePrintenv(stdout, vars);
       repoDir = vars.GHPAGES_DIR;
-      // console.log('vars after', vars);
       if (err) {
         console.log('err: '+err);
         callback(err);
@@ -178,32 +195,24 @@ function publishGithubPages(context, callback) {
         ghpagesBranch();
       }
     });
-    // # Git repo init and update gh-pages branch
-    // rm -rf "${GHPAGES_DIR}"
-    // mkdir -p "${GHPAGES_DIR}"
-    // cd "${GHPAGES_DIR}"
-    // git init
-    // git config user.name "${GIT_USER}"
-    // git config user.email "${GIT_EMAIL}"
-    // git remote add upstream "${REPO_URL_AUTH}"
   }
 
-  var numGhpagesBranches;
+  var numPublishBranches;
 
   function ghpagesBranch() {
     console.log('Set up branch');
-    execute("git ls-remote --heads ${REPO_URL_UNAUTH} | grep 'refs\\\/heads\\\/gh-pages' | wc -l", {
+    execute("git ls-remote --heads ${REPO_URL_UNAUTH} | grep 'refs\\\/heads\\\/${GH_PUBLISH_BRANCH}' | wc -l", {
       cwd: projectDir,
       env: vars,
     }, function(err, stdout, stderr) {
-      console.log('NUM_GHPAGES_BRANCHES', stdout);
+      console.log('NUM_PUBLISH_BRANCHES', stdout);
       if (err) {
         console.log('err: '+err);
         callback(err);
       }
       else {
         try {
-          numGhpagesBranches = parseInt(stdout.toString().trim(), 10);
+          numPublishBranches = parseInt(stdout.toString().trim(), 10);
         }
         catch (ex) {
           return callback('Could not determine whether repo has a gh-pages branch');
@@ -211,29 +220,17 @@ function publishGithubPages(context, callback) {
         ghpagesBranchImpl();
       }
     });
-    // # Detect if this repo has a gh-pages branch
-    // NUM_GHPAGES_BRANCHES=$( git ls-remote --heads ${REPO_URL_UNAUTH} | grep 'refs\/heads\/gh-pages' | wc -l )
-    // git ls-remote --heads ${REPO_URL_UNAUTH}
-    // echo "NUM_GHPAGES_BRANCHES ${NUM_GHPAGES_BRANCHES}"
-    // if test "${NUM_GHPAGES_BRANCHES}" == "0" ; then
-    //   echo "Creating new gh-pages branch"
-    //   git checkout --orphan gh-pages
-    // else
-    //   echo "Using existing gh-pages"
-    //   git fetch upstream gh-pages
-    //   git checkout gh-pages
-    // fi
   }
 
   function ghpagesBranchImpl() {
     var execStatement;
-    if (numGhpagesBranches === 0) {
-      console.log('Creating new gh-pages branch');
-      execStatement = 'git checkout --orphan gh-pages';
+    if (numPublishBranches === 0) {
+      console.log('Creating new '+vars.GH_PUBLISH_BRANCH+' branch');
+      execStatement = 'git checkout --orphan ${GH_PUBLISH_BRANCH}';
     }
     else {
-      console.log('Using existing gh-pages branch');
-      execStatement = 'git fetch upstream gh-pages && git checkout gh-pages';
+      console.log('Using existing '+vars.GH_PUBLISH_BRANCH+' branch');
+      execStatement = 'git fetch upstream ${GH_PUBLISH_BRANCH} && git checkout ${GH_PUBLISH_BRANCH}';
     }
     execute(execStatement, {
       cwd: repoDir,
@@ -268,11 +265,6 @@ function publishGithubPages(context, callback) {
         copyAssets();
       }
     });
-    // #NOTE The var `DOCUMENT_PUBLISH_FOLDER` is processed and is based on other vars
-    // # It defaults to `api/${MAJOR_VERSION}.${MINOR_VERSION}`
-    // mkdir -p "${DOC_PUBLISH_DIR}"
-    // rm -rf ${DOC_PUBLISH_DIR}/*
-    // cp -r ${GENERATED_DIR}/* "${DOC_PUBLISH_DIR}"
   }
 
   function copyAssets() {
@@ -300,21 +292,6 @@ function publishGithubPages(context, callback) {
       vars.DOCUMENT_ASSETS = '';
       createIndexPage();
     }
-    // # Specify a set of folders/ files to copy across to the root folder
-    // if test "${FLAG_COPY_ASSETS}" == "true" ; then
-    //   echo "Copying assets: ${DOCUMENT_ASSETS}"
-    //   cd "${PROJECT_DIR}"
-    //   # Use tar and pipe to untar to preserve directory structure
-    //   # because `cp -r` does not do this well.
-    //   # A viable alternative is to use `rsync`, for future reference
-    //   tar cf - ${DOCUMENT_ASSETS} | ( cd "${GHPAGES_DIR}" ; tar xf - )
-    //   cd "${GHPAGES_DIR}"
-    // else
-    //   echo "Not copying assets"
-    //   DOCUMENT_ASSETS=""
-    // fi
-    // touch "${DOC_PUBLISH_ROOT_DIR}"
-    // touch "${DOC_PUBLISH_DIR}"
   }
 
   function createIndexPage() {
@@ -326,12 +303,10 @@ function publishGithubPages(context, callback) {
           callback(err);
         }
         else {
-          console.log('files', files);
           var testFiles = files.filter(function(file) {
             return (file.indexOf('all') < 0 &&
               file.indexOf('latest') < 0);
           });
-          console.log('testFiles', testFiles);
           var versionsHtmlFragment = files.filter(function(file) {
             return (file.indexOf('all') < 0 &&
               file.indexOf('latest') < 0 &&
@@ -342,7 +317,11 @@ function publishGithubPages(context, callback) {
           versionsHtmlFragment = '<ul>'+versionsHtmlFragment+'</ul>';
           var inHtml = fs.readFileSync(path.resolve(vars.SCRIPT_DIR, 'all.html'));
           var outHtml = inHtml.toString().replace('{{VERSIONLIST}}', versionsHtmlFragment);
-          fs.mkdirSync(path.resolve(repoDir, vars.ALL_DIR));
+          try {
+            fs.mkdirSync(path.resolve(repoDir, vars.ALL_DIR));
+          } catch (ex) {
+            // Do nothing - we don't care if the directory already exists
+          }
           fs.writeFileSync(path.resolve(repoDir, vars.ALL_DIR, 'index.html'), outHtml);
           vars.ALL_ASSETS = vars.ALL_DIR;
           createLatestAlias();
@@ -385,16 +364,6 @@ function publishGithubPages(context, callback) {
       vars.LATEST_ASSETS = '';
       commitAndPush();
     }
-    // # TODO alias "latest" or "current" to the one currently being generated
-    // if test "${FLAG_LATEST_PAGE}" == "true" ; then
-    //   echo "Generating 'latest' page"
-    //   # echo SED_REDIRECT=${SED_REDIRECT}
-    //   mkdir -p "${LATEST_DIR}"
-    //   { cat "${SCRIPT_DIR}/latest.html" | sed "s/${LATEST_REDIRECTREPLACE}/${LATEST_REDIRECTURL}/g" ; } > "${LATEST_DIR}/index.html"
-    //   LATEST_ASSETS="${LATEST_DIR}"
-    // else
-    //   LATEST_ASSETS=""
-    // fi
   }
 
   var numFilesChanged;
@@ -419,35 +388,6 @@ function publishGithubPages(context, callback) {
         commitAndPushImpl();
       }
     });
-    // # Test if there are any changes
-    // cd "${GHPAGES_DIR}"
-    // NUM_FILES_CHANGED=$( git ls-files -m -o | wc -l )
-    // if test "${NUM_FILES_CHANGED}" -gt "0" ; then
-      // # Commit and push
-      // GIT_ADDITIONS="${DOC_PUBLISH_DIR} ${DOCUMENT_ASSETS} ${LATEST_ASSETS}"
-      // git add -A ${GIT_ADDITIONS}
-      // COMMIT_MESSAGE="autodocs publish ${TIME_STAMP} ${COMMIT_ID}"
-      // echo "${COMMIT_MESSAGE}"
-      // git commit -m "${COMMIT_MESSAGE}"
-      // if test "${FLAG_SKIP_PUSH}" == "true" ;  then
-      //   echo "Skipping push to github pages"
-      // else
-      //   # discard all output, because it contains the github access token
-      //   # unless, opted out, using `FLAG_QUIET_PUSH`
-      //   if test "${FLAG_STRIP_TOKEN_OUTPUT}" == "false" ; then
-      //     # Show output, unmodified.
-      //     # This should *not* be done in CI, only for local testing
-      //     git push upstream HEAD:gh-pages
-      //   else
-      //     # Use `sed` to replace any instances of the Github token in both stdout and stderr
-      //     SED_STRIP_TOKEN="s/${GH_TOKEN}/\[SECURE\]/g"
-      //     { git push upstream HEAD:gh-pages 2>&1 >&3 | sed ${SED_STRIP_TOKEN} ; } 3>&1
-      //   fi
-      //   echo "Successfully pushed documentation to gh-pages"
-      // fi
-    // else
-    //   echo "Documentation unchanged, no need to publish"
-    // fi
   }
 
   function commitAndPushImpl() {
@@ -496,11 +436,6 @@ function publishGithubPages(context, callback) {
       console.log('Leaving git repo as is at '+repoDir);
       allComplete();
     }
-    // if "${FLAG_CLEAN_DOCUMENT}" == "true" ; then
-    //   echo "Cleaning up git repo at ${GHPAGES_DIR}"
-    //   rm -rf "${GHPAGES_DIR}"
-    // fi
-
   }
 
   function allComplete() {

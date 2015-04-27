@@ -4,7 +4,7 @@
 # or when any environment variables that have not been defined are encountered
 set -o errexit -o nounset
 
-# Git repo init and update gh-pages branch
+# Git repo init
 rm -rf "${GHPAGES_DIR}"
 mkdir -p "${GHPAGES_DIR}"
 cd "${GHPAGES_DIR}"
