@@ -24,7 +24,15 @@ function environmentVariablesTravis(context, callback) {
    * @default None - throws when not set
    */
   envVar.require('TRAVIS_REPO_SLUG');
-  process.env.REPO_SLUG = process.env.TRAVIS_REPO_SLUG;
+
+  /**
+   * Used to set value of `REPO_SLUG`
+   *
+   * @property TRAVIS_REPO_SLUG
+   * @type String (Environment Variable)
+   * @default None - throws when not set
+   */
+  envVar.default('REPO_SLUG', process.env.TRAVIS_REPO_SLUG);
 
   /**
    * @property TRAVIS_PULL_REQUEST
@@ -77,24 +85,40 @@ function testShouldPublishTravis(context, callback) {
   var envVar = context.environmentVariables;
 
   var correctBuildIndex =
-    (process.env.TRAVIS_BUILD_NUMBER+'.'+process.env.DOCUMENT_JOB_INDEX ===
+    ((process.env.TRAVIS_BUILD_NUMBER+'.'+process.env.DOCUMENT_JOB_INDEX) ===
       process.env.TRAVIS_JOB_NUMBER);
-  if (!correctBuildIndex) {
-    return false;
-  }
-  else if (process.env.FLAG_PUBLISH_ON_RELEASE === 'true') {
+  var out = {
+    flag: true,
+    message: undefined,
+  };
+  if (process.env.FLAG_PUBLISH_ON_RELEASE === 'true') {
+    out.message = 'Publish on release';
     /**
      * @property TRAVIS_TAG
      * @type String (Environment Variable)
      * @default None
      */
-    return (envVar.exists('TRAVIS_TAG'));
+    if (!envVar.exists('TRAVIS_TAG')) {
+      out.flag = false;
+      out.message += '\n- travis tag exists failure';
+    }
   }
   else {
-    return (
-      process.env.TRAVIS_PULL_REQUEST === 'false' &&
-      process.env.TRAVIS_BRANCH === process.env.DOCUMENT_BRANCH);
+    out.message = 'Publish on branch';
+    if (process.env.TRAVIS_PULL_REQUEST !== 'false') {
+      out.flag = false;
+      out.message += '\n- is not a pull request failure';
+    }
+    if (process.env.TRAVIS_BRANCH !== process.env.DOCUMENT_BRANCH) {
+      out.flag = false;
+      out.message += '\n- branch name match failure';
+    }
   }
+  if (!correctBuildIndex) {
+    out.flag = false;
+    out.message += '\n- job index match failure';
+  }
+  return out;
 }
 
 module.exports = {
