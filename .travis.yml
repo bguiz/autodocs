@@ -17,5 +17,3 @@ env:
   # - FLAG_PUBLISH_ON_RELEASE: 'true'
   - DOCUMENT_BRANCH: ${TRAVIS_BRANCH}
   - FLAG_CLEAN_DOCUMENT: 'true'
-  - REPO_SLUG: 'bguiz/autodocs-demo'
-  - GH_PUBLISH_BRANCH: 'unicorn-pages'
