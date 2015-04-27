@@ -201,7 +201,9 @@ function publishGithubPages(context, callback) {
 
   function ghpagesBranch() {
     console.log('Set up branch');
-    execute("git ls-remote --heads ${REPO_URL_UNAUTH} | grep 'refs\\\/heads\\\/${GH_PUBLISH_BRANCH}' | wc -l", {
+    var executeStatement = "git ls-remote --heads "+vars.REPO_URL_UNAUTH+" | grep 'refs\\\/heads\\\/"+vars.GH_PUBLISH_BRANCH+"' | wc -l";
+    console.log(executeStatement);
+    execute(executeStatement, {
       cwd: projectDir,
       env: vars,
     }, function(err, stdout, stderr) {
@@ -215,7 +217,7 @@ function publishGithubPages(context, callback) {
           numPublishBranches = parseInt(stdout.toString().trim(), 10);
         }
         catch (ex) {
-          return callback('Could not determine whether repo has a gh-pages branch');
+          return callback('Could not determine whether repo has a '+vars.GH_PUBLISH_BRANCH+' branch');
         }
         ghpagesBranchImpl();
       }
@@ -226,12 +228,13 @@ function publishGithubPages(context, callback) {
     var execStatement;
     if (numPublishBranches === 0) {
       console.log('Creating new '+vars.GH_PUBLISH_BRANCH+' branch');
-      execStatement = 'git checkout --orphan ${GH_PUBLISH_BRANCH}';
+      execStatement = 'git checkout --orphan '+vars.GH_PUBLISH_BRANCH;
     }
     else {
       console.log('Using existing '+vars.GH_PUBLISH_BRANCH+' branch');
-      execStatement = 'git fetch upstream ${GH_PUBLISH_BRANCH} && git checkout ${GH_PUBLISH_BRANCH}';
+      execStatement = 'git fetch upstream '+vars.GH_PUBLISH_BRANCH+' && git checkout '+vars.GH_PUBLISH_BRANCH;
     }
+    console.log(execStatement);
     execute(execStatement, {
       cwd: repoDir,
       env: vars,
