@@ -21,7 +21,7 @@
             <li class="divider-vertical"></li>
             <li>
                 <p class="navbar-text">
-                    API Docs for Version: <b>0.6.4</b>
+                    API Docs for Version: <b>0.6.5</b>
                 </p>
             </li>
         </div>
@@ -180,9 +180,12 @@
                           }
                         
                           function runGeneratedocs() {
-                            // Generate the documentation
                             console.log(&#x27;Generating documentation&#x27;);
                             if (process.env.FLAG_SKIP_GENERATE === &#x27;true&#x27;) {
+                              console.log(&#x27;Re-using previously generated documentation&#x27;);
+                              setUpVars();
+                            }
+                            else {
                               console.log(&#x27;Invoking &quot;generatedocs&quot; script&#x27;);
                               execute(&#x27;npm run generatedocs&#x27;, {
                                 cwd: projectDir,
@@ -199,10 +202,6 @@
                                 }
                               });
                             }
-                            else {
-                              console.log(&#x27;Re-using previously generated documentation&#x27;);
-                              setUpVars();
-                            }
                           }
                         
                           var vars = envVar.selected([
@@ -215,6 +214,7 @@
                             &#x27;GIT_USER&#x27;,
                             &#x27;GIT_EMAIL&#x27;,
                             &#x27;REPO_SLUG&#x27;,
+                            &#x27;SCRIPT_DIR&#x27;,
                         
                             &#x27;FLAG_COPY_ASSETS&#x27;,
                             &#x27;FLAG_PUBLISH_ON_RELEASE&#x27;,
@@ -380,7 +380,12 @@
                           }
                         
                           function createIndexPage() {
-                            if (vars.FLAG_ALL_PAGE === &#x27;true&#x27;) {
+                            if (vars.FLAG_ALL_PAGE === &#x27;false&#x27;) {
+                              console.log(&#x27;Not creating an all page&#x27;);
+                              vars.ALL_ASSETS = &#x27;&#x27;;
+                              createLatestAlias();
+                            }
+                            else {
                               console.log(&#x27;Create an all page&#x27;);
                               fs.readdir(path.resolve(repoDir, vars.DOCUMENT_PUBLISH_FOLDER_ROOT), function(err, files) {
                                 if (err) {
@@ -413,15 +418,15 @@
                                 }
                               });
                             }
-                            else {
-                              console.log(&#x27;Not creating an all page&#x27;);
-                              vars.ALL_ASSETS = &#x27;&#x27;;
-                              createLatestAlias();
-                            }
                           }
                         
                           function createLatestAlias() {
-                            if (vars.FLAG_LATEST_PAGE === &#x27;true&#x27;) {
+                            if (vars.FLAG_LATEST_PAGE === &#x27;false&#x27;) {
+                              console.log(&#x27;Not creating page for latest alias&#x27;);
+                              vars.LATEST_ASSETS = &#x27;&#x27;;
+                              commitAndPush();
+                            }
+                            else {
                               console.log(&#x27;Create latest alias&#x27;);
                               var executeStatement = &#x27;mkdir -p &quot;&#x27;+vars.LATEST_DIR+
                                 &#x27;&quot; &amp;&amp; { cat &quot;&#x27;+vars.SCRIPT_DIR+
@@ -443,11 +448,6 @@
                                   commitAndPush();
                                 }
                               });
-                            }
-                            else {
-                              console.log(&#x27;Not creating page for latest alias&#x27;);
-                              vars.LATEST_ASSETS = &#x27;&#x27;;
-                              commitAndPush();
                             }
                           }
                         
