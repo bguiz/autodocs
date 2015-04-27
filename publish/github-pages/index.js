@@ -98,9 +98,12 @@ function publishGithubPages(context, callback) {
   }
 
   function runGeneratedocs() {
-    // Generate the documentation
     console.log('Generating documentation');
     if (process.env.FLAG_SKIP_GENERATE === 'true') {
+      console.log('Re-using previously generated documentation');
+      setUpVars();
+    }
+    else {
       console.log('Invoking "generatedocs" script');
       execute('npm run generatedocs', {
         cwd: projectDir,
@@ -117,10 +120,6 @@ function publishGithubPages(context, callback) {
         }
       });
     }
-    else {
-      console.log('Re-using previously generated documentation');
-      setUpVars();
-    }
   }
 
   var vars = envVar.selected([
@@ -133,6 +132,7 @@ function publishGithubPages(context, callback) {
     'GIT_USER',
     'GIT_EMAIL',
     'REPO_SLUG',
+    'SCRIPT_DIR',
 
     'FLAG_COPY_ASSETS',
     'FLAG_PUBLISH_ON_RELEASE',
@@ -298,7 +298,12 @@ function publishGithubPages(context, callback) {
   }
 
   function createIndexPage() {
-    if (vars.FLAG_ALL_PAGE === 'true') {
+    if (vars.FLAG_ALL_PAGE === 'false') {
+      console.log('Not creating an all page');
+      vars.ALL_ASSETS = '';
+      createLatestAlias();
+    }
+    else {
       console.log('Create an all page');
       fs.readdir(path.resolve(repoDir, vars.DOCUMENT_PUBLISH_FOLDER_ROOT), function(err, files) {
         if (err) {
@@ -331,15 +336,15 @@ function publishGithubPages(context, callback) {
         }
       });
     }
-    else {
-      console.log('Not creating an all page');
-      vars.ALL_ASSETS = '';
-      createLatestAlias();
-    }
   }
 
   function createLatestAlias() {
-    if (vars.FLAG_LATEST_PAGE === 'true') {
+    if (vars.FLAG_LATEST_PAGE === 'false') {
+      console.log('Not creating page for latest alias');
+      vars.LATEST_ASSETS = '';
+      commitAndPush();
+    }
+    else {
       console.log('Create latest alias');
       var executeStatement = 'mkdir -p "'+vars.LATEST_DIR+
         '" && { cat "'+vars.SCRIPT_DIR+
@@ -361,11 +366,6 @@ function publishGithubPages(context, callback) {
           commitAndPush();
         }
       });
-    }
-    else {
-      console.log('Not creating page for latest alias');
-      vars.LATEST_ASSETS = '';
-      commitAndPush();
     }
   }
 
