@@ -126,6 +126,7 @@ function publishGithubPages(context, callback) {
     'PATH',
 
     'PROJECT_DIR',
+    'PROJECT_NAME',
     'MAJOR_VERSION',
     'MINOR_VERSION',
     'PATCH_VERSION',
@@ -178,7 +179,6 @@ function publishGithubPages(context, callback) {
       }
     });
   }
-
 
   function setUpRepo() {
     console.log('Set up repo');
@@ -311,26 +311,28 @@ function publishGithubPages(context, callback) {
           callback(err);
         }
         else {
-          var testFiles = files.filter(function(file) {
-            return (file.indexOf('all') < 0 &&
-              file.indexOf('latest') < 0);
-          });
-          var versionsHtmlFragment = files.filter(function(file) {
-            return (file.indexOf('all') < 0 &&
-              file.indexOf('latest') < 0 &&
-              !!fs.statSync(path.resolve(repoDir, vars.DOCUMENT_PUBLISH_FOLDER_ROOT), file).isDirectory());
-          }).map(function(version) {
-            return '<li><a href="../'+version+'/">'+version+'</a></li>';
-          }).join('\n');
-          versionsHtmlFragment = '<ul>'+versionsHtmlFragment+'</ul>';
+          // Work out which versions have documentation available
+          var versions = files
+            .filter(function(file) {
+              return (file.indexOf('all') < 0 && file.indexOf('latest') < 0 &&
+                !!fs.statSync(path.resolve(repoDir, vars.DOCUMENT_PUBLISH_FOLDER_ROOT), file).isDirectory());
+            });
+
+          // Use the list of versions to render an "all" page from a template,
+          // and write to disk
           var inHtml = fs.readFileSync(path.resolve(vars.SCRIPT_DIR, 'all.html'));
-          var outHtml = inHtml.toString().replace('{{VERSIONLIST}}', versionsHtmlFragment);
+          var allTemplate = require('hogan.js').compile(inHtml.toString());
+          var outHtml = allTemplate.render({
+            name: vars.PROJECT_NAME,
+            versions: versions,
+          });
           try {
             fs.mkdirSync(path.resolve(repoDir, vars.ALL_DIR));
           } catch (ex) {
             // Do nothing - we don't care if the directory already exists
           }
           fs.writeFileSync(path.resolve(repoDir, vars.ALL_DIR, 'index.html'), outHtml);
+
           vars.ALL_ASSETS = vars.ALL_DIR;
           createLatestAlias();
         }
@@ -340,32 +342,27 @@ function publishGithubPages(context, callback) {
 
   function createLatestAlias() {
     if (vars.FLAG_LATEST_PAGE === 'false') {
-      console.log('Not creating page for latest alias');
+      console.log('Not creating a latest page');
       vars.LATEST_ASSETS = '';
       commitAndPush();
     }
     else {
       console.log('Create latest alias');
-      var executeStatement = 'mkdir -p "'+vars.LATEST_DIR+
-        '" && { cat "'+vars.SCRIPT_DIR+
-        '/latest.html" | sed "s/'+vars.LATEST_REDIRECTREPLACE+
-        '/'+vars.LATEST_REDIRECTURL+
-        '/g" ; } > "'+vars.LATEST_DIR+'/index.html"';
-      execute(executeStatement, {
-        cwd: repoDir,
-        env: vars,
-      }, function(err, stdout, stderr) {
-        console.log(stdout);
-        console.log(stderr);
-        if (err) {
-          console.log('err: '+err);
-          callback(err);
-        }
-        else {
-          vars.LATEST_ASSETS = vars.LATEST_DIR;
-          commitAndPush();
-        }
+      var inHtml = fs.readFileSync(path.resolve(vars.SCRIPT_DIR, 'latest.html'));
+      var latestTemplate = require('hogan.js').compile(inHtml.toString());
+      var outHtml = latestTemplate.render({
+        name: vars.PROJECT_NAME,
+        redirectUrl: '../'+vars.DOCUMENT_PUBLISH_SUBFOLDER+'/',
       });
+      try {
+        fs.mkdirSync(path.resolve(repoDir, vars.LATEST_DIR));
+      } catch (ex) {
+        // Do nothing - we don't care if the directory already exists
+      }
+      fs.writeFileSync(path.resolve(repoDir, vars.LATEST_DIR, 'index.html'), outHtml);
+
+      vars.LATEST_ASSETS = vars.LATEST_DIR;
+      commitAndPush();
     }
   }
 
