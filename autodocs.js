@@ -94,6 +94,9 @@ function environmentVariablesAutodocs(context, callback) {
   console.log('projectPath', projectPath);
   var projectPackageJson = require(path.resolve(projectPath, 'package.json'));
   var projectVersion = projectPackageJson.version;
+  var projectName = projectPackageJson.name;
+
+  process.env.PROJECT_NAME = projectName;
 
   /**
    * @property PROJECT_DIR

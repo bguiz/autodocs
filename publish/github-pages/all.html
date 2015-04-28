@@ -2,9 +2,16 @@
 <html lang="en-US">
     <head>
         <meta charset="UTF-8">
-        <title>All</title>
+        <title>{{name}} - all versions</title>
     </head>
     <body>
-        {{VERSIONLIST}}
+        <h1><pre>{{name}}</pre></h1>
+        <p>Documentation is available for these versions:</p>
+        <ul>
+        {{#versions}}
+          <li><a href="../{{.}}/">v{{.}}</a></li>
+        {{/versions}}
+        </ul>
+        <p>Total: {{versions.length}}</p>
     </body>
 </html>
