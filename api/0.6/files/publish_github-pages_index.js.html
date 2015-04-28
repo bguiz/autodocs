@@ -208,6 +208,7 @@
                             &#x27;PATH&#x27;,
                         
                             &#x27;PROJECT_DIR&#x27;,
+                            &#x27;PROJECT_NAME&#x27;,
                             &#x27;MAJOR_VERSION&#x27;,
                             &#x27;MINOR_VERSION&#x27;,
                             &#x27;PATCH_VERSION&#x27;,
@@ -260,7 +261,6 @@
                               }
                             });
                           }
-                        
                         
                           function setUpRepo() {
                             console.log(&#x27;Set up repo&#x27;);
@@ -393,26 +393,28 @@
                                   callback(err);
                                 }
                                 else {
-                                  var testFiles = files.filter(function(file) {
-                                    return (file.indexOf(&#x27;all&#x27;) &lt; 0 &amp;&amp;
-                                      file.indexOf(&#x27;latest&#x27;) &lt; 0);
-                                  });
-                                  var versionsHtmlFragment = files.filter(function(file) {
-                                    return (file.indexOf(&#x27;all&#x27;) &lt; 0 &amp;&amp;
-                                      file.indexOf(&#x27;latest&#x27;) &lt; 0 &amp;&amp;
-                                      !!fs.statSync(path.resolve(repoDir, vars.DOCUMENT_PUBLISH_FOLDER_ROOT), file).isDirectory());
-                                  }).map(function(version) {
-                                    return &#x27;&lt;li&gt;&lt;a href=&quot;../&#x27;+version+&#x27;/&quot;&gt;&#x27;+version+&#x27;&lt;/a&gt;&lt;/li&gt;&#x27;;
-                                  }).join(&#x27;\n&#x27;);
-                                  versionsHtmlFragment = &#x27;&lt;ul&gt;&#x27;+versionsHtmlFragment+&#x27;&lt;/ul&gt;&#x27;;
+                                  // Work out which versions have documentation available
+                                  var versions = files
+                                    .filter(function(file) {
+                                      return (file.indexOf(&#x27;all&#x27;) &lt; 0 &amp;&amp; file.indexOf(&#x27;latest&#x27;) &lt; 0 &amp;&amp;
+                                        !!fs.statSync(path.resolve(repoDir, vars.DOCUMENT_PUBLISH_FOLDER_ROOT), file).isDirectory());
+                                    });
+                        
+                                  // Use the list of versions to render an &quot;all&quot; page from a template,
+                                  // and write to disk
                                   var inHtml = fs.readFileSync(path.resolve(vars.SCRIPT_DIR, &#x27;all.html&#x27;));
-                                  var outHtml = inHtml.toString().replace(&#x27;{{VERSIONLIST}}&#x27;, versionsHtmlFragment);
+                                  var allTemplate = require(&#x27;hogan.js&#x27;).compile(inHtml.toString());
+                                  var outHtml = allTemplate.render({
+                                    name: vars.PROJECT_NAME,
+                                    versions: versions,
+                                  });
                                   try {
                                     fs.mkdirSync(path.resolve(repoDir, vars.ALL_DIR));
                                   } catch (ex) {
                                     // Do nothing - we don&#x27;t care if the directory already exists
                                   }
                                   fs.writeFileSync(path.resolve(repoDir, vars.ALL_DIR, &#x27;index.html&#x27;), outHtml);
+                        
                                   vars.ALL_ASSETS = vars.ALL_DIR;
                                   createLatestAlias();
                                 }
@@ -422,32 +424,27 @@
                         
                           function createLatestAlias() {
                             if (vars.FLAG_LATEST_PAGE === &#x27;false&#x27;) {
-                              console.log(&#x27;Not creating page for latest alias&#x27;);
+                              console.log(&#x27;Not creating a latest page&#x27;);
                               vars.LATEST_ASSETS = &#x27;&#x27;;
                               commitAndPush();
                             }
                             else {
                               console.log(&#x27;Create latest alias&#x27;);
-                              var executeStatement = &#x27;mkdir -p &quot;&#x27;+vars.LATEST_DIR+
-                                &#x27;&quot; &amp;&amp; { cat &quot;&#x27;+vars.SCRIPT_DIR+
-                                &#x27;/latest.html&quot; | sed &quot;s/&#x27;+vars.LATEST_REDIRECTREPLACE+
-                                &#x27;/&#x27;+vars.LATEST_REDIRECTURL+
-                                &#x27;/g&quot; ; } &gt; &quot;&#x27;+vars.LATEST_DIR+&#x27;/index.html&quot;&#x27;;
-                              execute(executeStatement, {
-                                cwd: repoDir,
-                                env: vars,
-                              }, function(err, stdout, stderr) {
-                                console.log(stdout);
-                                console.log(stderr);
-                                if (err) {
-                                  console.log(&#x27;err: &#x27;+err);
-                                  callback(err);
-                                }
-                                else {
-                                  vars.LATEST_ASSETS = vars.LATEST_DIR;
-                                  commitAndPush();
-                                }
+                              var inHtml = fs.readFileSync(path.resolve(vars.SCRIPT_DIR, &#x27;latest.html&#x27;));
+                              var latestTemplate = require(&#x27;hogan.js&#x27;).compile(inHtml.toString());
+                              var outHtml = latestTemplate.render({
+                                name: vars.PROJECT_NAME,
+                                redirectUrl: &#x27;../&#x27;+vars.DOCUMENT_PUBLISH_SUBFOLDER+&#x27;/&#x27;,
                               });
+                              try {
+                                fs.mkdirSync(path.resolve(repoDir, vars.LATEST_DIR));
+                              } catch (ex) {
+                                // Do nothing - we don&#x27;t care if the directory already exists
+                              }
+                              fs.writeFileSync(path.resolve(repoDir, vars.LATEST_DIR, &#x27;index.html&#x27;), outHtml);
+                        
+                              vars.LATEST_ASSETS = vars.LATEST_DIR;
+                              commitAndPush();
                             }
                           }
                         

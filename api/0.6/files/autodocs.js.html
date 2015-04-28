@@ -176,6 +176,9 @@
                           console.log(&#x27;projectPath&#x27;, projectPath);
                           var projectPackageJson = require(path.resolve(projectPath, &#x27;package.json&#x27;));
                           var projectVersion = projectPackageJson.version;
+                          var projectName = projectPackageJson.name;
+                        
+                          process.env.PROJECT_NAME = projectName;
                         
                           /**
                            * @property PROJECT_DIR
