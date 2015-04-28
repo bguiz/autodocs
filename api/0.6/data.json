@@ -364,7 +364,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 52,
+            "line": 63,
             "itemtype": "property",
             "name": "SELECT_CI",
             "type": "String (Environment Variable)",
@@ -374,7 +374,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 58,
+            "line": 69,
             "itemtype": "property",
             "name": "SELECT_PUBLISH",
             "type": "String (Environment Variable)",
@@ -384,7 +384,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 82,
+            "line": 93,
             "description": "Initialisation step for Autodocs\n\nUsed to check/ set any Autodocs environment variables",
             "itemtype": "method",
             "name": "init",
@@ -393,7 +393,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 101,
+            "line": 112,
             "itemtype": "property",
             "name": "PROJECT_DIR",
             "type": "String (Environment Variable)",
@@ -404,7 +404,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 110,
+            "line": 121,
             "itemtype": "property",
             "name": "MAJOR_VERSION",
             "type": "String (Environment Variable)",
@@ -415,7 +415,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 118,
+            "line": 129,
             "itemtype": "property",
             "name": "MINOR_VERSION",
             "type": "String (Environment Variable)",
@@ -426,7 +426,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 126,
+            "line": 137,
             "itemtype": "property",
             "name": "PATCH_VERSION",
             "type": "String (Environment Variable)",
@@ -437,7 +437,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 134,
+            "line": 145,
             "itemtype": "property",
             "name": "GIT_USER",
             "type": "String (Environment Variable)",
@@ -447,7 +447,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 141,
+            "line": 152,
             "itemtype": "property",
             "name": "GIT_EMAIL",
             "type": "String (Environment Variable)",
@@ -457,7 +457,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 149,
+            "line": 160,
             "itemtype": "property",
             "name": "FLAG_COPY_ASSETS",
             "type": "String (Environment Variable)",
@@ -467,7 +467,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 156,
+            "line": 167,
             "itemtype": "property",
             "name": "FLAG_PUBLISH_ON_RELEASE",
             "type": "String (Environment Variable)",
@@ -477,7 +477,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 163,
+            "line": 174,
             "itemtype": "property",
             "name": "FLAG_CLEAN_DOCUMENT",
             "type": "String (Environment Variable)",
@@ -487,7 +487,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 170,
+            "line": 181,
             "itemtype": "property",
             "name": "FLAG_STRIP_TOKEN_OUTPUT",
             "type": "String (Environment Variable)",
@@ -497,7 +497,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 177,
+            "line": 188,
             "description": "By default, this will publish a latest page,\nwhose purpose is simply to redirect to the most recently publish API version\n\nAssuming default values for other configurations,\nif the version of the project is currently `1.2.3`,\n\n- `http://USER.github.io/REPO/api/latest/`\n- This URL will be published with an `index.html` file that redirects to:\n- `http://USER.github.io/REPO/api/1.2/`\n\nSet to `false` to disable this behaviour.",
             "itemtype": "property",
             "name": "FLAG_LATEST_PAGE",
@@ -508,7 +508,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 196,
+            "line": 207,
             "description": "By default, this will publish an all page,\nwhose purpose is simply to list and link to all published API versions\n\nAssuming default values for other configurations,\nif the versions of the project are currently `0.1`, `0.2`, `0.3`, and `1.0`\n\n- `http://USER.github.io/REPO/api/all/`\n- This URL will be published with an `index.html` file that links to:\n  - `http://USER.github.io/REPO/api/0.1/`\n  - `http://USER.github.io/REPO/api/0.2/`\n  - `http://USER.github.io/REPO/api/0.3/`\n  - `http://USER.github.io/REPO/api/1.0/`\n\nSet to `false` to disable this behaviour.",
             "itemtype": "property",
             "name": "FLAG_ALL_PAGE",
@@ -519,7 +519,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 218,
+            "line": 229,
             "description": "Set to false to do all of the steps in publishing,\nexcept for the final step of pushing the changes to the git remote.\n\nThis is useful for testing and debugging purposes.\nLeaving this on in a CI environment would defeat the purpose of autodocs",
             "itemtype": "property",
             "name": "FLAG_SKIP_PUSH",
@@ -530,7 +530,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 231,
+            "line": 242,
             "description": "Set to true to skip step where documentation is generated. i.e. Do not run\n\n`npm run generatedocs`\n\nThis is useful for testing and debugging purposes.\nLeaving this on in a CI environment would defeat the purpose of autodocs",
             "itemtype": "property",
             "name": "FLAG_SKIP_GENERATE",
@@ -541,7 +541,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 245,
+            "line": 256,
             "description": "Set to true to skips the entirety of the CI publish run function.\n**None** of the publishing related step will occur,\nexcept for setting any required environment variables.\n\nThis is useful for testing and debugging purposes.\nLeaving this on in a CI environment would defeat the purpose of autodocs",
             "itemtype": "property",
             "name": "FLAG_SKIP_PUBLISH_RUN",
@@ -552,7 +552,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 259,
+            "line": 270,
             "itemtype": "property",
             "name": "DOCUMENT_BRANCH",
             "type": "String (Environment Variable)",
@@ -562,7 +562,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 266,
+            "line": 277,
             "itemtype": "property",
             "name": "DOCUMENT_JOB_INDEX",
             "type": "String (Environment Variable)",
@@ -572,7 +572,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 273,
+            "line": 284,
             "itemtype": "property",
             "name": "DOCUMENT_GENERATED_FOLDER",
             "type": "String (Environment Variable)",
@@ -582,7 +582,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 280,
+            "line": 291,
             "description": "All documentation will be published under this root directory\n\nThis can be used for **non-version-specific** documentation",
             "itemtype": "property",
             "name": "DOCUMENT_PUBLISH_FOLDER_ROOT",
@@ -593,7 +593,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 291,
+            "line": 302,
             "description": "The documentation will be published in this subdirectory of the root directory.\n\nThis can be used for **version-specific** documentation",
             "itemtype": "property",
             "name": "DOCUMENT_PUBLISH_SUBFOLDER",
@@ -604,7 +604,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 303,
+            "line": 314,
             "description": "Joins `DOCUMENT_PUBLISH_FOLDER_ROOT` with `DOCUMENT_PUBLISH_SUBFOLDER`\nto get a concrete path to publish the documentation.",
             "itemtype": "property",
             "name": "DOCUMENT_PUBLISH_FOLDER",
@@ -615,7 +615,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 313,
+            "line": 324,
             "itemtype": "property",
             "name": "DOCUMENT_ASSETS",
             "type": "String (Environment Variable)",

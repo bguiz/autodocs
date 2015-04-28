@@ -113,7 +113,14 @@
                          */
                         function runAutodocs(context, callback) {
                           if (typeof callback !== &#x27;function&#x27;) {
-                            throw new Error(&#x27;Expected callback function&#x27;);
+                            callback = function defaultAutodocsRunCallback(err) {
+                              if (err) {
+                                console.log(&#x27;autodocs error:&#x27;, err);
+                              }
+                              else {
+                                console.log(&#x27;autodocs done&#x27;);
+                              }
+                            };
                           }
                           try {
                             context = context || {};
@@ -123,8 +130,12 @@
                             runAutodocsImpl(context, callback);
                           }
                           catch (ex) {
-                            callback(ex);
-                            throw ex;
+                            if (!!ex) {
+                              throw ex;
+                            }
+                            else {
+                              callback(ex);
+                            }
                           }
                         }
                         
