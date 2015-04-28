@@ -31,7 +31,14 @@ var path = require('path');
  */
 function runAutodocs(context, callback) {
   if (typeof callback !== 'function') {
-    throw new Error('Expected callback function');
+    callback = function defaultAutodocsRunCallback(err) {
+      if (err) {
+        console.log('autodocs error:', err);
+      }
+      else {
+        console.log('autodocs done');
+      }
+    };
   }
   try {
     context = context || {};
@@ -41,8 +48,12 @@ function runAutodocs(context, callback) {
     runAutodocsImpl(context, callback);
   }
   catch (ex) {
-    callback(ex);
-    throw ex;
+    if (!!ex) {
+      throw ex;
+    }
+    else {
+      callback(ex);
+    }
   }
 }
 
@@ -94,6 +105,9 @@ function environmentVariablesAutodocs(context, callback) {
   console.log('projectPath', projectPath);
   var projectPackageJson = require(path.resolve(projectPath, 'package.json'));
   var projectVersion = projectPackageJson.version;
+  var projectName = projectPackageJson.name;
+
+  process.env.PROJECT_NAME = projectName;
 
   /**
    * @property PROJECT_DIR

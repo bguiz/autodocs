@@ -1,6 +1,6 @@
 {
   "name": "autodocs",
-  "version": "0.6.5",
+  "version": "0.6.6",
   "description": "Automates publishing API docs for NodeJs projects, useful for continuous integration",
   "main": "index.js",
   "scripts": {
@@ -38,5 +38,8 @@
     "istanbul": "^0.3.11",
     "yuidoc-lucid-theme": "^0.1.1",
     "yuidocjs": "^0.6.0"
+  },
+  "dependencies": {
+    "hogan.js": "^3.0.2"
   }
 }
