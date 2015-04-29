@@ -105,14 +105,15 @@ function publishGithubPages(context, callback) {
     }
     else {
       console.log('Invoking "generatedocs" script');
-      execute('npm run generatedocs', {
+      var execStatement = 'npm run '+process.env.DOCUMENT_GENERATE_HOOK;
+      console.log(execStatement);
+      execute(execStatement, {
         cwd: projectDir,
         env: process.env,
       }, function(err, stdout, stderr) {
         console.log(stdout);
         console.log(stderr);
         if (err) {
-          console.log('err: '+err);
           callback(err);
         }
         else {
@@ -146,6 +147,7 @@ function publishGithubPages(context, callback) {
 
     'DOCUMENT_BRANCH',
     'DOCUMENT_JOB_INDEX',
+    'DOCUMENT_GENERATE_HOOK',
     'DOCUMENT_GENERATED_FOLDER',
     'DOCUMENT_PUBLISH_FOLDER_ROOT',
     'DOCUMENT_PUBLISH_FOLDER',
@@ -171,7 +173,6 @@ function publishGithubPages(context, callback) {
       vars = envVar.parsePrintenv(stdout, vars);
       repoDir = vars.GHPAGES_DIR;
       if (err) {
-        console.log('err: '+err);
         callback(err);
       }
       else {
@@ -188,7 +189,7 @@ function publishGithubPages(context, callback) {
     }, function(err, stdout, stderr) {
       console.log(stdout);
       if (err) {
-        console.log('err: '+err);
+
         callback(err);
       }
       else {
@@ -209,7 +210,6 @@ function publishGithubPages(context, callback) {
     }, function(err, stdout, stderr) {
       console.log('NUM_PUBLISH_BRANCHES', stdout);
       if (err) {
-        console.log('err: '+err);
         callback(err);
       }
       else {
@@ -242,7 +242,6 @@ function publishGithubPages(context, callback) {
       console.log(stdout);
       console.log(stderr);
       if (err) {
-        console.log('err: '+err);
         callback(err);
       }
       else {
@@ -261,7 +260,6 @@ function publishGithubPages(context, callback) {
       console.log(stdout);
       console.log(stderr);
       if (err) {
-        console.log('err: '+err);
         callback(err);
       }
       else {
@@ -282,7 +280,6 @@ function publishGithubPages(context, callback) {
         console.log(stdout);
         console.log(stderr);
         if (err) {
-          console.log('err: '+err);
           callback(err);
         }
         else {
@@ -307,7 +304,6 @@ function publishGithubPages(context, callback) {
       console.log('Create an all page');
       fs.readdir(path.resolve(repoDir, vars.DOCUMENT_PUBLISH_FOLDER_ROOT), function(err, files) {
         if (err) {
-          console.log('err: '+err);
           callback(err);
         }
         else {
@@ -375,7 +371,6 @@ function publishGithubPages(context, callback) {
     }, function(err, stdout, stderr) {
       console.log('NUM_FILES_CHANGED', stdout);
       if (err) {
-        console.log('err: '+err);
         callback(err);
       }
       else {
@@ -404,7 +399,6 @@ function publishGithubPages(context, callback) {
       console.log(stdout);
       console.log(stderr);
       if (err) {
-        console.log('err: '+err);
         callback(err);
       }
       else {
@@ -424,7 +418,6 @@ function publishGithubPages(context, callback) {
         console.log(stdout);
         console.log(stderr);
         if (err) {
-          console.log('err: '+err);
           callback(err);
         }
         else {
