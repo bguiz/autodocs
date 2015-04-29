@@ -105,14 +105,24 @@ function publishGithubPages(context, callback) {
     }
     else {
       console.log('Invoking "generatedocs" script');
-      execute('npm run generatedocs', {
+      var execStatement = 'npm run '+process.env.DOCUMENT_GENERATE_HOOK;
+      console.log(execStatement);
+      execute(execStatement, {
         cwd: projectDir,
         env: process.env,
       }, function(err, stdout, stderr) {
         console.log(stdout);
         console.log(stderr);
+
+        /* istanbul ignore if */
+        if (!err &&
+            !(require(path.resolve(process.env.PROJECT_DIR, 'package.json')))
+              .scripts[process.env.DOCUMENT_GENERATE_HOOK]) {
+          // Necessary to test this scenario because in npm 1.x,
+          // npm run on scripts that are not defined results in a silent failure
+          err = new Error('Command failed: npm\nmissing script: '+process.env.DOCUMENT_GENERATE_HOOK);
+        }
         if (err) {
-          console.log('err: '+err);
           callback(err);
         }
         else {
@@ -146,6 +156,7 @@ function publishGithubPages(context, callback) {
 
     'DOCUMENT_BRANCH',
     'DOCUMENT_JOB_INDEX',
+    'DOCUMENT_GENERATE_HOOK',
     'DOCUMENT_GENERATED_FOLDER',
     'DOCUMENT_PUBLISH_FOLDER_ROOT',
     'DOCUMENT_PUBLISH_FOLDER',
@@ -171,7 +182,6 @@ function publishGithubPages(context, callback) {
       vars = envVar.parsePrintenv(stdout, vars);
       repoDir = vars.GHPAGES_DIR;
       if (err) {
-        console.log('err: '+err);
         callback(err);
       }
       else {
@@ -188,7 +198,7 @@ function publishGithubPages(context, callback) {
     }, function(err, stdout, stderr) {
       console.log(stdout);
       if (err) {
-        console.log('err: '+err);
+
         callback(err);
       }
       else {
@@ -209,7 +219,6 @@ function publishGithubPages(context, callback) {
     }, function(err, stdout, stderr) {
       console.log('NUM_PUBLISH_BRANCHES', stdout);
       if (err) {
-        console.log('err: '+err);
         callback(err);
       }
       else {
@@ -242,7 +251,6 @@ function publishGithubPages(context, callback) {
       console.log(stdout);
       console.log(stderr);
       if (err) {
-        console.log('err: '+err);
         callback(err);
       }
       else {
@@ -261,7 +269,6 @@ function publishGithubPages(context, callback) {
       console.log(stdout);
       console.log(stderr);
       if (err) {
-        console.log('err: '+err);
         callback(err);
       }
       else {
@@ -274,15 +281,13 @@ function publishGithubPages(context, callback) {
     console.log('Copy assets');
     if (vars.FLAG_COPY_ASSETS === 'true') {
       console.log('Copying assets: '+vars.DOCUMENT_ASSETS);
-      var executeStatement = 'tar cf - '+vars.DOCUMENT_ASSETS+' | ( cd "'+repoDir+'" ; tar xf - )';
-      execute(executeStatement, {
+      childProcess.execFile(path.join(__dirname, 'copy-assets.sh'), [], {
         cwd: repoDir,
         env: vars,
       }, function(err, stdout, stderr) {
         console.log(stdout);
         console.log(stderr);
         if (err) {
-          console.log('err: '+err);
           callback(err);
         }
         else {
@@ -307,7 +312,6 @@ function publishGithubPages(context, callback) {
       console.log('Create an all page');
       fs.readdir(path.resolve(repoDir, vars.DOCUMENT_PUBLISH_FOLDER_ROOT), function(err, files) {
         if (err) {
-          console.log('err: '+err);
           callback(err);
         }
         else {
@@ -369,13 +373,14 @@ function publishGithubPages(context, callback) {
   var numFilesChanged;
   function commitAndPush() {
     console.log('Commit and push');
-    execute("git ls-files -m -o | wc -l", {
+    var execStatement = 'git ls-files -m -o | wc -l';
+    console.log(execStatement);
+    execute(execStatement, {
       cwd: repoDir,
       env: vars,
     }, function(err, stdout, stderr) {
       console.log('NUM_FILES_CHANGED', stdout);
       if (err) {
-        console.log('err: '+err);
         callback(err);
       }
       else {
@@ -404,7 +409,6 @@ function publishGithubPages(context, callback) {
       console.log(stdout);
       console.log(stderr);
       if (err) {
-        console.log('err: '+err);
         callback(err);
       }
       else {
@@ -417,14 +421,15 @@ function publishGithubPages(context, callback) {
     if (vars.FLAG_CLEAN_DOCUMENT === 'true') {
       console.log('Cleaning up git repo at '+repoDir);
       //TODO this could be done without using a shell command
-      execute(path.join('rm -rf "'+repoDir+'"'), {
+      var execStatement = 'rm -rf "'+repoDir+'"';
+      console.log(execStatement);
+      execute(path.join(execStatement), {
         cwd: projectDir,
         env: vars,
       }, function(err, stdout, stderr) {
         console.log(stdout);
         console.log(stderr);
         if (err) {
-          console.log('err: '+err);
           callback(err);
         }
         else {
