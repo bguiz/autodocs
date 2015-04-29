@@ -105,6 +105,7 @@
                         			<ul>
                         				<li><a href="#prop-DOCUMENT_ASSETS"><span class="ip">DOCUMENT_ASSETS</span></a></li>
                         				<li><a href="#prop-DOCUMENT_BRANCH"><span class="ip">DOCUMENT_BRANCH</span></a></li>
+                        				<li><a href="#prop-DOCUMENT_GENERATE_HOOK"><span class="ip">DOCUMENT_GENERATE_HOOK</span></a></li>
                         				<li><a href="#prop-DOCUMENT_GENERATED_FOLDER"><span class="ip">DOCUMENT_GENERATED_FOLDER</span></a></li>
                         				<li><a href="#prop-DOCUMENT_JOB_INDEX"><span class="ip">DOCUMENT_JOB_INDEX</span></a></li>
                         				<li><a href="#prop-DOCUMENT_PUBLISH_FOLDER"><span class="ip">DOCUMENT_PUBLISH_FOLDER</span></a></li>
@@ -232,7 +233,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l325"><code>autodocs.js:325</code></a>
+                                            <a href="../files/autodocs.js.html#l342"><code>autodocs.js:342</code></a>
                                             </p>
                                     
                                     
@@ -271,8 +272,8 @@
                                     
                                     
                                     </div>
-                                    <div id="prop-DOCUMENT_GENERATED_FOLDER" class="property item">
-                                        <h3 class="name"><code>DOCUMENT_GENERATED_FOLDER</code></h3>
+                                    <div id="prop-DOCUMENT_GENERATE_HOOK" class="property item">
+                                        <h3 class="name"><code>DOCUMENT_GENERATE_HOOK</code></h3>
                                         <span class="type">String (Environment Variable)</span>
                                     
                                     
@@ -289,7 +290,39 @@
                                         </div>
                                     
                                         <div class="description">
-                                            
+                                            <p>The name of the npm script to run,
+                                    expecting the documentation to get generated.
+                                    For example:</p>
+                                    <p><code>npm run ${DOCUMENT_GENERATE_HOOK}</code></p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;generatedocs&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-DOCUMENT_GENERATED_FOLDER" class="property item">
+                                        <h3 class="name"><code>DOCUMENT_GENERATED_FOLDER</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l298"><code>autodocs.js:298</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>After the documentation generation script is run,
+                                    autodocs expects to find its output in this folder.
+                                    The files located here will get published.</p>
+                                    
                                         </div>
                                     
                                             <p><strong>Default:</strong> &#x27;documentation&#x27;</p>
@@ -332,7 +365,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l315"><code>autodocs.js:315</code></a>
+                                            <a href="../files/autodocs.js.html#l332"><code>autodocs.js:332</code></a>
                                             </p>
                                     
                                     
@@ -359,7 +392,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l292"><code>autodocs.js:292</code></a>
+                                            <a href="../files/autodocs.js.html#l309"><code>autodocs.js:309</code></a>
                                             </p>
                                     
                                     
@@ -386,7 +419,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l303"><code>autodocs.js:303</code></a>
+                                            <a href="../files/autodocs.js.html#l320"><code>autodocs.js:320</code></a>
                                             </p>
                                     
                                     
@@ -802,7 +835,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/autodocs.js.html#l113"><code>autodocs.js:113</code></a>
+                                            <a href="../files/autodocs.js.html#l112"><code>autodocs.js:112</code></a>
                                             </p>
                                     
                                     

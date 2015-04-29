@@ -344,7 +344,7 @@
         },
         {
             "file": "publish/github-pages/index.js",
-            "line": 450,
+            "line": 452,
             "description": "Outputs the base URL and the API URL at which the documentation should be published.\n\nUses `CNAME` file based on best guess,\notherwise defaults to `*.github/*`",
             "itemtype": "method",
             "name": "outputUrls",
@@ -393,7 +393,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 113,
+            "line": 112,
             "itemtype": "property",
             "name": "PROJECT_DIR",
             "type": "String (Environment Variable)",
@@ -573,6 +573,18 @@
         {
             "file": "autodocs.js",
             "line": 285,
+            "description": "The name of the npm script to run,\nexpecting the documentation to get generated.\nFor example:\n\n`npm run ${DOCUMENT_GENERATE_HOOK}`",
+            "itemtype": "property",
+            "name": "DOCUMENT_GENERATE_HOOK",
+            "type": "String (Environment Variable)",
+            "default": "'generatedocs'",
+            "class": "Autodocs",
+            "module": "Autodocs"
+        },
+        {
+            "file": "autodocs.js",
+            "line": 298,
+            "description": "After the documentation generation script is run,\nautodocs expects to find its output in this folder.\nThe files located here will get published.",
             "itemtype": "property",
             "name": "DOCUMENT_GENERATED_FOLDER",
             "type": "String (Environment Variable)",
@@ -582,7 +594,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 292,
+            "line": 309,
             "description": "All documentation will be published under this root directory\n\nThis can be used for **non-version-specific** documentation",
             "itemtype": "property",
             "name": "DOCUMENT_PUBLISH_FOLDER_ROOT",
@@ -593,7 +605,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 303,
+            "line": 320,
             "description": "The documentation will be published in this subdirectory of the root directory.\n\nThis can be used for **version-specific** documentation",
             "itemtype": "property",
             "name": "DOCUMENT_PUBLISH_SUBFOLDER",
@@ -604,7 +616,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 315,
+            "line": 332,
             "description": "Joins `DOCUMENT_PUBLISH_FOLDER_ROOT` with `DOCUMENT_PUBLISH_SUBFOLDER`\nto get a concrete path to publish the documentation.",
             "itemtype": "property",
             "name": "DOCUMENT_PUBLISH_FOLDER",
@@ -615,7 +627,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 325,
+            "line": 342,
             "itemtype": "property",
             "name": "DOCUMENT_ASSETS",
             "type": "String (Environment Variable)",

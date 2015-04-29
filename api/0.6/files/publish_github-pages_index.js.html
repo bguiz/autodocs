@@ -187,14 +187,24 @@
                             }
                             else {
                               console.log(&#x27;Invoking &quot;generatedocs&quot; script&#x27;);
-                              execute(&#x27;npm run generatedocs&#x27;, {
+                              var execStatement = &#x27;npm run &#x27;+process.env.DOCUMENT_GENERATE_HOOK;
+                              console.log(execStatement);
+                              execute(execStatement, {
                                 cwd: projectDir,
                                 env: process.env,
                               }, function(err, stdout, stderr) {
                                 console.log(stdout);
                                 console.log(stderr);
+                        
+                                /* istanbul ignore if */
+                                if (!err &amp;&amp;
+                                    !(require(path.resolve(process.env.PROJECT_DIR, &#x27;package.json&#x27;)))
+                                      .scripts[process.env.DOCUMENT_GENERATE_HOOK]) {
+                                  // Necessary to test this scenario because in npm 1.x,
+                                  // npm run on scripts that are not defined results in a silent failure
+                                  err = new Error(&#x27;Command failed: npm\nmissing script: &#x27;+process.env.DOCUMENT_GENERATE_HOOK);
+                                }
                                 if (err) {
-                                  console.log(&#x27;err: &#x27;+err);
                                   callback(err);
                                 }
                                 else {
@@ -228,6 +238,7 @@
                         
                             &#x27;DOCUMENT_BRANCH&#x27;,
                             &#x27;DOCUMENT_JOB_INDEX&#x27;,
+                            &#x27;DOCUMENT_GENERATE_HOOK&#x27;,
                             &#x27;DOCUMENT_GENERATED_FOLDER&#x27;,
                             &#x27;DOCUMENT_PUBLISH_FOLDER_ROOT&#x27;,
                             &#x27;DOCUMENT_PUBLISH_FOLDER&#x27;,
@@ -253,7 +264,6 @@
                               vars = envVar.parsePrintenv(stdout, vars);
                               repoDir = vars.GHPAGES_DIR;
                               if (err) {
-                                console.log(&#x27;err: &#x27;+err);
                                 callback(err);
                               }
                               else {
@@ -270,7 +280,7 @@
                             }, function(err, stdout, stderr) {
                               console.log(stdout);
                               if (err) {
-                                console.log(&#x27;err: &#x27;+err);
+                        
                                 callback(err);
                               }
                               else {
@@ -291,7 +301,6 @@
                             }, function(err, stdout, stderr) {
                               console.log(&#x27;NUM_PUBLISH_BRANCHES&#x27;, stdout);
                               if (err) {
-                                console.log(&#x27;err: &#x27;+err);
                                 callback(err);
                               }
                               else {
@@ -324,7 +333,6 @@
                               console.log(stdout);
                               console.log(stderr);
                               if (err) {
-                                console.log(&#x27;err: &#x27;+err);
                                 callback(err);
                               }
                               else {
@@ -343,7 +351,6 @@
                               console.log(stdout);
                               console.log(stderr);
                               if (err) {
-                                console.log(&#x27;err: &#x27;+err);
                                 callback(err);
                               }
                               else {
@@ -364,7 +371,6 @@
                                 console.log(stdout);
                                 console.log(stderr);
                                 if (err) {
-                                  console.log(&#x27;err: &#x27;+err);
                                   callback(err);
                                 }
                                 else {
@@ -389,7 +395,6 @@
                               console.log(&#x27;Create an all page&#x27;);
                               fs.readdir(path.resolve(repoDir, vars.DOCUMENT_PUBLISH_FOLDER_ROOT), function(err, files) {
                                 if (err) {
-                                  console.log(&#x27;err: &#x27;+err);
                                   callback(err);
                                 }
                                 else {
@@ -457,7 +462,6 @@
                             }, function(err, stdout, stderr) {
                               console.log(&#x27;NUM_FILES_CHANGED&#x27;, stdout);
                               if (err) {
-                                console.log(&#x27;err: &#x27;+err);
                                 callback(err);
                               }
                               else {
@@ -486,7 +490,6 @@
                               console.log(stdout);
                               console.log(stderr);
                               if (err) {
-                                console.log(&#x27;err: &#x27;+err);
                                 callback(err);
                               }
                               else {
@@ -506,7 +509,6 @@
                                 console.log(stdout);
                                 console.log(stderr);
                                 if (err) {
-                                  console.log(&#x27;err: &#x27;+err);
                                   callback(err);
                                 }
                                 else {

@@ -185,7 +185,6 @@
                           var envVar = context.environmentVariables;
                         
                           var projectPath = path.resolve(&#x27;.&#x27;);
-                          console.log(&#x27;projectPath&#x27;, projectPath);
                           var projectPackageJson = require(path.resolve(projectPath, &#x27;package.json&#x27;));
                           var projectVersion = projectPackageJson.version;
                           var projectName = projectPackageJson.name;
@@ -199,6 +198,7 @@
                            * @readOnly
                            */
                           process.env.PROJECT_DIR = projectPath;
+                        
                           var projectVersionTokens = projectVersion.split(&#x27;.&#x27;);
                         
                           /**
@@ -365,6 +365,23 @@
                           envVar.default(&#x27;DOCUMENT_JOB_INDEX&#x27;, &#x27;1&#x27;);
                         
                           /**
+                           * The name of the npm script to run,
+                           * expecting the documentation to get generated.
+                           * For example:
+                           *
+                           * &#x60;npm run ${DOCUMENT_GENERATE_HOOK}&#x60;
+                           *
+                           * @property DOCUMENT_GENERATE_HOOK
+                           * @type String (Environment Variable)
+                           * @default &#x27;generatedocs&#x27;
+                           */
+                          envVar.default(&#x27;DOCUMENT_GENERATE_HOOK&#x27;, &#x27;generatedocs&#x27;);
+                        
+                          /**
+                           * After the documentation generation script is run,
+                           * autodocs expects to find its output in this folder.
+                           * The files located here will get published.
+                           *
                            * @property DOCUMENT_GENERATED_FOLDER
                            * @type String (Environment Variable)
                            * @default &#x27;documentation&#x27;
