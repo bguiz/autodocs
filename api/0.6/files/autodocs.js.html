@@ -148,6 +148,7 @@
                            * @default &#x27;travis&#x27;
                            */
                           var ciName = envVar.default(&#x27;SELECT_CI&#x27;, &#x27;travis&#x27;);
+                        
                           /**
                            * @property SELECT_PUBLISH
                            * @type String (Environment Variable)
@@ -168,7 +169,7 @@
                           else {
                             console.log(&#x27;This build does not need to generate new documentation&#x27;);
                             console.log(&#x27;Reason:&#x27;, shouldRun.message);
-                            callback();
+                            callback(undefined, shouldRun.message);
                           }
                         }
                         
