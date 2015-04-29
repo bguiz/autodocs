@@ -363,8 +363,7 @@
                             console.log(&#x27;Copy assets&#x27;);
                             if (vars.FLAG_COPY_ASSETS === &#x27;true&#x27;) {
                               console.log(&#x27;Copying assets: &#x27;+vars.DOCUMENT_ASSETS);
-                              var executeStatement = &#x27;tar cf - &#x27;+vars.DOCUMENT_ASSETS+&#x27; | ( cd &quot;&#x27;+repoDir+&#x27;&quot; ; tar xf - )&#x27;;
-                              execute(executeStatement, {
+                              childProcess.execFile(path.join(__dirname, &#x27;copy-assets.sh&#x27;), [], {
                                 cwd: repoDir,
                                 env: vars,
                               }, function(err, stdout, stderr) {
@@ -456,7 +455,9 @@
                           var numFilesChanged;
                           function commitAndPush() {
                             console.log(&#x27;Commit and push&#x27;);
-                            execute(&quot;git ls-files -m -o | wc -l&quot;, {
+                            var execStatement = &#x27;git ls-files -m -o | wc -l&#x27;;
+                            console.log(execStatement);
+                            execute(execStatement, {
                               cwd: repoDir,
                               env: vars,
                             }, function(err, stdout, stderr) {
@@ -502,7 +503,9 @@
                             if (vars.FLAG_CLEAN_DOCUMENT === &#x27;true&#x27;) {
                               console.log(&#x27;Cleaning up git repo at &#x27;+repoDir);
                               //TODO this could be done without using a shell command
-                              execute(path.join(&#x27;rm -rf &quot;&#x27;+repoDir+&#x27;&quot;&#x27;), {
+                              var execStatement = &#x27;rm -rf &quot;&#x27;+repoDir+&#x27;&quot;&#x27;;
+                              console.log(execStatement);
+                              execute(path.join(execStatement), {
                                 cwd: projectDir,
                                 env: vars,
                               }, function(err, stdout, stderr) {
