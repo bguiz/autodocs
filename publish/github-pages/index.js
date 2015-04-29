@@ -114,7 +114,6 @@ function publishGithubPages(context, callback) {
         console.log(stdout);
         console.log(stderr);
 
-        var projectPackageJson = ;
         /* istanbul ignore if */
         if (!err &&
             !(require(path.resolve(process.env.PROJECT_DIR, 'package.json')))
