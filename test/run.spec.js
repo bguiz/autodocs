@@ -63,7 +63,7 @@ describe('[run]', function() {
       }).not.toThrow();
     });
 
-    xdescribe('[default vars]', function() {
+    describe('[default vars]', function() {
       beforeEach(function(done) {
         process.env = envs.buildOnBranch();
         require('../autodocs').run({}, done);
@@ -112,8 +112,8 @@ describe('[run]', function() {
       expect(function() {
         autodocs.run(undefined, function(err) {
           expect(err).not.toBeUndefined();
-          expect(err).toMatch('Command failed: npm');
-          expect(err).toMatch('missing script: foo123');
+          expect(err).toMatch( /Command failed.*npm/ );
+          expect(err).toMatch( /missing script.*foo123/ );
           // console.log(err.toString());
           done();
         });

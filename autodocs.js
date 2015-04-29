@@ -103,7 +103,6 @@ function environmentVariablesAutodocs(context, callback) {
   var envVar = context.environmentVariables;
 
   var projectPath = path.resolve('.');
-  console.log('projectPath', projectPath);
   var projectPackageJson = require(path.resolve(projectPath, 'package.json'));
   var projectVersion = projectPackageJson.version;
   var projectName = projectPackageJson.name;
@@ -117,6 +116,7 @@ function environmentVariablesAutodocs(context, callback) {
    * @readOnly
    */
   process.env.PROJECT_DIR = projectPath;
+
   var projectVersionTokens = projectVersion.split('.');
 
   /**

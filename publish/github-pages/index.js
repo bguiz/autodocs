@@ -113,6 +113,16 @@ function publishGithubPages(context, callback) {
       }, function(err, stdout, stderr) {
         console.log(stdout);
         console.log(stderr);
+
+        var projectPackageJson = ;
+        /* istanbul ignore if */
+        if (!err &&
+            !(require(path.resolve(process.env.PROJECT_DIR, 'package.json')))
+              .scripts[process.env.DOCUMENT_GENERATE_HOOK]) {
+          // Necessary to test this scenario because in npm 1.x,
+          // npm run on scripts that are not defined results in a silent failure
+          err = new Error('Command failed: npm\nmissing script: '+process.env.DOCUMENT_GENERATE_HOOK);
+        }
         if (err) {
           callback(err);
         }
