@@ -28,6 +28,9 @@ describe('[run]', function() {
       process.env = envs.buildOnBranch();
       process.env.FLAG_SKIP_PUBLISH_RUN = 'false';
       process.env.FLAG_SKIP_GENERATE = 'true';
+      //rm -rf documentation/
+      require('rimraf').sync(path.resolve('documentation'));
+
       autodocs.run(undefined, function(err) {
         expect(err).not.toBeUndefined();
         done();
@@ -40,6 +43,20 @@ describe('[run]', function() {
       process.env.FLAG_SKIP_GENERATE = 'false';
       process.env.FLAG_COPY_ASSETS === 'true';
       process.env.DOCUMENT_ASSETS === 'CNAME';
+      process.env.FLAG_CLEAN_DOCUMENT === 'true';
+
+      expect(function() {
+        autodocs.run(undefined, done);
+      }).not.toThrow();
+    });
+
+    it('Should do publish with run generatedocs with an opposite set of flags', function(done) {
+      process.env = envs.buildOnBranch();
+      process.env.FLAG_SKIP_PUBLISH_RUN = 'true';
+      process.env.FLAG_SKIP_GENERATE = 'true';
+      process.env.FLAG_COPY_ASSETS === 'false';
+      process.env.DOCUMENT_ASSETS === '';
+      process.env.FLAG_CLEAN_DOCUMENT === 'false';
 
       expect(function() {
         autodocs.run(undefined, done);
@@ -83,5 +100,43 @@ describe('[run]', function() {
     //
     //- different combinations of flags
     //- error thrown cases
+
+    it('Should fail when DOCUMENT_GENERATE_HOOK is specified as a script that does not exist', function(done) {
+      process.env = envs.buildOnBranch();
+
+      process.env.FLAG_SKIP_PUBLISH_RUN = 'false';
+      process.env.FLAG_SKIP_GENERATE = 'false';
+
+      process.env.DOCUMENT_GENERATE_HOOK = 'foo123';
+
+      expect(function() {
+        autodocs.run(undefined, function(err) {
+          expect(err).not.toBeUndefined();
+          expect(err).toMatch( /Command failed.*npm/i );
+          expect(err).toMatch( /missing script.*foo123/i );
+          // console.log(err.toString());
+          done();
+        });
+      }).not.toThrow();
+    });
+
+    it('Should fail when FLAG_COPY_ASSETS is true but DOCUMENT_ASSETS refers to files that do not exist', function(done) {
+      process.env = envs.buildOnBranch();
+
+      process.env.FLAG_SKIP_PUBLISH_RUN = 'false';
+      process.env.FLAG_SKIP_GENERATE = 'true';
+
+      process.env.FLAG_COPY_ASSETS = 'true';
+      process.env.DOCUMENT_ASSETS = 'files/that do/not/exist';
+
+      expect(function() {
+        autodocs.run(undefined, function(err) {
+          expect(err).not.toBeUndefined();
+          expect(err).toMatch( /files\/that.*No such file or directory/i );
+          expect(err).toMatch( /do\/not\/exist.*No such file or directory/i );
+          done();
+        });
+      }).not.toThrow();
+    });
   });
 });

@@ -66,6 +66,7 @@ function runAutodocsImpl(context, callback) {
    * @default 'travis'
    */
   var ciName = envVar.default('SELECT_CI', 'travis');
+
   /**
    * @property SELECT_PUBLISH
    * @type String (Environment Variable)
@@ -86,7 +87,7 @@ function runAutodocsImpl(context, callback) {
   else {
     console.log('This build does not need to generate new documentation');
     console.log('Reason:', shouldRun.message);
-    callback();
+    callback(undefined, shouldRun.message);
   }
 }
 
@@ -102,7 +103,6 @@ function environmentVariablesAutodocs(context, callback) {
   var envVar = context.environmentVariables;
 
   var projectPath = path.resolve('.');
-  console.log('projectPath', projectPath);
   var projectPackageJson = require(path.resolve(projectPath, 'package.json'));
   var projectVersion = projectPackageJson.version;
   var projectName = projectPackageJson.name;
@@ -116,6 +116,7 @@ function environmentVariablesAutodocs(context, callback) {
    * @readOnly
    */
   process.env.PROJECT_DIR = projectPath;
+
   var projectVersionTokens = projectVersion.split('.');
 
   /**
@@ -282,6 +283,23 @@ function environmentVariablesAutodocs(context, callback) {
   envVar.default('DOCUMENT_JOB_INDEX', '1');
 
   /**
+   * The name of the npm script to run,
+   * expecting the documentation to get generated.
+   * For example:
+   *
+   * `npm run ${DOCUMENT_GENERATE_HOOK}`
+   *
+   * @property DOCUMENT_GENERATE_HOOK
+   * @type String (Environment Variable)
+   * @default 'generatedocs'
+   */
+  envVar.default('DOCUMENT_GENERATE_HOOK', 'generatedocs');
+
+  /**
+   * After the documentation generation script is run,
+   * autodocs expects to find its output in this folder.
+   * The files located here will get published.
+   *
    * @property DOCUMENT_GENERATED_FOLDER
    * @type String (Environment Variable)
    * @default 'documentation'
