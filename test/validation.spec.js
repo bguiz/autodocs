@@ -42,6 +42,98 @@ describe('[validation]', function() {
       }).toThrowError( /Cannot find module \'[^\']+\'/ );
     });
 
+    it('Should stop without failing when FLAG_PUBLISH_ON_RELEASE but no git tag is present', function(done) {
+      process.env = envs.buildOnRelease();
+      // process.env.FLAG_PUBLISH_ON_RELEASE = 'true';
+      process.env.TRAVIS_TAG = undefined;
+      expect(function() {
+        require('../autodocs').run(undefined, function(err, message) {
+          expect(err).toBeUndefined();
+          expect(message).toEqual('Publish on release\n- travis tag exists failure');
+          done();
+        });
+      }).not.toThrow();
+    });
+
+    it('Should stop without failing when publish on branch but is a pull request', function(done) {
+      process.env = envs.buildOnBranch();
+      process.env.TRAVIS_PULL_REQUEST = 'true';
+      expect(function() {
+        require('../autodocs').run(undefined, function(err, message) {
+          expect(err).toBeUndefined();
+          expect(message).toEqual('Publish on branch\n- is not a pull request failure');
+          done();
+        });
+      }).not.toThrow();
+    });
+
+    it('Should stop without failing when publish on branch but not the right branch', function(done) {
+      process.env = envs.buildOnBranch();
+      process.env.TRAVIS_BRANCH = 'master';
+      process.env.DOCUMENT_BRANCH = 'develop';
+      expect(function() {
+        require('../autodocs').run(undefined, function(err, message) {
+          expect(err).toBeUndefined();
+          expect(message).toEqual('Publish on branch\n- branch name match failure');
+          done();
+        });
+      }).not.toThrow();
+    });
+
+    it('Should stop without failing when job index is not the right one', function(done) {
+      process.env = envs.buildOnBranch();
+      process.env.TRAVIS_BUILD_NUMBER = '123';
+      process.env.TRAVIS_JOB_NUMBER = '123.4';
+      process.env.DOCUMENT_JOB_INDEX = '2';
+      expect(function() {
+        require('../autodocs').run(undefined, function(err, message) {
+          expect(err).toBeUndefined();
+          expect(message).toEqual('Publish on branch\n- job index match failure');
+          done();
+        });
+      }).not.toThrow();
+    });
+
+
+    it('Should stop without failing whenbuilding on release and multiple mismatches occur', function(done) {
+      process.env = envs.buildOnRelease();
+
+      process.env.TRAVIS_BUILD_NUMBER = '123';
+      process.env.TRAVIS_JOB_NUMBER = '123.4';
+      process.env.DOCUMENT_JOB_INDEX = '2';
+
+      process.env.TRAVIS_TAG = undefined;
+
+      expect(function() {
+        require('../autodocs').run(undefined, function(err, message) {
+          expect(err).toBeUndefined();
+          expect(message).toEqual('Publish on release\n- travis tag exists failure\n- job index match failure');
+          done();
+        });
+      }).not.toThrow();
+    });
+
+    it('Should stop without failing when building on branch and multiple mismatches occur', function(done) {
+      process.env = envs.buildOnBranch();
+
+      process.env.TRAVIS_BUILD_NUMBER = '123';
+      process.env.TRAVIS_JOB_NUMBER = '123.4';
+      process.env.DOCUMENT_JOB_INDEX = '2';
+
+      process.env.TRAVIS_BRANCH = 'master';
+      process.env.DOCUMENT_BRANCH = 'develop';
+
+      process.env.TRAVIS_PULL_REQUEST = 'true';
+
+      expect(function() {
+        require('../autodocs').run(undefined, function(err, message) {
+          expect(err).toBeUndefined();
+          expect(message).toEqual('Publish on branch\n- is not a pull request failure\n- branch name match failure\n- job index match failure');
+          done();
+        });
+      }).not.toThrow();
+    });
+
     describe('[compulsory vars]', function() {
       [
         'GH_TOKEN',

@@ -66,6 +66,7 @@ function runAutodocsImpl(context, callback) {
    * @default 'travis'
    */
   var ciName = envVar.default('SELECT_CI', 'travis');
+
   /**
    * @property SELECT_PUBLISH
    * @type String (Environment Variable)
@@ -86,7 +87,7 @@ function runAutodocsImpl(context, callback) {
   else {
     console.log('This build does not need to generate new documentation');
     console.log('Reason:', shouldRun.message);
-    callback();
+    callback(undefined, shouldRun.message);
   }
 }
 
