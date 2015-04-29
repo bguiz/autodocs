@@ -112,8 +112,8 @@ describe('[run]', function() {
       expect(function() {
         autodocs.run(undefined, function(err) {
           expect(err).not.toBeUndefined();
-          expect(err).toMatch( /Command failed.*npm/ );
-          expect(err).toMatch( /missing script.*foo123/ );
+          expect(err).toMatch( /Command failed.*npm/i );
+          expect(err).toMatch( /missing script.*foo123/i );
           // console.log(err.toString());
           done();
         });
@@ -132,7 +132,8 @@ describe('[run]', function() {
       expect(function() {
         autodocs.run(undefined, function(err) {
           expect(err).not.toBeUndefined();
-          expect(err).toMatch( /files\/that.*did not match any files/ );
+          expect(err).toMatch( /files\/that.*No such file or directory/i );
+          expect(err).toMatch( /do\/not\/exist.*No such file or directory/i );
           done();
         });
       }).not.toThrow();

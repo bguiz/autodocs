@@ -281,8 +281,7 @@ function publishGithubPages(context, callback) {
     console.log('Copy assets');
     if (vars.FLAG_COPY_ASSETS === 'true') {
       console.log('Copying assets: '+vars.DOCUMENT_ASSETS);
-      var executeStatement = 'tar cf - '+vars.DOCUMENT_ASSETS+' | ( cd "'+repoDir+'" ; tar xf - )';
-      execute(executeStatement, {
+      childProcess.execFile(path.join(__dirname, 'copy-assets.sh'), [], {
         cwd: repoDir,
         env: vars,
       }, function(err, stdout, stderr) {
@@ -374,7 +373,9 @@ function publishGithubPages(context, callback) {
   var numFilesChanged;
   function commitAndPush() {
     console.log('Commit and push');
-    execute("git ls-files -m -o | wc -l", {
+    var execStatement = 'git ls-files -m -o | wc -l';
+    console.log(execStatement);
+    execute(execStatement, {
       cwd: repoDir,
       env: vars,
     }, function(err, stdout, stderr) {
@@ -420,7 +421,9 @@ function publishGithubPages(context, callback) {
     if (vars.FLAG_CLEAN_DOCUMENT === 'true') {
       console.log('Cleaning up git repo at '+repoDir);
       //TODO this could be done without using a shell command
-      execute(path.join('rm -rf "'+repoDir+'"'), {
+      var execStatement = 'rm -rf "'+repoDir+'"';
+      console.log(execStatement);
+      execute(path.join(execStatement), {
         cwd: projectDir,
         env: vars,
       }, function(err, stdout, stderr) {
