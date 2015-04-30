@@ -44,7 +44,6 @@ describe('[validation]', function() {
 
     it('Should stop without failing when FLAG_PUBLISH_ON_RELEASE but no git tag is present', function(done) {
       process.env = envs.buildOnRelease();
-      // process.env.FLAG_PUBLISH_ON_RELEASE = 'true';
       process.env.TRAVIS_TAG = undefined;
       expect(function() {
         require('../autodocs').run(undefined, function(err, message) {

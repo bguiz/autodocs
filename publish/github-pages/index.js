@@ -282,7 +282,7 @@ function publishGithubPages(context, callback) {
     if (vars.FLAG_COPY_ASSETS === 'true') {
       console.log('Copying assets: '+vars.DOCUMENT_ASSETS);
       childProcess.execFile(path.join(__dirname, 'copy-assets.sh'), [], {
-        cwd: repoDir,
+        cwd: projectDir,
         env: vars,
       }, function(err, stdout, stderr) {
         console.log(stdout);
@@ -310,7 +310,8 @@ function publishGithubPages(context, callback) {
     }
     else {
       console.log('Create an all page');
-      fs.readdir(path.resolve(repoDir, vars.DOCUMENT_PUBLISH_FOLDER_ROOT), function(err, files) {
+      var publishFolderRoot = path.resolve(repoDir, vars.DOCUMENT_PUBLISH_FOLDER_ROOT);
+      fs.readdir(publishFolderRoot, function(err, files) {
         if (err) {
           callback(err);
         }
@@ -319,7 +320,7 @@ function publishGithubPages(context, callback) {
           var versions = files
             .filter(function(file) {
               return (file.indexOf('all') < 0 && file.indexOf('latest') < 0 &&
-                !!fs.statSync(path.resolve(repoDir, vars.DOCUMENT_PUBLISH_FOLDER_ROOT), file).isDirectory());
+                !!fs.statSync(publishFolderRoot, file).isDirectory());
             });
 
           // Use the list of versions to render an "all" page from a template,
