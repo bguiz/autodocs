@@ -23,6 +23,15 @@ function environmentVariablesGithub(context, callback) {
   var envVar = context.environmentVariables;
 
   /**
+   * - Must be set, use an encrypted token
+   *   - If using the ruby gem:
+   *     `travis encrypt GH_TOKEN=GITHUB_ACCESS_TOKEN --add`
+   *   - If using the npm module:
+   *     `travis-encrypt -r GH_USER/GH_REPO GH_TOKEN=GITHUB_ACCESS_TOKEN`
+   *     and then copy into `.travis.yml`
+   * - This is used to give Travis write access to your Git repository,
+   *   and will be used to push to the `gh-pages` branch
+   *
    * @property GH_TOKEN
    * @type String (Environment Variable)
    * @default None - throws when not set
@@ -41,11 +50,6 @@ function environmentVariablesGithub(context, callback) {
    */
   envVar.default('GH_PUBLISH_BRANCH', 'gh-pages');
 
-  /**
-   * @property REPO_SLUG
-   * @type String (Environment Variable)
-   * @default None - throws when not set
-   */
   envVar.require('REPO_SLUG');
 
   if (!envVar.exists('GH_USER') ||
@@ -53,6 +57,8 @@ function environmentVariablesGithub(context, callback) {
     var tokens = process.env.REPO_SLUG.split('/');
 
     /**
+     * Github user or organisation name
+     *
      * @property GH_USER
      * @type String (Environment Variable)
      * @default First half of `REPO_SLUG`
@@ -60,6 +66,8 @@ function environmentVariablesGithub(context, callback) {
     envVar.default('GH_USER', tokens[0]);
 
     /**
+     * Github repository name
+     *
      * @property GH_REPO
      * @type String (Environment Variable)
      * @default Second half of `REPO_SLUG`

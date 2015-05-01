@@ -110,6 +110,8 @@ function environmentVariablesAutodocs(context, callback) {
   process.env.PROJECT_NAME = projectName;
 
   /**
+   * The directory that the project being published ios located in.
+   *
    * @property PROJECT_DIR
    * @type String (Environment Variable)
    * @default The current working directory
@@ -120,6 +122,10 @@ function environmentVariablesAutodocs(context, callback) {
   var projectVersionTokens = projectVersion.split('.');
 
   /**
+   * The major version of the project.
+   *
+   * `1.2.3` --> `1`
+   *
    * @property MAJOR_VERSION
    * @type String (Environment Variable)
    * @default The major version read in from package.json
@@ -128,6 +134,10 @@ function environmentVariablesAutodocs(context, callback) {
   process.env.MAJOR_VERSION = projectVersionTokens[0];
 
   /**
+   * The minor version of the project
+   *
+   * `1.2.3` --> `2`
+   *
    * @property MINOR_VERSION
    * @type String (Environment Variable)
    * @default The minor version read in from package.json
@@ -136,6 +146,10 @@ function environmentVariablesAutodocs(context, callback) {
   process.env.MINOR_VERSION = projectVersionTokens[1];
 
   /**
+   * The patch version of the project
+   *
+   * `1.2.3` --> `3`
+   *
    * @property PATCH_VERSION
    * @type String (Environment Variable)
    * @default The patch version read in from package.json
@@ -144,6 +158,8 @@ function environmentVariablesAutodocs(context, callback) {
   process.env.PATCH_VERSION = projectVersionTokens.slice(2).join('.');
 
   /**
+   * Name to use when creating the Git commit
+   *
    * @property GIT_USER
    * @type String (Environment Variable)
    * @default 'autodocs Git User'
@@ -151,6 +167,8 @@ function environmentVariablesAutodocs(context, callback) {
   envVar.default('GIT_USER', 'autodocs Git User');
 
   /**
+   * Email address to use when creating the Git commit
+   *
    * @property GIT_EMAIL
    * @type String (Environment Variable)
    * @default 'autodocs-git-user@bguiz.com'
@@ -159,6 +177,9 @@ function environmentVariablesAutodocs(context, callback) {
 
 
   /**
+   * Whether there are any assets to copy.
+   * Set to `true` **only if** intending to use `DOCUMENT_ASSETS`.
+   *
    * @property FLAG_COPY_ASSETS
    * @type String (Environment Variable)
    * @default 'false'
@@ -166,6 +187,11 @@ function environmentVariablesAutodocs(context, callback) {
   envVar.default('FLAG_COPY_ASSETS', 'false');
 
   /**
+   * By default, publish will occur when a branch is pushed.
+   *
+   * When this flag is set to `true`,
+   * publish will occur when a tag is pushed instead.
+   *
    * @property FLAG_PUBLISH_ON_RELEASE
    * @type String (Environment Variable)
    * @default 'false'
@@ -173,6 +199,8 @@ function environmentVariablesAutodocs(context, callback) {
   envVar.default('FLAG_PUBLISH_ON_RELEASE', 'false');
 
   /**
+   * Whether to clean up afterward, by deleting the directory that was published
+   *
    * @property FLAG_CLEAN_DOCUMENT
    * @type String (Environment Variable)
    * @default 'false'
@@ -180,6 +208,11 @@ function environmentVariablesAutodocs(context, callback) {
   envVar.default('FLAG_CLEAN_DOCUMENT', 'false');
 
   /**
+   * Any tokens contained in the build output will be stripped out
+   * before being printed.
+   * This is to ensure security,
+   * especially if your CI's build logs are publicly available
+   *
    * @property FLAG_STRIP_TOKEN_OUTPUT
    * @type String (Environment Variable)
    * @default 'true'
@@ -269,6 +302,8 @@ function environmentVariablesAutodocs(context, callback) {
   envVar.default('FLAG_SKIP_PUBLISH_RUN', 'false');
 
   /**
+   * Documentation will be generated only when this **branch** is pushed
+   *
    * @property DOCUMENT_BRANCH
    * @type String (Environment Variable)
    * @default 'master'
@@ -276,6 +311,9 @@ function environmentVariablesAutodocs(context, callback) {
   envVar.default('DOCUMENT_BRANCH', 'master');
 
   /**
+   * Documentation will be generated only on one of the jobs
+   * for each build, use this to specify which one.
+   *
    * @property DOCUMENT_JOB_INDEX
    * @type String (Environment Variable)
    * @default '1'
@@ -340,6 +378,9 @@ function environmentVariablesAutodocs(context, callback) {
   envVar.default('DOCUMENT_PUBLISH_FOLDER', '{{DOCUMENT_PUBLISH_FOLDER_ROOT}}/{{DOCUMENT_PUBLISH_SUBFOLDER}}');
 
   /**
+   * list of files and folders (bash style) to copy into the root of the `gh-pages` branch
+   * these files will be copied to the **root**, not the `DOCUMENT_PUBLISH_FOLDER`
+   *
    * @property DOCUMENT_ASSETS
    * @type String (Environment Variable)
    * @default ''
