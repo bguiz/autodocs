@@ -22,19 +22,23 @@ function environmentVariablesTravis(context, callback) {
    * @property TRAVIS_REPO_SLUG
    * @type String (Environment Variable)
    * @default None - throws when not set
+   * @readOnly
    */
   envVar.require('TRAVIS_REPO_SLUG');
 
   /**
-   * Used to set value of `REPO_SLUG`
+   * The repository to publish documentation to.
+   * Override if you wish to publish to a different repository.
    *
-   * @property TRAVIS_REPO_SLUG
+   * @property REPO_SLUG
    * @type String (Environment Variable)
    * @default None - throws when not set
    */
   envVar.default('REPO_SLUG', process.env.TRAVIS_REPO_SLUG);
 
   /**
+   * Whether this is a pull request.
+   *
    * @property TRAVIS_PULL_REQUEST
    * @type String (Environment Variable)
    * @default None - throws when not set
@@ -42,6 +46,8 @@ function environmentVariablesTravis(context, callback) {
   envVar.require('TRAVIS_PULL_REQUEST');
 
   /**
+   * The name of the current branch
+   *
    * @property TRAVIS_BRANCH
    * @type String (Environment Variable)
    * @default None - throws when not set
@@ -49,6 +55,8 @@ function environmentVariablesTravis(context, callback) {
   envVar.require('TRAVIS_BRANCH');
 
   /**
+   * The build number, e.g. `74`
+   *
    * @property TRAVIS_BUILD_NUMBER
    * @type String (Environment Variable)
    * @default None - throws when not set
@@ -56,6 +64,8 @@ function environmentVariablesTravis(context, callback) {
   envVar.require('TRAVIS_BUILD_NUMBER');
 
   /**
+   * The job number, e.g. `74.1`
+   *
    * @property TRAVIS_JOB_NUMBER
    * @type String (Environment Variable)
    * @default None - throws when not set

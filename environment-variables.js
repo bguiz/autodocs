@@ -83,6 +83,14 @@ function substituteEnvironmentVariable(name) {
   return process.env[name];
 }
 
+/**
+ * Set a default value for an environment variable if it does not exist
+ *
+ * @method selected
+ * @for  EnvironmentVariables
+ * @param  {Array<String>} name The names of the environment variables we want
+ * @return {Object<String, String>} A hash of key value pairs
+ */
 function selectedEnvironmentVariable(names) {
   var out = {};
   names.forEach(function(name) {
@@ -91,6 +99,16 @@ function selectedEnvironmentVariable(names) {
   return out;
 }
 
+/**
+ * In a bash shell, when `printenv` is invoked,
+ * parse its output into a Javascript object
+ *
+ * @method parsePrintenv
+ * @for  EnvironmentVariables
+ * @param  {String} stdout The output from `printenv`
+ * @param  {String} out If this is given, the values from `printenv` will be added/ overriden ob this object
+ * @return {Object<String, String>} A hash of key value pairs
+ */
 function parsePrintenv(stdout, out) {
   out = out || {};
   var lines = stdout.toString().split('\n');
@@ -100,7 +118,6 @@ function parsePrintenv(stdout, out) {
       var name = line.slice(0, splitIdx);
       var value = line.slice(splitIdx + 1);
       out[name] = value;
-      // console.log('NEW '+name+'='+value);
     }
   });
   return out;
