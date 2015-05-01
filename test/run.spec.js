@@ -68,7 +68,7 @@ describe('[run]', function() {
       });
     });
 
-    describe('[]', function() {
+    describe('[full run]', function() {
       beforeEach(increaseTestDuration); afterEach(resetTestDuration);
       beforeEach(clearEnvironment); afterEach(resetEnvironment);
 
@@ -76,7 +76,7 @@ describe('[run]', function() {
         process.env = envs.buildOnBranch();
 
         process.env.FLAG_SKIP_PUBLISH_RUN = 'false';
-        process.env.FLAG_SKIP_GENERATE = 'true';
+        process.env.FLAG_SKIP_GENERATE = 'false';
 
         process.env.FLAG_COPY_ASSETS = 'true';
         process.env.DOCUMENT_ASSETS = 'CNAME';
