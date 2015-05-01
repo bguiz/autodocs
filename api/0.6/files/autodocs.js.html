@@ -192,6 +192,8 @@
                           process.env.PROJECT_NAME = projectName;
                         
                           /**
+                           * The directory that the project being published ios located in.
+                           *
                            * @property PROJECT_DIR
                            * @type String (Environment Variable)
                            * @default The current working directory
@@ -202,6 +204,10 @@
                           var projectVersionTokens = projectVersion.split(&#x27;.&#x27;);
                         
                           /**
+                           * The major version of the project.
+                           *
+                           * &#x60;1.2.3&#x60; --&gt; &#x60;1&#x60;
+                           *
                            * @property MAJOR_VERSION
                            * @type String (Environment Variable)
                            * @default The major version read in from package.json
@@ -210,6 +216,10 @@
                           process.env.MAJOR_VERSION = projectVersionTokens[0];
                         
                           /**
+                           * The minor version of the project
+                           *
+                           * &#x60;1.2.3&#x60; --&gt; &#x60;2&#x60;
+                           *
                            * @property MINOR_VERSION
                            * @type String (Environment Variable)
                            * @default The minor version read in from package.json
@@ -218,6 +228,10 @@
                           process.env.MINOR_VERSION = projectVersionTokens[1];
                         
                           /**
+                           * The patch version of the project
+                           *
+                           * &#x60;1.2.3&#x60; --&gt; &#x60;3&#x60;
+                           *
                            * @property PATCH_VERSION
                            * @type String (Environment Variable)
                            * @default The patch version read in from package.json
@@ -226,6 +240,8 @@
                           process.env.PATCH_VERSION = projectVersionTokens.slice(2).join(&#x27;.&#x27;);
                         
                           /**
+                           * Name to use when creating the Git commit
+                           *
                            * @property GIT_USER
                            * @type String (Environment Variable)
                            * @default &#x27;autodocs Git User&#x27;
@@ -233,6 +249,8 @@
                           envVar.default(&#x27;GIT_USER&#x27;, &#x27;autodocs Git User&#x27;);
                         
                           /**
+                           * Email address to use when creating the Git commit
+                           *
                            * @property GIT_EMAIL
                            * @type String (Environment Variable)
                            * @default &#x27;autodocs-git-user@bguiz.com&#x27;
@@ -241,6 +259,9 @@
                         
                         
                           /**
+                           * Whether there are any assets to copy.
+                           * Set to &#x60;true&#x60; **only if** intending to use &#x60;DOCUMENT_ASSETS&#x60;.
+                           *
                            * @property FLAG_COPY_ASSETS
                            * @type String (Environment Variable)
                            * @default &#x27;false&#x27;
@@ -248,6 +269,11 @@
                           envVar.default(&#x27;FLAG_COPY_ASSETS&#x27;, &#x27;false&#x27;);
                         
                           /**
+                           * By default, publish will occur when a branch is pushed.
+                           *
+                           * When this flag is set to &#x60;true&#x60;,
+                           * publish will occur when a tag is pushed instead.
+                           *
                            * @property FLAG_PUBLISH_ON_RELEASE
                            * @type String (Environment Variable)
                            * @default &#x27;false&#x27;
@@ -255,6 +281,8 @@
                           envVar.default(&#x27;FLAG_PUBLISH_ON_RELEASE&#x27;, &#x27;false&#x27;);
                         
                           /**
+                           * Whether to clean up afterward, by deleting the directory that was published
+                           *
                            * @property FLAG_CLEAN_DOCUMENT
                            * @type String (Environment Variable)
                            * @default &#x27;false&#x27;
@@ -262,6 +290,11 @@
                           envVar.default(&#x27;FLAG_CLEAN_DOCUMENT&#x27;, &#x27;false&#x27;);
                         
                           /**
+                           * Any tokens contained in the build output will be stripped out
+                           * before being printed.
+                           * This is to ensure security,
+                           * especially if your CI&#x27;s build logs are publicly available
+                           *
                            * @property FLAG_STRIP_TOKEN_OUTPUT
                            * @type String (Environment Variable)
                            * @default &#x27;true&#x27;
@@ -351,6 +384,8 @@
                           envVar.default(&#x27;FLAG_SKIP_PUBLISH_RUN&#x27;, &#x27;false&#x27;);
                         
                           /**
+                           * Documentation will be generated only when this **branch** is pushed
+                           *
                            * @property DOCUMENT_BRANCH
                            * @type String (Environment Variable)
                            * @default &#x27;master&#x27;
@@ -358,6 +393,9 @@
                           envVar.default(&#x27;DOCUMENT_BRANCH&#x27;, &#x27;master&#x27;);
                         
                           /**
+                           * Documentation will be generated only on one of the jobs
+                           * for each build, use this to specify which one.
+                           *
                            * @property DOCUMENT_JOB_INDEX
                            * @type String (Environment Variable)
                            * @default &#x27;1&#x27;
@@ -422,6 +460,9 @@
                           envVar.default(&#x27;DOCUMENT_PUBLISH_FOLDER&#x27;, &#x27;{{DOCUMENT_PUBLISH_FOLDER_ROOT}}/{{DOCUMENT_PUBLISH_SUBFOLDER}}&#x27;);
                         
                           /**
+                           * list of files and folders (bash style) to copy into the root of the &#x60;gh-pages&#x60; branch
+                           * these files will be copied to the **root**, not the &#x60;DOCUMENT_PUBLISH_FOLDER&#x60;
+                           *
                            * @property DOCUMENT_ASSETS
                            * @type String (Environment Variable)
                            * @default &#x27;&#x27;

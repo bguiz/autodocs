@@ -105,6 +105,15 @@
                           var envVar = context.environmentVariables;
                         
                           /**
+                           * - Must be set, use an encrypted token
+                           *   - If using the ruby gem:
+                           *     &#x60;travis encrypt GH_TOKEN=GITHUB_ACCESS_TOKEN --add&#x60;
+                           *   - If using the npm module:
+                           *     &#x60;travis-encrypt -r GH_USER/GH_REPO GH_TOKEN=GITHUB_ACCESS_TOKEN&#x60;
+                           *     and then copy into &#x60;.travis.yml&#x60;
+                           * - This is used to give Travis write access to your Git repository,
+                           *   and will be used to push to the &#x60;gh-pages&#x60; branch
+                           *
                            * @property GH_TOKEN
                            * @type String (Environment Variable)
                            * @default None - throws when not set
@@ -123,11 +132,6 @@
                            */
                           envVar.default(&#x27;GH_PUBLISH_BRANCH&#x27;, &#x27;gh-pages&#x27;);
                         
-                          /**
-                           * @property REPO_SLUG
-                           * @type String (Environment Variable)
-                           * @default None - throws when not set
-                           */
                           envVar.require(&#x27;REPO_SLUG&#x27;);
                         
                           if (!envVar.exists(&#x27;GH_USER&#x27;) ||
@@ -135,6 +139,8 @@
                             var tokens = process.env.REPO_SLUG.split(&#x27;/&#x27;);
                         
                             /**
+                             * Github user or organisation name
+                             *
                              * @property GH_USER
                              * @type String (Environment Variable)
                              * @default First half of &#x60;REPO_SLUG&#x60;
@@ -142,6 +148,8 @@
                             envVar.default(&#x27;GH_USER&#x27;, tokens[0]);
                         
                             /**
+                             * Github repository name
+                             *
                              * @property GH_REPO
                              * @type String (Environment Variable)
                              * @default Second half of &#x60;REPO_SLUG&#x60;

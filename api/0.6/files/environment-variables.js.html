@@ -165,6 +165,14 @@
                           return process.env[name];
                         }
                         
+                        /**
+                         * Set a default value for an environment variable if it does not exist
+                         *
+                         * @method selected
+                         * @for  EnvironmentVariables
+                         * @param  {Array&lt;String&gt;} name The names of the environment variables we want
+                         * @return {Object&lt;String, String&gt;} A hash of key value pairs
+                         */
                         function selectedEnvironmentVariable(names) {
                           var out = {};
                           names.forEach(function(name) {
@@ -173,6 +181,16 @@
                           return out;
                         }
                         
+                        /**
+                         * In a bash shell, when &#x60;printenv&#x60; is invoked,
+                         * parse its output into a Javascript object
+                         *
+                         * @method parsePrintenv
+                         * @for  EnvironmentVariables
+                         * @param  {String} stdout The output from &#x60;printenv&#x60;
+                         * @param  {String} out If this is given, the values from &#x60;printenv&#x60; will be added/ overriden ob this object
+                         * @return {Object&lt;String, String&gt;} A hash of key value pairs
+                         */
                         function parsePrintenv(stdout, out) {
                           out = out || {};
                           var lines = stdout.toString().split(&#x27;\n&#x27;);
@@ -182,7 +200,6 @@
                               var name = line.slice(0, splitIdx);
                               var value = line.slice(splitIdx + 1);
                               out[name] = value;
-                              // console.log(&#x27;NEW &#x27;+name+&#x27;=&#x27;+value);
                             }
                           });
                           return out;

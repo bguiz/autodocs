@@ -103,11 +103,11 @@
                         		<li>
                         			<strong>Properties</strong>
                         			<ul>
+                        				<li><a href="#prop-REPO_SLUG"><span class="ip">REPO_SLUG</span></a></li>
                         				<li><a href="#prop-TRAVIS_BRANCH"><span class="ip">TRAVIS_BRANCH</span></a></li>
                         				<li><a href="#prop-TRAVIS_BUILD_NUMBER"><span class="ip">TRAVIS_BUILD_NUMBER</span></a></li>
                         				<li><a href="#prop-TRAVIS_JOB_NUMBER"><span class="ip">TRAVIS_JOB_NUMBER</span></a></li>
                         				<li><a href="#prop-TRAVIS_PULL_REQUEST"><span class="ip">TRAVIS_PULL_REQUEST</span></a></li>
-                        				<li><a href="#prop-TRAVIS_REPO_SLUG"><span class="ip">TRAVIS_REPO_SLUG</span></a></li>
                         				<li><a href="#prop-TRAVIS_REPO_SLUG"><span class="ip">TRAVIS_REPO_SLUG</span></a></li>
                         				<li><a href="#prop-TRAVIS_TAG"><span class="ip">TRAVIS_TAG</span></a></li>
                         			</ul>
@@ -170,7 +170,7 @@
                                     	<div class="meta">
                                     				<p>
                                     				Defined in
-                                    		<a href="../files/ci_travis_index.js.html#l66"><code>ci&#x2F;travis&#x2F;index.js:66</code></a>
+                                    		<a href="../files/ci_travis_index.js.html#l76"><code>ci&#x2F;travis&#x2F;index.js:76</code></a>
                                     		</p>
                                     
                                     
@@ -208,6 +208,33 @@
                                 <h2 class="off-left">Properties</h2>
                         
                                 <div class="item-list">
+                                    <div id="prop-REPO_SLUG" class="property item">
+                                        <h3 class="name"><code>REPO_SLUG</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/ci_travis_index.js.html#l29"><code>ci&#x2F;travis&#x2F;index.js:29</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>The repository to publish documentation to.
+                                    Override if you wish to publish to a different repository.</p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> None - throws when not set</p>
+                                    
+                                    
+                                    </div>
                                     <div id="prop-TRAVIS_BRANCH" class="property item">
                                         <h3 class="name"><code>TRAVIS_BRANCH</code></h3>
                                         <span class="type">String (Environment Variable)</span>
@@ -219,14 +246,15 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/ci_travis_index.js.html#l44"><code>ci&#x2F;travis&#x2F;index.js:44</code></a>
+                                            <a href="../files/ci_travis_index.js.html#l48"><code>ci&#x2F;travis&#x2F;index.js:48</code></a>
                                             </p>
                                     
                                     
                                         </div>
                                     
                                         <div class="description">
-                                            
+                                            <p>The name of the current branch</p>
+                                    
                                         </div>
                                     
                                             <p><strong>Default:</strong> None - throws when not set</p>
@@ -244,14 +272,15 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/ci_travis_index.js.html#l51"><code>ci&#x2F;travis&#x2F;index.js:51</code></a>
+                                            <a href="../files/ci_travis_index.js.html#l57"><code>ci&#x2F;travis&#x2F;index.js:57</code></a>
                                             </p>
                                     
                                     
                                         </div>
                                     
                                         <div class="description">
-                                            
+                                            <p>The build number, e.g. <code>74</code></p>
+                                    
                                         </div>
                                     
                                             <p><strong>Default:</strong> None - throws when not set</p>
@@ -269,14 +298,15 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/ci_travis_index.js.html#l58"><code>ci&#x2F;travis&#x2F;index.js:58</code></a>
+                                            <a href="../files/ci_travis_index.js.html#l66"><code>ci&#x2F;travis&#x2F;index.js:66</code></a>
                                             </p>
                                     
                                     
                                         </div>
                                     
                                         <div class="description">
-                                            
+                                            <p>The job number, e.g. <code>74.1</code></p>
+                                    
                                         </div>
                                     
                                             <p><strong>Default:</strong> None - throws when not set</p>
@@ -294,14 +324,15 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/ci_travis_index.js.html#l37"><code>ci&#x2F;travis&#x2F;index.js:37</code></a>
+                                            <a href="../files/ci_travis_index.js.html#l39"><code>ci&#x2F;travis&#x2F;index.js:39</code></a>
                                             </p>
                                     
                                     
                                         </div>
                                     
                                         <div class="description">
-                                            
+                                            <p>Whether this is a pull request.</p>
+                                    
                                         </div>
                                     
                                             <p><strong>Default:</strong> None - throws when not set</p>
@@ -334,32 +365,6 @@
                                     
                                     
                                     </div>
-                                    <div id="prop-TRAVIS_REPO_SLUG" class="property item">
-                                        <h3 class="name"><code>TRAVIS_REPO_SLUG</code></h3>
-                                        <span class="type">String (Environment Variable)</span>
-                                    
-                                    
-                                    
-                                    
-                                    
-                                        <div class="meta">
-                                                    <p>
-                                                    Defined in
-                                            <a href="../files/ci_travis_index.js.html#l28"><code>ci&#x2F;travis&#x2F;index.js:28</code></a>
-                                            </p>
-                                    
-                                    
-                                        </div>
-                                    
-                                        <div class="description">
-                                            <p>Used to set value of <code>REPO_SLUG</code></p>
-                                    
-                                        </div>
-                                    
-                                            <p><strong>Default:</strong> None - throws when not set</p>
-                                    
-                                    
-                                    </div>
                                     <div id="prop-TRAVIS_TAG" class="property item">
                                         <h3 class="name"><code>TRAVIS_TAG</code></h3>
                                         <span class="type">String (Environment Variable)</span>
@@ -371,7 +376,7 @@
                                         <div class="meta">
                                                     <p>
                                                     Defined in
-                                            <a href="../files/ci_travis_index.js.html#l96"><code>ci&#x2F;travis&#x2F;index.js:96</code></a>
+                                            <a href="../files/ci_travis_index.js.html#l106"><code>ci&#x2F;travis&#x2F;index.js:106</code></a>
                                             </p>
                                     
                                     
