@@ -14,6 +14,7 @@ module.exports = {
       TRAVIS_BRANCH: 'master',
       TRAVIS_BUILD_NUMBER: 'foo',
       TRAVIS_JOB_NUMBER: 'foo.1',
+
       GH_TOKEN: 'unicorns',
 
       FLAG_TESTING: 'true',
@@ -32,9 +33,10 @@ module.exports = {
       TRAVIS_BUILD_NUMBER: 'foo',
       TRAVIS_JOB_NUMBER: 'foo.1',
       TRAVIS_TAG: 'anythingotherthanfalse',
-      FLAG_PUBLISH_ON_RELEASE: 'true',
+
       GH_TOKEN: 'unicorns',
 
+      FLAG_PUBLISH_ON_RELEASE: 'true',
       FLAG_TESTING: 'true',
       FLAG_SKIP_PUSH: 'true',
       FLAG_SKIP_GENERATE: 'true',

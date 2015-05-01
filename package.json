@@ -1,6 +1,6 @@
 {
   "name": "autodocs",
-  "version": "0.6.7",
+  "version": "0.6.8",
   "description": "Automates publishing API docs for NodeJs projects, useful for continuous integration",
   "main": "index.js",
   "scripts": {
@@ -36,7 +36,6 @@
     "jasmine-node": "^2.0.0",
     "jshint": "^2.6.3",
     "jshint-stylish": "^1.0.1",
-    "rimraf": "^2.3.2",
     "yuidoc-lucid-theme": "^0.1.1",
     "yuidocjs": "^0.6.0"
   },
