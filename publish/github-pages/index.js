@@ -9,8 +9,6 @@ var childProcess = require('child_process');
  * @module  AutodocsPublish
  */
 
-var execute = childProcess.exec;
-
 /**
  * Initialisation step for Github Pages
  *
@@ -115,7 +113,7 @@ function publishGithubPages(context, callback) {
       console.log('Invoking "generatedocs" script');
       var execStatement = 'npm run '+process.env.DOCUMENT_GENERATE_HOOK;
       console.log(execStatement);
-      execute(execStatement, {
+      childProcess.exec(execStatement, {
         cwd: projectDir,
         env: process.env,
       }, function(err, stdout, stderr) {
@@ -183,7 +181,7 @@ function publishGithubPages(context, callback) {
 
   function setUpVars() {
     console.log('Set up vars');
-    execute(path.join(__dirname, 'set-up-vars.sh'), {
+    childProcess.execFile(path.join(__dirname, 'set-up-vars.sh'), [], {
       cwd: projectDir,
       env: vars,
     }, function(err, stdout, stderr) {
@@ -200,7 +198,7 @@ function publishGithubPages(context, callback) {
 
   function setUpRepo() {
     console.log('Set up repo');
-    execute(path.join(__dirname, 'set-up-repo.sh'), {
+    childProcess.execFile(path.join(__dirname, 'set-up-repo.sh'), [], {
       cwd: projectDir,
       env: vars,
     }, function(err, stdout, stderr) {
@@ -221,7 +219,7 @@ function publishGithubPages(context, callback) {
     console.log('Set up branch');
     var executeStatement = "git ls-remote --heads "+vars.REPO_URL_UNAUTH+" | grep 'refs\\\/heads\\\/"+vars.GH_PUBLISH_BRANCH+"' | wc -l";
     console.log(executeStatement);
-    execute(executeStatement, {
+    childProcess.exec(executeStatement, {
       cwd: projectDir,
       env: vars,
     }, function(err, stdout, stderr) {
@@ -252,7 +250,7 @@ function publishGithubPages(context, callback) {
       execStatement = 'git fetch upstream '+vars.GH_PUBLISH_BRANCH+' && git checkout '+vars.GH_PUBLISH_BRANCH;
     }
     console.log(execStatement);
-    execute(execStatement, {
+    childProcess.exec(execStatement, {
       cwd: repoDir,
       env: vars,
     }, function(err, stdout, stderr) {
@@ -270,7 +268,7 @@ function publishGithubPages(context, callback) {
   function copyGeneratedFiles() {
     //TODO this step could be done without using shell scripts
     console.log('Copy generated files');
-    execute(path.join(__dirname, 'copy-generated-files.sh'), {
+    childProcess.execFile(path.join(__dirname, 'copy-generated-files.sh'), [], {
       cwd: projectDir,
       env: vars,
     }, function(err, stdout, stderr) {
@@ -384,7 +382,7 @@ function publishGithubPages(context, callback) {
     console.log('Commit and push');
     var execStatement = 'git ls-files -m -o | wc -l';
     console.log(execStatement);
-    execute(execStatement, {
+    childProcess.exec(execStatement, {
       cwd: repoDir,
       env: vars,
     }, function(err, stdout, stderr) {
@@ -411,7 +409,7 @@ function publishGithubPages(context, callback) {
       return;
     }
     console.log('Publishing changes to documentation');
-    execute(path.join(__dirname, 'commit-and-push.sh'), {
+    childProcess.execFile(path.join(__dirname, 'commit-and-push.sh'), [], {
       cwd: repoDir,
       env: vars,
     }, function(err, stdout, stderr) {
@@ -432,7 +430,7 @@ function publishGithubPages(context, callback) {
       //TODO this could be done without using a shell command
       var execStatement = 'rm -rf "'+repoDir+'"';
       console.log(execStatement);
-      execute(path.join(execStatement), {
+      childProcess.exec(path.join(execStatement), {
         cwd: projectDir,
         env: vars,
       }, function(err, stdout, stderr) {
@@ -486,7 +484,17 @@ function outputUrls(context, callback) {
       // Do nothing
     }
   }
-  CNAME = CNAME || (process.env.GH_USER+'.github.io');
+  if (!CNAME) {
+    /* istanbul ignore if :
+      this project will not be able to test this - it isn't an organisation page
+      will need and entirely new project in order to test this */
+    if (process.env.GH_USER.match( /^[^\.]+.github.io$/)) {
+      CNAME = process.env.GH_USER;
+    }
+    else {
+      CNAME = process.env.GH_USER+'.github.io';
+    }
+  }
   var publishDomain = 'http://'+CNAME;
   var publishUrl = publishDomain+'/'+process.env.GH_REPO;
   var publishApiUrl = publishUrl+'/'+process.env.DOCUMENT_PUBLISH_FOLDER;
