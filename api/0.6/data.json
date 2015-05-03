@@ -2,7 +2,7 @@
     "project": {
         "name": "autodocs",
         "description": "Automates publishing API docs for NodeJs projects, useful for continuous integration",
-        "version": "0.6.10"
+        "version": "0.6.8"
     },
     "files": {
         "ci/travis/index.js": {
@@ -196,16 +196,15 @@
             "name": "TRAVIS_REPO_SLUG",
             "type": "String (Environment Variable)",
             "default": "None - throws when not set",
-            "readonly": "",
             "class": "CiTravis",
             "module": "AutodocsCi"
         },
         {
             "file": "ci/travis/index.js",
-            "line": 29,
-            "description": "The repository to publish documentation to.\nOverride if you wish to publish to a different repository.",
+            "line": 28,
+            "description": "Used to set value of `REPO_SLUG`",
             "itemtype": "property",
-            "name": "REPO_SLUG",
+            "name": "TRAVIS_REPO_SLUG",
             "type": "String (Environment Variable)",
             "default": "None - throws when not set",
             "class": "CiTravis",
@@ -213,8 +212,7 @@
         },
         {
             "file": "ci/travis/index.js",
-            "line": 39,
-            "description": "Whether this is a pull request.",
+            "line": 37,
             "itemtype": "property",
             "name": "TRAVIS_PULL_REQUEST",
             "type": "String (Environment Variable)",
@@ -224,8 +222,7 @@
         },
         {
             "file": "ci/travis/index.js",
-            "line": 48,
-            "description": "The name of the current branch",
+            "line": 44,
             "itemtype": "property",
             "name": "TRAVIS_BRANCH",
             "type": "String (Environment Variable)",
@@ -235,8 +232,7 @@
         },
         {
             "file": "ci/travis/index.js",
-            "line": 57,
-            "description": "The build number, e.g. `74`",
+            "line": 51,
             "itemtype": "property",
             "name": "TRAVIS_BUILD_NUMBER",
             "type": "String (Environment Variable)",
@@ -246,8 +242,7 @@
         },
         {
             "file": "ci/travis/index.js",
-            "line": 66,
-            "description": "The job number, e.g. `74.1`",
+            "line": 58,
             "itemtype": "property",
             "name": "TRAVIS_JOB_NUMBER",
             "type": "String (Environment Variable)",
@@ -257,7 +252,7 @@
         },
         {
             "file": "ci/travis/index.js",
-            "line": 76,
+            "line": 66,
             "description": "Based on the Travis environment variables,\ndetermines whether to trigger generation and publishing of documentation.\n\nIf `FLAG_PUBLISH_ON_RELEASE` is `true`,\nthen will trigger if Travis says that a tag was pushed.\n\nOtherwise, it will trigger when a branch is pushed,\nif Travis says that this **is not** a pull request,\nand the branch being pushed matches `DOCUMENT_BRANCH`.\n\nBoth cases also require that the correct build index for the current job\nmatches `DOCUMENT_JOB_INDEX`.\nThis is to ensure that documentation is only published once per successful build.",
             "itemtype": "method",
             "name": "shouldRun",
@@ -270,7 +265,7 @@
         },
         {
             "file": "ci/travis/index.js",
-            "line": 106,
+            "line": 96,
             "itemtype": "property",
             "name": "TRAVIS_TAG",
             "type": "String (Environment Variable)",
@@ -280,7 +275,7 @@
         },
         {
             "file": "publish/github-pages/index.js",
-            "line": 12,
+            "line": 14,
             "description": "Initialisation step for Github Pages\n\nUsed to check/ set any Github Pages environment variables",
             "itemtype": "method",
             "name": "init",
@@ -289,8 +284,7 @@
         },
         {
             "file": "publish/github-pages/index.js",
-            "line": 23,
-            "description": "- Must be set, use an encrypted token\n  - If using the ruby gem:\n    `travis encrypt GH_TOKEN=GITHUB_ACCESS_TOKEN --add`\n  - If using the npm module:\n    `travis-encrypt -r GH_USER/GH_REPO GH_TOKEN=GITHUB_ACCESS_TOKEN`\n    and then copy into `.travis.yml`\n- This is used to give Travis write access to your Git repository,\n  and will be used to push to the `gh-pages` branch",
+            "line": 25,
             "itemtype": "property",
             "name": "GH_TOKEN",
             "type": "String (Environment Variable)",
@@ -300,7 +294,7 @@
         },
         {
             "file": "publish/github-pages/index.js",
-            "line": 39,
+            "line": 32,
             "description": "All documentation will be published under to this branch.\n\nFor most repositories, the default `gh-pages` will do.\nHowever, for user or organisation pages, `master` could also be appropriate",
             "itemtype": "property",
             "name": "GH_PUBLISH_BRANCH",
@@ -311,8 +305,17 @@
         },
         {
             "file": "publish/github-pages/index.js",
-            "line": 57,
-            "description": "Github user or organisation name",
+            "line": 44,
+            "itemtype": "property",
+            "name": "REPO_SLUG",
+            "type": "String (Environment Variable)",
+            "default": "None - throws when not set",
+            "class": "PublishGithubPages",
+            "module": "AutodocsPublish"
+        },
+        {
+            "file": "publish/github-pages/index.js",
+            "line": 55,
             "itemtype": "property",
             "name": "GH_USER",
             "type": "String (Environment Variable)",
@@ -322,8 +325,7 @@
         },
         {
             "file": "publish/github-pages/index.js",
-            "line": 66,
-            "description": "Github repository name",
+            "line": 62,
             "itemtype": "property",
             "name": "GH_REPO",
             "type": "String (Environment Variable)",
@@ -333,7 +335,7 @@
         },
         {
             "file": "publish/github-pages/index.js",
-            "line": 80,
+            "line": 74,
             "description": "Performs the required steps for publishing to Github pages\n\n- runs `npm run generatedocs`\n- `git fetch`es the `gh-pages` branch of the project into a throwaway git repository\n- copies the documentation generated by the `generatedocs` script into the `gh-pages` branch\n- copies any additional files required into the gh-pages branch\n- if any files have changed, `git commit`s `git push`es on the `gh-pages` branch\n  - this is when the files actually succeed in publishing\n- if necessary, cleans up the throwaway git repository",
             "itemtype": "method",
             "name": "run",
@@ -342,7 +344,7 @@
         },
         {
             "file": "publish/github-pages/index.js",
-            "line": 462,
+            "line": 456,
             "description": "Outputs the base URL and the API URL at which the documentation should be published.\n\nUses `CNAME` file based on best guess,\notherwise defaults to `*.github/*`",
             "itemtype": "method",
             "name": "outputUrls",
@@ -392,7 +394,6 @@
         {
             "file": "autodocs.js",
             "line": 112,
-            "description": "The directory that the project being published ios located in.",
             "itemtype": "property",
             "name": "PROJECT_DIR",
             "type": "String (Environment Variable)",
@@ -403,8 +404,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 124,
-            "description": "The major version of the project.\n\n`1.2.3` --> `1`",
+            "line": 122,
             "itemtype": "property",
             "name": "MAJOR_VERSION",
             "type": "String (Environment Variable)",
@@ -415,8 +415,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 136,
-            "description": "The minor version of the project\n\n`1.2.3` --> `2`",
+            "line": 130,
             "itemtype": "property",
             "name": "MINOR_VERSION",
             "type": "String (Environment Variable)",
@@ -427,8 +426,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 148,
-            "description": "The patch version of the project\n\n`1.2.3` --> `3`",
+            "line": 138,
             "itemtype": "property",
             "name": "PATCH_VERSION",
             "type": "String (Environment Variable)",
@@ -439,8 +437,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 160,
-            "description": "Name to use when creating the Git commit",
+            "line": 146,
             "itemtype": "property",
             "name": "GIT_USER",
             "type": "String (Environment Variable)",
@@ -450,8 +447,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 169,
-            "description": "Email address to use when creating the Git commit",
+            "line": 153,
             "itemtype": "property",
             "name": "GIT_EMAIL",
             "type": "String (Environment Variable)",
@@ -461,8 +457,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 179,
-            "description": "Whether there are any assets to copy.\nSet to `true` **only if** intending to use `DOCUMENT_ASSETS`.",
+            "line": 161,
             "itemtype": "property",
             "name": "FLAG_COPY_ASSETS",
             "type": "String (Environment Variable)",
@@ -472,8 +467,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 189,
-            "description": "By default, publish will occur when a branch is pushed.\n\nWhen this flag is set to `true`,\npublish will occur when a tag is pushed instead.",
+            "line": 168,
             "itemtype": "property",
             "name": "FLAG_PUBLISH_ON_RELEASE",
             "type": "String (Environment Variable)",
@@ -483,8 +477,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 201,
-            "description": "Whether to clean up afterward, by deleting the directory that was published",
+            "line": 175,
             "itemtype": "property",
             "name": "FLAG_CLEAN_DOCUMENT",
             "type": "String (Environment Variable)",
@@ -494,8 +487,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 210,
-            "description": "Any tokens contained in the build output will be stripped out\nbefore being printed.\nThis is to ensure security,\nespecially if your CI's build logs are publicly available",
+            "line": 182,
             "itemtype": "property",
             "name": "FLAG_STRIP_TOKEN_OUTPUT",
             "type": "String (Environment Variable)",
@@ -505,7 +497,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 222,
+            "line": 189,
             "description": "By default, this will publish a latest page,\nwhose purpose is simply to redirect to the most recently publish API version\n\nAssuming default values for other configurations,\nif the version of the project is currently `1.2.3`,\n\n- `http://USER.github.io/REPO/api/latest/`\n- This URL will be published with an `index.html` file that redirects to:\n- `http://USER.github.io/REPO/api/1.2/`\n\nSet to `false` to disable this behaviour.",
             "itemtype": "property",
             "name": "FLAG_LATEST_PAGE",
@@ -516,7 +508,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 241,
+            "line": 208,
             "description": "By default, this will publish an all page,\nwhose purpose is simply to list and link to all published API versions\n\nAssuming default values for other configurations,\nif the versions of the project are currently `0.1`, `0.2`, `0.3`, and `1.0`\n\n- `http://USER.github.io/REPO/api/all/`\n- This URL will be published with an `index.html` file that links to:\n  - `http://USER.github.io/REPO/api/0.1/`\n  - `http://USER.github.io/REPO/api/0.2/`\n  - `http://USER.github.io/REPO/api/0.3/`\n  - `http://USER.github.io/REPO/api/1.0/`\n\nSet to `false` to disable this behaviour.",
             "itemtype": "property",
             "name": "FLAG_ALL_PAGE",
@@ -527,7 +519,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 263,
+            "line": 230,
             "description": "Set to false to do all of the steps in publishing,\nexcept for the final step of pushing the changes to the git remote.\n\nThis is useful for testing and debugging purposes.\nLeaving this on in a CI environment would defeat the purpose of autodocs",
             "itemtype": "property",
             "name": "FLAG_SKIP_PUSH",
@@ -538,7 +530,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 276,
+            "line": 243,
             "description": "Set to true to skip step where documentation is generated. i.e. Do not run\n\n`npm run generatedocs`\n\nThis is useful for testing and debugging purposes.\nLeaving this on in a CI environment would defeat the purpose of autodocs",
             "itemtype": "property",
             "name": "FLAG_SKIP_GENERATE",
@@ -549,7 +541,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 290,
+            "line": 257,
             "description": "Set to true to skips the entirety of the CI publish run function.\n**None** of the publishing related step will occur,\nexcept for setting any required environment variables.\n\nThis is useful for testing and debugging purposes.\nLeaving this on in a CI environment would defeat the purpose of autodocs",
             "itemtype": "property",
             "name": "FLAG_SKIP_PUBLISH_RUN",
@@ -560,8 +552,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 304,
-            "description": "Documentation will be generated only when this **branch** is pushed",
+            "line": 271,
             "itemtype": "property",
             "name": "DOCUMENT_BRANCH",
             "type": "String (Environment Variable)",
@@ -571,8 +562,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 313,
-            "description": "Documentation will be generated only on one of the jobs\nfor each build, use this to specify which one.",
+            "line": 278,
             "itemtype": "property",
             "name": "DOCUMENT_JOB_INDEX",
             "type": "String (Environment Variable)",
@@ -582,7 +572,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 323,
+            "line": 285,
             "description": "The name of the npm script to run,\nexpecting the documentation to get generated.\nFor example:\n\n`npm run ${DOCUMENT_GENERATE_HOOK}`",
             "itemtype": "property",
             "name": "DOCUMENT_GENERATE_HOOK",
@@ -593,7 +583,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 336,
+            "line": 298,
             "description": "After the documentation generation script is run,\nautodocs expects to find its output in this folder.\nThe files located here will get published.",
             "itemtype": "property",
             "name": "DOCUMENT_GENERATED_FOLDER",
@@ -604,7 +594,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 347,
+            "line": 309,
             "description": "All documentation will be published under this root directory\n\nThis can be used for **non-version-specific** documentation",
             "itemtype": "property",
             "name": "DOCUMENT_PUBLISH_FOLDER_ROOT",
@@ -615,7 +605,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 358,
+            "line": 320,
             "description": "The documentation will be published in this subdirectory of the root directory.\n\nThis can be used for **version-specific** documentation",
             "itemtype": "property",
             "name": "DOCUMENT_PUBLISH_SUBFOLDER",
@@ -626,7 +616,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 370,
+            "line": 332,
             "description": "Joins `DOCUMENT_PUBLISH_FOLDER_ROOT` with `DOCUMENT_PUBLISH_SUBFOLDER`\nto get a concrete path to publish the documentation.",
             "itemtype": "property",
             "name": "DOCUMENT_PUBLISH_FOLDER",
@@ -637,8 +627,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 380,
-            "description": "list of files and folders (bash style) to copy into the root of the `gh-pages` branch\nthese files will be copied to the **root**, not the `DOCUMENT_PUBLISH_FOLDER`",
+            "line": 342,
             "itemtype": "property",
             "name": "DOCUMENT_ASSETS",
             "type": "String (Environment Variable)",
@@ -726,51 +715,6 @@
             "return": {
                 "description": "The value of the existing or newly set environment variable",
                 "type": "String"
-            },
-            "class": "EnvironmentVariables",
-            "module": "Autodocs"
-        },
-        {
-            "file": "environment-variables.js",
-            "line": 86,
-            "description": "Set a default value for an environment variable if it does not exist",
-            "itemtype": "method",
-            "name": "selected",
-            "params": [
-                {
-                    "name": "name",
-                    "description": "The names of the environment variables we want",
-                    "type": "Array<String>"
-                }
-            ],
-            "return": {
-                "description": "A hash of key value pairs",
-                "type": "Object<String, String>"
-            },
-            "class": "EnvironmentVariables",
-            "module": "Autodocs"
-        },
-        {
-            "file": "environment-variables.js",
-            "line": 102,
-            "description": "In a bash shell, when `printenv` is invoked,\nparse its output into a Javascript object",
-            "itemtype": "method",
-            "name": "parsePrintenv",
-            "params": [
-                {
-                    "name": "stdout",
-                    "description": "The output from `printenv`",
-                    "type": "String"
-                },
-                {
-                    "name": "out",
-                    "description": "If this is given, the values from `printenv` will be added/ overriden ob this object",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "A hash of key value pairs",
-                "type": "Object<String, String>"
             },
             "class": "EnvironmentVariables",
             "module": "Autodocs"

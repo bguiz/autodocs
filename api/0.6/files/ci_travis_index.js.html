@@ -21,7 +21,7 @@
             <li class="divider-vertical"></li>
             <li>
                 <p class="navbar-text">
-                    API Docs for Version: <b>0.6.10</b>
+                    API Docs for Version: <b>0.6.8</b>
                 </p>
             </li>
         </div>
@@ -104,23 +104,19 @@
                            * @property TRAVIS_REPO_SLUG
                            * @type String (Environment Variable)
                            * @default None - throws when not set
-                           * @readOnly
                            */
                           envVar.require(&#x27;TRAVIS_REPO_SLUG&#x27;);
                         
                           /**
-                           * The repository to publish documentation to.
-                           * Override if you wish to publish to a different repository.
+                           * Used to set value of &#x60;REPO_SLUG&#x60;
                            *
-                           * @property REPO_SLUG
+                           * @property TRAVIS_REPO_SLUG
                            * @type String (Environment Variable)
                            * @default None - throws when not set
                            */
                           envVar.default(&#x27;REPO_SLUG&#x27;, process.env.TRAVIS_REPO_SLUG);
                         
                           /**
-                           * Whether this is a pull request.
-                           *
                            * @property TRAVIS_PULL_REQUEST
                            * @type String (Environment Variable)
                            * @default None - throws when not set
@@ -128,8 +124,6 @@
                           envVar.require(&#x27;TRAVIS_PULL_REQUEST&#x27;);
                         
                           /**
-                           * The name of the current branch
-                           *
                            * @property TRAVIS_BRANCH
                            * @type String (Environment Variable)
                            * @default None - throws when not set
@@ -137,8 +131,6 @@
                           envVar.require(&#x27;TRAVIS_BRANCH&#x27;);
                         
                           /**
-                           * The build number, e.g. &#x60;74&#x60;
-                           *
                            * @property TRAVIS_BUILD_NUMBER
                            * @type String (Environment Variable)
                            * @default None - throws when not set
@@ -146,8 +138,6 @@
                           envVar.require(&#x27;TRAVIS_BUILD_NUMBER&#x27;);
                         
                           /**
-                           * The job number, e.g. &#x60;74.1&#x60;
-                           *
                            * @property TRAVIS_JOB_NUMBER
                            * @type String (Environment Variable)
                            * @default None - throws when not set

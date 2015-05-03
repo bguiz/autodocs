@@ -21,7 +21,7 @@
             <li class="divider-vertical"></li>
             <li>
                 <p class="navbar-text">
-                    API Docs for Version: <b>0.6.10</b>
+                    API Docs for Version: <b>0.6.8</b>
                 </p>
             </li>
         </div>
@@ -98,9 +98,7 @@
                         				<li><a href="#method-default"><span class="im">default</span>(<span class="ia">name</span><span class="ia">value</span>)</a></li>
                         				<li><a href="#method-default"><span class="im">default</span>(<span class="ia">name</span>)</a></li>
                         				<li><a href="#method-exists"><span class="im">exists</span>(<span class="ia">name</span>)</a></li>
-                        				<li><a href="#method-parsePrintenv"><span class="im">parsePrintenv</span>(<span class="ia">stdout</span><span class="ia">out</span>)</a></li>
                         				<li><a href="#method-require"><span class="im">require</span>(<span class="ia">name</span>)</a></li>
-                        				<li><a href="#method-selected"><span class="im">selected</span>(<span class="ia">name</span>)</a></li>
                         			</ul>
                         		</li>
                         
@@ -323,80 +321,6 @@
                                     		</div>
                                     
                                     </div>
-                                    <div id="method-parsePrintenv" class="method item">
-                                    	<div class="method-signature">
-                                    	<span class="name"><code>parsePrintenv</code></span>
-                                    
-                                    		<div class="args">
-                                    			<span class="paren">(</span><ul class="args-list inline commas">
-                                    				<li class="arg">
-                                    						<code>stdout</code>
-                                    				</li>
-                                    				<li class="arg">
-                                    						<code>out</code>
-                                    				</li>
-                                    			</ul><span class="paren">)</span>
-                                    		</div>
-                                    		<span class="returns-inline">
-                                    			<span class="type">Object<String, String></span>
-                                    		</span>
-                                    	</div>
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    	<div class="meta">
-                                    				<p>
-                                    				Defined in
-                                    		<a href="../files/environment-variables.js.html#l102"><code>environment-variables.js:102</code></a>
-                                    		</p>
-                                    
-                                    
-                                    
-                                    	</div>
-                                    
-                                    	<div class="description"><p>In a bash shell, when <code>printenv</code> is invoked,
-                                    parse its output into a Javascript object</p>
-                                    </div>
-                                    
-                                    		<div class="params">
-                                    			<h4>Parameters:</h4>
-                                    
-                                    			<ul class="params-list">
-                                    				<li class="param">
-                                    						<code class="param-name">stdout</code>
-                                    						<span class="type">String</span>
-                                    
-                                    
-                                    					<div class="param-description"><p>The output from <code>printenv</code></p>
-                                    </div>
-                                    
-                                    				</li>
-                                    				<li class="param">
-                                    						<code class="param-name">out</code>
-                                    						<span class="type">String</span>
-                                    
-                                    
-                                    					<div class="param-description"><p>If this is given, the values from <code>printenv</code> will be added/ overriden ob this object</p>
-                                    </div>
-                                    
-                                    				</li>
-                                    			</ul>
-                                    		</div>
-                                    
-                                    		<div class="returns">
-                                    			<h4>Returns:</h4>
-                                    
-                                    			<div class="returns-description">
-                                    						<span class="type">Object<String, String></span>:
-                                    					<p>A hash of key value pairs</p>
-                                    
-                                    			</div>
-                                    		</div>
-                                    
-                                    </div>
                                     <div id="method-require" class="method item">
                                     	<div class="method-signature">
                                     	<span class="name"><code>require</code></span>
@@ -444,67 +368,6 @@
                                     			</ul>
                                     		</div>
                                     
-                                    
-                                    </div>
-                                    <div id="method-selected" class="method item">
-                                    	<div class="method-signature">
-                                    	<span class="name"><code>selected</code></span>
-                                    
-                                    		<div class="args">
-                                    			<span class="paren">(</span><ul class="args-list inline commas">
-                                    				<li class="arg">
-                                    						<code>name</code>
-                                    				</li>
-                                    			</ul><span class="paren">)</span>
-                                    		</div>
-                                    		<span class="returns-inline">
-                                    			<span class="type">Object<String, String></span>
-                                    		</span>
-                                    	</div>
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    	<div class="meta">
-                                    				<p>
-                                    				Defined in
-                                    		<a href="../files/environment-variables.js.html#l86"><code>environment-variables.js:86</code></a>
-                                    		</p>
-                                    
-                                    
-                                    
-                                    	</div>
-                                    
-                                    	<div class="description"><p>Set a default value for an environment variable if it does not exist</p>
-                                    </div>
-                                    
-                                    		<div class="params">
-                                    			<h4>Parameters:</h4>
-                                    
-                                    			<ul class="params-list">
-                                    				<li class="param">
-                                    						<code class="param-name">name</code>
-                                    						<span class="type">Array<String></span>
-                                    
-                                    
-                                    					<div class="param-description"><p>The names of the environment variables we want</p>
-                                    </div>
-                                    
-                                    				</li>
-                                    			</ul>
-                                    		</div>
-                                    
-                                    		<div class="returns">
-                                    			<h4>Returns:</h4>
-                                    
-                                    			<div class="returns-description">
-                                    						<span class="type">Object<String, String></span>:
-                                    					<p>A hash of key value pairs</p>
-                                    
-                                    			</div>
-                                    		</div>
                                     
                                     </div>
                                 </div>
