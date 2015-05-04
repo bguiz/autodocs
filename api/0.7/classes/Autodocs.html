@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Autodocs - autodocs</title>
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/css/custom.css">
+    <link rel="stylesheet" href="../assets/css/lucid.css">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+</head>
+<body class="yui3-skin-sam">
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <h1 class="brand" style="padding: 10px 16px 10px; height: 20px; line-height: 20px; margin-left: 0;">
+            autodocs
+        </h1>
+	<div class="nav">
+            <li class="divider-vertical"></li>
+            <li>
+                <p class="navbar-text">
+                    API Docs for Version: <b>0.7.0-rc</b>
+                </p>
+            </li>
+        </div>
+        <form class="navbar-form pull-right" style="line-height: 40px; height: 40px;">
+            <input style="margin-top: 0;" type="text" class="search-query" placeholder="Search for classes/modules..." data-obj='["classes/Autodocs", "classes/AutodocsRun", "classes/CiTravis", "classes/EnvironmentVariables", "classes/PublishGithubPages", "modules/Autodocs", "modules/AutodocsCi", "modules/AutodocsPublish"]'>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span3">
+	    <div>
+	        <div id="sidebar">
+	        <div id="classes">
+	            <ul id="api-classes" class="nav nav-list">
+	                    <li><a href="../classes/Autodocs.html">Autodocs</a></li>
+	                    <li><a href="../classes/AutodocsRun.html">AutodocsRun</a></li>
+	                    <li><a href="../classes/CiTravis.html">CiTravis</a></li>
+	                    <li><a href="../classes/EnvironmentVariables.html">EnvironmentVariables</a></li>
+	                    <li><a href="../classes/PublishGithubPages.html">PublishGithubPages</a></li>
+	            </ul>
+	        </div>
+	        </div>
+	    </div>
+        </div>
+        <div class="span9">
+                <form id="options-form" class="form-inline pull-right">
+                    Show:
+                    <label for="api-show-inherited" class="checkbox">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected" class="checkbox">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private" class="checkbox">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated" class="checkbox">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </form>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <div class="page-header">
+                            <h1>Autodocs</h1>
+                        </div>
+                        
+                        
+                        
+                        	<div class="well well-small">
+                                    Module: <a href="../modules/Autodocs.html">Autodocs</a>
+                            </div>
+                        
+                        
+                        
+                        
+                        <!-- table of contents -->
+                        
+                        <div id="class-toc" class="page-section">
+                        	<h2>Table of Contents</h2>
+                            <ul>
+                        		<li>
+                        			<strong>Methods</strong>
+                        			<ul>
+                        				<li><a href="#method-init"><span class="im">init</span>()</a></li>
+                        				<li><a href="#method-run"><span class="im">run</span>()</a></li>
+                        			</ul>
+                        		</li>
+                        
+                        		<li>
+                        			<strong>Properties</strong>
+                        			<ul>
+                        				<li><a href="#prop-DOCUMENT_ASSETS"><span class="ip">DOCUMENT_ASSETS</span></a></li>
+                        				<li><a href="#prop-DOCUMENT_BRANCH"><span class="ip">DOCUMENT_BRANCH</span></a></li>
+                        				<li><a href="#prop-DOCUMENT_GENERATE_HOOK"><span class="ip">DOCUMENT_GENERATE_HOOK</span></a></li>
+                        				<li><a href="#prop-DOCUMENT_GENERATED_FOLDER"><span class="ip">DOCUMENT_GENERATED_FOLDER</span></a></li>
+                        				<li><a href="#prop-DOCUMENT_JOB_INDEX"><span class="ip">DOCUMENT_JOB_INDEX</span></a></li>
+                        				<li><a href="#prop-DOCUMENT_PUBLISH_FOLDER"><span class="ip">DOCUMENT_PUBLISH_FOLDER</span></a></li>
+                        				<li><a href="#prop-DOCUMENT_PUBLISH_FOLDER_ROOT"><span class="ip">DOCUMENT_PUBLISH_FOLDER_ROOT</span></a></li>
+                        				<li><a href="#prop-DOCUMENT_PUBLISH_SUBFOLDER"><span class="ip">DOCUMENT_PUBLISH_SUBFOLDER</span></a></li>
+                        				<li><a href="#prop-FLAG_ALL_PAGE"><span class="ip">FLAG_ALL_PAGE</span></a></li>
+                        				<li><a href="#prop-FLAG_CLEAN_DOCUMENT"><span class="ip">FLAG_CLEAN_DOCUMENT</span></a></li>
+                        				<li><a href="#prop-FLAG_COPY_ASSETS"><span class="ip">FLAG_COPY_ASSETS</span></a></li>
+                        				<li><a href="#prop-FLAG_LATEST_PAGE"><span class="ip">FLAG_LATEST_PAGE</span></a></li>
+                        				<li><a href="#prop-FLAG_PUBLISH_ON_RELEASE"><span class="ip">FLAG_PUBLISH_ON_RELEASE</span></a></li>
+                        				<li><a href="#prop-FLAG_SKIP_GENERATE"><span class="ip">FLAG_SKIP_GENERATE</span></a></li>
+                        				<li><a href="#prop-FLAG_SKIP_PUBLISH_RUN"><span class="ip">FLAG_SKIP_PUBLISH_RUN</span></a></li>
+                        				<li><a href="#prop-FLAG_SKIP_PUSH"><span class="ip">FLAG_SKIP_PUSH</span></a></li>
+                        				<li><a href="#prop-FLAG_STRIP_TOKEN_OUTPUT"><span class="ip">FLAG_STRIP_TOKEN_OUTPUT</span></a></li>
+                        				<li><a href="#prop-GIT_EMAIL"><span class="ip">GIT_EMAIL</span></a></li>
+                        				<li><a href="#prop-GIT_USER"><span class="ip">GIT_USER</span></a></li>
+                        				<li><a href="#prop-MAJOR_VERSION"><span class="ip">MAJOR_VERSION</span></a></li>
+                        				<li><a href="#prop-MINOR_VERSION"><span class="ip">MINOR_VERSION</span></a></li>
+                        				<li><a href="#prop-PATCH_VERSION"><span class="ip">PATCH_VERSION</span></a></li>
+                        				<li><a href="#prop-PROJECT_DIR"><span class="ip">PROJECT_DIR</span></a></li>
+                        				<li><a href="#prop-SELECT_CI"><span class="ip">SELECT_CI</span></a></li>
+                        				<li><a href="#prop-SELECT_PUBLISH"><span class="ip">SELECT_PUBLISH</span></a></li>
+                        			</ul>
+                        		</li>
+                        
+                        
+                        	</ul>
+                        </div>
+                        
+                        <!-- details -->
+                        
+                        
+                            <div id="methods" class="page-section">
+                                <h2 class="off-left">Methods</h2>
+                                <div class="item-list">
+                                    <div id="method-init" class="method item">
+                                    	<div class="method-signature">
+                                    	<span class="name"><code>init</code></span>
+                                    
+                                    		<span class="paren">()</span>
+                                    	</div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    	<div class="meta">
+                                    				<p>
+                                    				Defined in
+                                    		<a href="../files/autodocs.js.html#l103"><code>autodocs.js:103</code></a>
+                                    		</p>
+                                    
+                                    
+                                    
+                                    	</div>
+                                    
+                                    	<div class="description"><p>Initialisation step for Autodocs</p>
+                                    <p>Used to check/ set any Autodocs environment variables</p>
+                                    </div>
+                                    
+                                    
+                                    
+                                    </div>
+                                    <div id="method-run" class="method item">
+                                    	<div class="method-signature">
+                                    	<span class="name"><code>run</code></span>
+                                    
+                                    		<span class="paren">()</span>
+                                    	</div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    	<div class="meta">
+                                    				<p>
+                                    				Defined in
+                                    		<a href="../files/autodocs.js.html#l14"><code>autodocs.js:14</code></a>
+                                    		</p>
+                                    
+                                    
+                                    
+                                    	</div>
+                                    
+                                    	<div class="description"><p>Will determine which continuous integration environment and publishing environment to use,
+                                    and then run those appropriately.</p>
+                                    <p>Currently, the supported ones are:</p>
+                                    <ul>
+                                    <li>Continuous Integration (<code>SELECT_CI</code>):
+                                    <ul>
+                                    <li><code>travis</code></li>
+                                    </ul>
+                                    </li>
+                                    <li>Publishing Environment (<code>SELECT_PUBLISH</code>):
+                                    <ul>
+                                    <li><code>github-pages</code></li>
+                                    </ul>
+                                    </li>
+                                    </ul>
+                                    <p>Runs various environment variables checks and sets defaults where appropriate.
+                                    Then tests whether this particular build should trigger publishing the documentation,
+                                    and if so fires the publish script</p>
+                                    </div>
+                                    
+                                    
+                                    
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div id="properties" class="page-section">
+                                <h2 class="off-left">Properties</h2>
+                        
+                                <div class="item-list">
+                                    <div id="prop-DOCUMENT_ASSETS" class="property item">
+                                        <h3 class="name"><code>DOCUMENT_ASSETS</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l389"><code>autodocs.js:389</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>list of files and folders (bash style) to copy into the root of the <code>gh-pages</code> branch
+                                    these files will be copied to the <strong>root</strong>, not the <code>DOCUMENT_PUBLISH_FOLDER</code></p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-DOCUMENT_BRANCH" class="property item">
+                                        <h3 class="name"><code>DOCUMENT_BRANCH</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l313"><code>autodocs.js:313</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>Documentation will be generated only when this <strong>branch</strong> is pushed</p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;master&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-DOCUMENT_GENERATE_HOOK" class="property item">
+                                        <h3 class="name"><code>DOCUMENT_GENERATE_HOOK</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l332"><code>autodocs.js:332</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>The name of the npm script to run,
+                                    expecting the documentation to get generated.
+                                    For example:</p>
+                                    <p><code>npm run ${DOCUMENT_GENERATE_HOOK}</code></p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;generatedocs&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-DOCUMENT_GENERATED_FOLDER" class="property item">
+                                        <h3 class="name"><code>DOCUMENT_GENERATED_FOLDER</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l345"><code>autodocs.js:345</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>After the documentation generation script is run,
+                                    autodocs expects to find its output in this folder.
+                                    The files located here will get published.</p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;documentation&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-DOCUMENT_JOB_INDEX" class="property item">
+                                        <h3 class="name"><code>DOCUMENT_JOB_INDEX</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l322"><code>autodocs.js:322</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>Documentation will be generated only on one of the jobs
+                                    for each build, use this to specify which one.</p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;1&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-DOCUMENT_PUBLISH_FOLDER" class="property item">
+                                        <h3 class="name"><code>DOCUMENT_PUBLISH_FOLDER</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l379"><code>autodocs.js:379</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>Joins <code>DOCUMENT_PUBLISH_FOLDER_ROOT</code> with <code>DOCUMENT_PUBLISH_SUBFOLDER</code>
+                                    to get a concrete path to publish the documentation.</p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;{{DOCUMENT_PUBLISH_FOLDER_ROOT}}/{{DOCUMENT_PUBLISH_SUBFOLDER}}&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-DOCUMENT_PUBLISH_FOLDER_ROOT" class="property item">
+                                        <h3 class="name"><code>DOCUMENT_PUBLISH_FOLDER_ROOT</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l356"><code>autodocs.js:356</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>All documentation will be published under this root directory</p>
+                                    <p>This can be used for <strong>non-version-specific</strong> documentation</p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;api&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-DOCUMENT_PUBLISH_SUBFOLDER" class="property item">
+                                        <h3 class="name"><code>DOCUMENT_PUBLISH_SUBFOLDER</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l367"><code>autodocs.js:367</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>The documentation will be published in this subdirectory of the root directory.</p>
+                                    <p>This can be used for <strong>version-specific</strong> documentation</p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;{{MAJOR_VERSION}}.{{MINOR_VERSION}}&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-FLAG_ALL_PAGE" class="property item">
+                                        <h3 class="name"><code>FLAG_ALL_PAGE</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l250"><code>autodocs.js:250</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>By default, this will publish an all page,
+                                    whose purpose is simply to list and link to all published API versions</p>
+                                    <p>Assuming default values for other configurations,
+                                    if the versions of the project are currently <code>0.1</code>, <code>0.2</code>, <code>0.3</code>, and <code>1.0</code></p>
+                                    <ul>
+                                    <li><code>http://USER.github.io/REPO/api/all/</code></li>
+                                    <li>This URL will be published with an <code>index.html</code> file that links to:
+                                    <ul>
+                                    <li><code>http://USER.github.io/REPO/api/0.1/</code></li>
+                                    <li><code>http://USER.github.io/REPO/api/0.2/</code></li>
+                                    <li><code>http://USER.github.io/REPO/api/0.3/</code></li>
+                                    <li><code>http://USER.github.io/REPO/api/1.0/</code></li>
+                                    </ul>
+                                    </li>
+                                    </ul>
+                                    <p>Set to <code>false</code> to disable this behaviour.</p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;true&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-FLAG_CLEAN_DOCUMENT" class="property item">
+                                        <h3 class="name"><code>FLAG_CLEAN_DOCUMENT</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l210"><code>autodocs.js:210</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>Whether to clean up afterward, by deleting the directory that was published</p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;false&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-FLAG_COPY_ASSETS" class="property item">
+                                        <h3 class="name"><code>FLAG_COPY_ASSETS</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l188"><code>autodocs.js:188</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>Whether there are any assets to copy.
+                                    Set to <code>true</code> <strong>only if</strong> intending to use <code>DOCUMENT_ASSETS</code>.</p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;false&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-FLAG_LATEST_PAGE" class="property item">
+                                        <h3 class="name"><code>FLAG_LATEST_PAGE</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l231"><code>autodocs.js:231</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>By default, this will publish a latest page,
+                                    whose purpose is simply to redirect to the most recently publish API version</p>
+                                    <p>Assuming default values for other configurations,
+                                    if the version of the project is currently <code>1.2.3</code>,</p>
+                                    <ul>
+                                    <li><code>http://USER.github.io/REPO/api/latest/</code></li>
+                                    <li>This URL will be published with an <code>index.html</code> file that redirects to:</li>
+                                    <li><code>http://USER.github.io/REPO/api/1.2/</code></li>
+                                    </ul>
+                                    <p>Set to <code>false</code> to disable this behaviour.</p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;true&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-FLAG_PUBLISH_ON_RELEASE" class="property item">
+                                        <h3 class="name"><code>FLAG_PUBLISH_ON_RELEASE</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l198"><code>autodocs.js:198</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>By default, publish will occur when a branch is pushed.</p>
+                                    <p>When this flag is set to <code>true</code>,
+                                    publish will occur when a tag is pushed instead.</p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;false&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-FLAG_SKIP_GENERATE" class="property item">
+                                        <h3 class="name"><code>FLAG_SKIP_GENERATE</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l285"><code>autodocs.js:285</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>Set to true to skip step where documentation is generated. i.e. Do not run</p>
+                                    <p><code>npm run generatedocs</code></p>
+                                    <p>This is useful for testing and debugging purposes.
+                                    Leaving this on in a CI environment would defeat the purpose of autodocs</p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;false&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-FLAG_SKIP_PUBLISH_RUN" class="property item">
+                                        <h3 class="name"><code>FLAG_SKIP_PUBLISH_RUN</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l299"><code>autodocs.js:299</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>Set to true to skips the entirety of the CI publish run function.
+                                    <strong>None</strong> of the publishing related step will occur,
+                                    except for setting any required environment variables.</p>
+                                    <p>This is useful for testing and debugging purposes.
+                                    Leaving this on in a CI environment would defeat the purpose of autodocs</p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;false&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-FLAG_SKIP_PUSH" class="property item">
+                                        <h3 class="name"><code>FLAG_SKIP_PUSH</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l272"><code>autodocs.js:272</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>Set to false to do all of the steps in publishing,
+                                    except for the final step of pushing the changes to the git remote.</p>
+                                    <p>This is useful for testing and debugging purposes.
+                                    Leaving this on in a CI environment would defeat the purpose of autodocs</p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;false&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-FLAG_STRIP_TOKEN_OUTPUT" class="property item">
+                                        <h3 class="name"><code>FLAG_STRIP_TOKEN_OUTPUT</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l219"><code>autodocs.js:219</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>Any tokens contained in the build output will be stripped out
+                                    before being printed.
+                                    This is to ensure security,
+                                    especially if your CI's build logs are publicly available</p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;true&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-GIT_EMAIL" class="property item">
+                                        <h3 class="name"><code>GIT_EMAIL</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l178"><code>autodocs.js:178</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>Email address to use when creating the Git commit</p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;autodocs-git-user@bguiz.com&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-GIT_USER" class="property item">
+                                        <h3 class="name"><code>GIT_USER</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l169"><code>autodocs.js:169</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>Name to use when creating the Git commit</p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;autodocs Git User&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-MAJOR_VERSION" class="property item">
+                                        <h3 class="name"><code>MAJOR_VERSION</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l133"><code>autodocs.js:133</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>The major version of the project.</p>
+                                    <p><code>1.2.3</code> --&gt; <code>1</code></p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> The major version read in from package.json</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-MINOR_VERSION" class="property item">
+                                        <h3 class="name"><code>MINOR_VERSION</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l145"><code>autodocs.js:145</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>The minor version of the project</p>
+                                    <p><code>1.2.3</code> --&gt; <code>2</code></p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> The minor version read in from package.json</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-PATCH_VERSION" class="property item">
+                                        <h3 class="name"><code>PATCH_VERSION</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l157"><code>autodocs.js:157</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>The patch version of the project</p>
+                                    <p><code>1.2.3</code> --&gt; <code>3</code></p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> The patch version read in from package.json</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-PROJECT_DIR" class="property item">
+                                        <h3 class="name"><code>PROJECT_DIR</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l121"><code>autodocs.js:121</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>The directory that the project being published ios located in.</p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> The current working directory</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-SELECT_CI" class="property item">
+                                        <h3 class="name"><code>SELECT_CI</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l72"><code>autodocs.js:72</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;travis&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-SELECT_PUBLISH" class="property item">
+                                        <h3 class="name"><code>SELECT_PUBLISH</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/autodocs.js.html#l79"><code>autodocs.js:79</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> &#x27;github-pages&#x27;</p>
+                                    
+                                    
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/jquery/jquery-1.8.2.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/yuidoc-bootstrap.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>

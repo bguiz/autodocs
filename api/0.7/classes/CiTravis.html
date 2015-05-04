@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>CiTravis - autodocs</title>
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/css/custom.css">
+    <link rel="stylesheet" href="../assets/css/lucid.css">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+</head>
+<body class="yui3-skin-sam">
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <h1 class="brand" style="padding: 10px 16px 10px; height: 20px; line-height: 20px; margin-left: 0;">
+            autodocs
+        </h1>
+	<div class="nav">
+            <li class="divider-vertical"></li>
+            <li>
+                <p class="navbar-text">
+                    API Docs for Version: <b>0.7.0-rc</b>
+                </p>
+            </li>
+        </div>
+        <form class="navbar-form pull-right" style="line-height: 40px; height: 40px;">
+            <input style="margin-top: 0;" type="text" class="search-query" placeholder="Search for classes/modules..." data-obj='["classes/Autodocs", "classes/AutodocsRun", "classes/CiTravis", "classes/EnvironmentVariables", "classes/PublishGithubPages", "modules/Autodocs", "modules/AutodocsCi", "modules/AutodocsPublish"]'>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span3">
+	    <div>
+	        <div id="sidebar">
+	        <div id="classes">
+	            <ul id="api-classes" class="nav nav-list">
+	                    <li><a href="../classes/Autodocs.html">Autodocs</a></li>
+	                    <li><a href="../classes/AutodocsRun.html">AutodocsRun</a></li>
+	                    <li><a href="../classes/CiTravis.html">CiTravis</a></li>
+	                    <li><a href="../classes/EnvironmentVariables.html">EnvironmentVariables</a></li>
+	                    <li><a href="../classes/PublishGithubPages.html">PublishGithubPages</a></li>
+	            </ul>
+	        </div>
+	        </div>
+	    </div>
+        </div>
+        <div class="span9">
+                <form id="options-form" class="form-inline pull-right">
+                    Show:
+                    <label for="api-show-inherited" class="checkbox">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected" class="checkbox">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private" class="checkbox">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated" class="checkbox">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </form>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <div class="page-header">
+                            <h1>CiTravis</h1>
+                        </div>
+                        
+                        
+                        
+                        	<div class="well well-small">
+                                    Module: <a href="../modules/AutodocsCi.html">AutodocsCi</a>
+                            </div>
+                        
+                        
+                        
+                        
+                        <!-- table of contents -->
+                        
+                        <div id="class-toc" class="page-section">
+                        	<h2>Table of Contents</h2>
+                            <ul>
+                        		<li>
+                        			<strong>Methods</strong>
+                        			<ul>
+                        				<li><a href="#method-init"><span class="im">init</span>()</a></li>
+                        				<li><a href="#method-shouldRun"><span class="im">shouldRun</span>()</a></li>
+                        			</ul>
+                        		</li>
+                        
+                        		<li>
+                        			<strong>Properties</strong>
+                        			<ul>
+                        				<li><a href="#prop-REPO_SLUG"><span class="ip">REPO_SLUG</span></a></li>
+                        				<li><a href="#prop-TRAVIS_BRANCH"><span class="ip">TRAVIS_BRANCH</span></a></li>
+                        				<li><a href="#prop-TRAVIS_BUILD_NUMBER"><span class="ip">TRAVIS_BUILD_NUMBER</span></a></li>
+                        				<li><a href="#prop-TRAVIS_JOB_NUMBER"><span class="ip">TRAVIS_JOB_NUMBER</span></a></li>
+                        				<li><a href="#prop-TRAVIS_PULL_REQUEST"><span class="ip">TRAVIS_PULL_REQUEST</span></a></li>
+                        				<li><a href="#prop-TRAVIS_REPO_SLUG"><span class="ip">TRAVIS_REPO_SLUG</span></a></li>
+                        				<li><a href="#prop-TRAVIS_TAG"><span class="ip">TRAVIS_TAG</span></a></li>
+                        			</ul>
+                        		</li>
+                        
+                        
+                        	</ul>
+                        </div>
+                        
+                        <!-- details -->
+                        
+                        
+                            <div id="methods" class="page-section">
+                                <h2 class="off-left">Methods</h2>
+                                <div class="item-list">
+                                    <div id="method-init" class="method item">
+                                    	<div class="method-signature">
+                                    	<span class="name"><code>init</code></span>
+                                    
+                                    		<span class="paren">()</span>
+                                    	</div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    	<div class="meta">
+                                    				<p>
+                                    				Defined in
+                                    		<a href="../files/ci_travis_index.js.html#l8"><code>ci&#x2F;travis&#x2F;index.js:8</code></a>
+                                    		</p>
+                                    
+                                    
+                                    
+                                    	</div>
+                                    
+                                    	<div class="description"><p>Initialisation step for Travis</p>
+                                    <p>Used to check/ set any Travis environment variables</p>
+                                    </div>
+                                    
+                                    
+                                    
+                                    </div>
+                                    <div id="method-shouldRun" class="method item">
+                                    	<div class="method-signature">
+                                    	<span class="name"><code>shouldRun</code></span>
+                                    
+                                    		<span class="paren">()</span>
+                                    		<span class="returns-inline">
+                                    			<span class="type">Boolean</span>
+                                    		</span>
+                                    	</div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    	<div class="meta">
+                                    				<p>
+                                    				Defined in
+                                    		<a href="../files/ci_travis_index.js.html#l76"><code>ci&#x2F;travis&#x2F;index.js:76</code></a>
+                                    		</p>
+                                    
+                                    
+                                    
+                                    	</div>
+                                    
+                                    	<div class="description"><p>Based on the Travis environment variables,
+                                    determines whether to trigger generation and publishing of documentation.</p>
+                                    <p>If <code>FLAG_PUBLISH_ON_RELEASE</code> is <code>true</code>,
+                                    then will trigger if Travis says that a tag was pushed.</p>
+                                    <p>Otherwise, it will trigger when a branch is pushed,
+                                    if Travis says that this <strong>is not</strong> a pull request,
+                                    and the branch being pushed matches <code>DOCUMENT_BRANCH</code>.</p>
+                                    <p>Both cases also require that the correct build index for the current job
+                                    matches <code>DOCUMENT_JOB_INDEX</code>.
+                                    This is to ensure that documentation is only published once per successful build.</p>
+                                    </div>
+                                    
+                                    
+                                    		<div class="returns">
+                                    			<h4>Returns:</h4>
+                                    
+                                    			<div class="returns-description">
+                                    						<span class="type">Boolean</span>:
+                                    					<p><code>true</code> when documentation should be generated and published</p>
+                                    
+                                    			</div>
+                                    		</div>
+                                    
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div id="properties" class="page-section">
+                                <h2 class="off-left">Properties</h2>
+                        
+                                <div class="item-list">
+                                    <div id="prop-REPO_SLUG" class="property item">
+                                        <h3 class="name"><code>REPO_SLUG</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/ci_travis_index.js.html#l29"><code>ci&#x2F;travis&#x2F;index.js:29</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>The repository to publish documentation to.
+                                    Override if you wish to publish to a different repository.</p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> None - throws when not set</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-TRAVIS_BRANCH" class="property item">
+                                        <h3 class="name"><code>TRAVIS_BRANCH</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/ci_travis_index.js.html#l48"><code>ci&#x2F;travis&#x2F;index.js:48</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>The name of the current branch</p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> None - throws when not set</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-TRAVIS_BUILD_NUMBER" class="property item">
+                                        <h3 class="name"><code>TRAVIS_BUILD_NUMBER</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/ci_travis_index.js.html#l57"><code>ci&#x2F;travis&#x2F;index.js:57</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>The build number, e.g. <code>74</code></p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> None - throws when not set</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-TRAVIS_JOB_NUMBER" class="property item">
+                                        <h3 class="name"><code>TRAVIS_JOB_NUMBER</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/ci_travis_index.js.html#l66"><code>ci&#x2F;travis&#x2F;index.js:66</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>The job number, e.g. <code>74.1</code></p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> None - throws when not set</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-TRAVIS_PULL_REQUEST" class="property item">
+                                        <h3 class="name"><code>TRAVIS_PULL_REQUEST</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/ci_travis_index.js.html#l39"><code>ci&#x2F;travis&#x2F;index.js:39</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>Whether this is a pull request.</p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> None - throws when not set</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-TRAVIS_REPO_SLUG" class="property item">
+                                        <h3 class="name"><code>TRAVIS_REPO_SLUG</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/ci_travis_index.js.html#l19"><code>ci&#x2F;travis&#x2F;index.js:19</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            <p>Used to set value of <code>REPO_SLUG</code></p>
+                                    
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> None - throws when not set</p>
+                                    
+                                    
+                                    </div>
+                                    <div id="prop-TRAVIS_TAG" class="property item">
+                                        <h3 class="name"><code>TRAVIS_TAG</code></h3>
+                                        <span class="type">String (Environment Variable)</span>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                        <div class="meta">
+                                                    <p>
+                                                    Defined in
+                                            <a href="../files/ci_travis_index.js.html#l106"><code>ci&#x2F;travis&#x2F;index.js:106</code></a>
+                                            </p>
+                                    
+                                    
+                                        </div>
+                                    
+                                        <div class="description">
+                                            
+                                        </div>
+                                    
+                                            <p><strong>Default:</strong> None</p>
+                                    
+                                    
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/jquery/jquery-1.8.2.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/yuidoc-bootstrap.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>
