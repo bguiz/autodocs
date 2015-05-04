@@ -36,9 +36,14 @@ describe('[run]', function() {
       beforeEach(increaseTestDuration); afterEach(resetTestDuration);
       beforeEach(clearEnvironment); afterEach(resetEnvironment);
 
+      var vars = {};
+
       beforeEach(function(done) {
         process.env = envs.buildOnBranch();
-        require('../autodocs').run({}, done);
+        require('../autodocs').run({}, function callback(err, context) {
+          vars = context.vars;
+          done();
+        });
       });
 
       [
@@ -62,7 +67,7 @@ describe('[run]', function() {
         { name: 'PROJECT_DIR', value: path.resolve(__dirname, '..') }
       ].forEach(function(pair) {
         it('Should set default value for '+pair.name, function(done) {
-          expect(process.env[pair.name]).toEqual(pair.value);
+          expect(vars[pair.name]).toEqual(pair.value);
           done();
         });
       });

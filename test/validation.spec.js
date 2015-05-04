@@ -25,7 +25,7 @@ describe('[validation]', function() {
     it('Should fail when running without any env vars', function() {
       expect(function() {
         require('../autodocs').run({});
-      }).toThrowError( /Environment variable `[^\]]+` not set/ );
+      }).toThrowError( /Config variable `[^\]]+` not set/ );
     });
 
     it('Should fail when selected CI is not supported', function() {
@@ -147,7 +147,7 @@ describe('[validation]', function() {
           process.env[name] = undefined;
           expect(function() {
             require('../autodocs').run({});
-          }).toThrowError(new RegExp('Environment variable `'+name+'` not set'));
+          }).toThrowError(new RegExp('Config variable `'+name+'` not set'));
         });
       });
     });

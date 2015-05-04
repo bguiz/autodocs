@@ -14,7 +14,7 @@
  * @for  CiTravis
  */
 function environmentVariablesTravis(context, callback) {
-  var envVar = context.environmentVariables;
+  var configVars = context.configVariables;
 
   /**
    * Used to set value of `REPO_SLUG`
@@ -24,7 +24,7 @@ function environmentVariablesTravis(context, callback) {
    * @default None - throws when not set
    * @readOnly
    */
-  envVar.require('TRAVIS_REPO_SLUG');
+  configVars.require('TRAVIS_REPO_SLUG');
 
   /**
    * The repository to publish documentation to.
@@ -34,7 +34,7 @@ function environmentVariablesTravis(context, callback) {
    * @type String (Environment Variable)
    * @default None - throws when not set
    */
-  envVar.default('REPO_SLUG', process.env.TRAVIS_REPO_SLUG);
+  configVars.default('REPO_SLUG', context.vars.TRAVIS_REPO_SLUG);
 
   /**
    * Whether this is a pull request.
@@ -43,7 +43,7 @@ function environmentVariablesTravis(context, callback) {
    * @type String (Environment Variable)
    * @default None - throws when not set
    */
-  envVar.require('TRAVIS_PULL_REQUEST');
+  configVars.require('TRAVIS_PULL_REQUEST');
 
   /**
    * The name of the current branch
@@ -52,7 +52,7 @@ function environmentVariablesTravis(context, callback) {
    * @type String (Environment Variable)
    * @default None - throws when not set
    */
-  envVar.require('TRAVIS_BRANCH');
+  configVars.require('TRAVIS_BRANCH');
 
   /**
    * The build number, e.g. `74`
@@ -61,7 +61,7 @@ function environmentVariablesTravis(context, callback) {
    * @type String (Environment Variable)
    * @default None - throws when not set
    */
-  envVar.require('TRAVIS_BUILD_NUMBER');
+  configVars.require('TRAVIS_BUILD_NUMBER');
 
   /**
    * The job number, e.g. `74.1`
@@ -70,7 +70,7 @@ function environmentVariablesTravis(context, callback) {
    * @type String (Environment Variable)
    * @default None - throws when not set
    */
-  envVar.require('TRAVIS_JOB_NUMBER');
+  configVars.require('TRAVIS_JOB_NUMBER');
 }
 
 /**
@@ -92,34 +92,34 @@ function environmentVariablesTravis(context, callback) {
  * @return {Boolean} `true` when documentation should be generated and published
  */
 function testShouldPublishTravis(context, callback) {
-  var envVar = context.environmentVariables;
+  var configVars = context.configVariables;
 
   var correctBuildIndex =
-    ((process.env.TRAVIS_BUILD_NUMBER+'.'+process.env.DOCUMENT_JOB_INDEX) ===
-      process.env.TRAVIS_JOB_NUMBER);
+    ((context.vars.TRAVIS_BUILD_NUMBER+'.'+context.vars.DOCUMENT_JOB_INDEX) ===
+      context.vars.TRAVIS_JOB_NUMBER);
   var out = {
     flag: true,
     message: undefined,
   };
-  if (process.env.FLAG_PUBLISH_ON_RELEASE === 'true') {
+  if (context.vars.FLAG_PUBLISH_ON_RELEASE === 'true') {
     out.message = 'Publish on release';
     /**
      * @property TRAVIS_TAG
      * @type String (Environment Variable)
      * @default None
      */
-    if (!envVar.exists('TRAVIS_TAG')) {
+    if (!configVars.exists('TRAVIS_TAG')) {
       out.flag = false;
       out.message += '\n- travis tag exists failure';
     }
   }
   else {
     out.message = 'Publish on branch';
-    if (process.env.TRAVIS_PULL_REQUEST !== 'false') {
+    if (context.vars.TRAVIS_PULL_REQUEST !== 'false') {
       out.flag = false;
       out.message += '\n- is not a pull request failure';
     }
-    if (process.env.TRAVIS_BRANCH !== process.env.DOCUMENT_BRANCH) {
+    if (context.vars.TRAVIS_BRANCH !== context.vars.DOCUMENT_BRANCH) {
       out.flag = false;
       out.message += '\n- branch name match failure';
     }
