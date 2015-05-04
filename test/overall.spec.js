@@ -12,15 +12,17 @@ describe('[overall]', function() {
       done();
     });
 
-    it('Should verify environment-variables', function(done) {
-      var envVars;
+    it('Should verify config-variables', function(done) {
+      var configVars;
       expect(function() {
-        envVars = require('../environment-variables');
+        configVars = require('../config-variables')({});
       }).not.toThrow();
-      expect(typeof envVars.exists).toEqual('function');
-      expect(typeof envVars.require).toEqual('function');
-      expect(typeof envVars.default).toEqual('function');
-      expect(typeof envVars.substitute).toEqual('function');
+      expect(typeof configVars.exists).toEqual('function');
+      expect(typeof configVars.require).toEqual('function');
+      expect(typeof configVars.default).toEqual('function');
+      expect(typeof configVars.substitute).toEqual('function');
+      expect(typeof configVars.selected).toEqual('function');
+      expect(typeof configVars.parsePrintenv).toEqual('function');
       done();
     });
 
