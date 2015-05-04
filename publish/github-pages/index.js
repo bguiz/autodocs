@@ -18,7 +18,7 @@ var childProcess = require('child_process');
  * @for  PublishGithubPages
  */
 function environmentVariablesGithub(context, callback) {
-  var envVar = context.environmentVariables;
+  var configVars = context.configVariables;
 
   /**
    * - Must be set, use an encrypted token
@@ -34,7 +34,7 @@ function environmentVariablesGithub(context, callback) {
    * @type String (Environment Variable)
    * @default None - throws when not set
    */
-  envVar.require('GH_TOKEN');
+  configVars.require('GH_TOKEN');
 
   /**
    * All documentation will be published under to this branch.
@@ -46,13 +46,13 @@ function environmentVariablesGithub(context, callback) {
    * @type String (Environment Variable)
    * @default 'gh-pages'
    */
-  envVar.default('GH_PUBLISH_BRANCH', 'gh-pages');
+  configVars.default('GH_PUBLISH_BRANCH', 'gh-pages');
 
-  envVar.require('REPO_SLUG');
+  configVars.require('REPO_SLUG');
 
-  if (!envVar.exists('GH_USER') ||
-      !envVar.exists('GH_REPO')) {
-    var tokens = process.env.REPO_SLUG.split('/');
+  if (!configVars.exists('GH_USER') ||
+      !configVars.exists('GH_REPO')) {
+    var tokens = context.vars.REPO_SLUG.split('/');
 
     /**
      * Github user or organisation name
@@ -61,7 +61,7 @@ function environmentVariablesGithub(context, callback) {
      * @type String (Environment Variable)
      * @default First half of `REPO_SLUG`
      */
-    envVar.default('GH_USER', tokens[0]);
+    configVars.default('GH_USER', tokens[0]);
 
     /**
      * Github repository name
@@ -70,11 +70,11 @@ function environmentVariablesGithub(context, callback) {
      * @type String (Environment Variable)
      * @default Second half of `REPO_SLUG`
      */
-    envVar.default('GH_REPO', tokens[1]);
+    configVars.default('GH_REPO', tokens[1]);
 
   }
 
-  process.env.SCRIPT_DIR = __dirname;
+  context.vars.SCRIPT_DIR = __dirname;
 }
 
 /**
@@ -92,55 +92,9 @@ function environmentVariablesGithub(context, callback) {
  * @for  PublishGithubPages
  */
 function publishGithubPages(context, callback) {
-  var envVar = context.environmentVariables;
+  var configVars = context.configVariables;
 
-  var projectDir = process.env.PROJECT_DIR;
-
-  if (process.env.FLAG_SKIP_PUBLISH_RUN === 'true') {
-    allComplete();
-  }
-  else {
-    runGeneratedocs();
-  }
-
-  function runGeneratedocs() {
-    console.log('Generating documentation');
-    if (process.env.FLAG_SKIP_GENERATE === 'true') {
-      console.log('Re-using previously generated documentation');
-      setUpVars();
-    }
-    else {
-      console.log('Invoking "generatedocs" script');
-      var execStatement = 'npm run '+process.env.DOCUMENT_GENERATE_HOOK;
-      console.log(execStatement);
-      childProcess.exec(execStatement, {
-        cwd: projectDir,
-        env: process.env,
-      }, function(err, stdout, stderr) {
-        console.log(stdout);
-        console.log(stderr);
-
-        /* istanbul ignore if */
-        if (!err &&
-            !(require(path.resolve(process.env.PROJECT_DIR, 'package.json')))
-              .scripts[process.env.DOCUMENT_GENERATE_HOOK]) {
-          // Necessary to test this scenario because in npm 1.x,
-          // npm run on scripts that are not defined results in a silent failure
-          err = new Error('Command failed: npm\nmissing script: '+process.env.DOCUMENT_GENERATE_HOOK);
-        }
-        if (err) {
-          callback(err);
-        }
-        else {
-          setUpVars();
-        }
-      });
-    }
-  }
-
-  var vars = envVar.selected([
-    'PATH',
-
+  var vars = configVars.selected([
     'PROJECT_DIR',
     'PROJECT_NAME',
     'MAJOR_VERSION',
@@ -177,6 +131,52 @@ function publishGithubPages(context, callback) {
     'GH_USER',
     'GH_REPO'
   ]);
+  vars.PATH = process.env.PATH;
+
+  var projectDir = context.vars.PROJECT_DIR;
+
+  if (context.vars.FLAG_SKIP_PUBLISH_RUN === 'true') {
+    allComplete();
+  }
+  else {
+    runGeneratedocs();
+  }
+
+  function runGeneratedocs() {
+    console.log('Generating documentation');
+    if (context.vars.FLAG_SKIP_GENERATE === 'true') {
+      console.log('Re-using previously generated documentation');
+      setUpVars();
+    }
+    else {
+      console.log('Invoking "generatedocs" script');
+      var execStatement = 'npm run '+context.vars.DOCUMENT_GENERATE_HOOK;
+      console.log(execStatement);
+      childProcess.exec(execStatement, {
+        cwd: projectDir,
+        env: vars,
+      }, function(err, stdout, stderr) {
+        console.log(stdout);
+        console.log(stderr);
+
+        /* istanbul ignore if */
+        if (!err &&
+            !(require(path.resolve(context.vars.PROJECT_DIR, 'package.json')))
+              .scripts[context.vars.DOCUMENT_GENERATE_HOOK]) {
+          // Necessary to test this scenario because in npm 1.x,
+          // npm run on scripts that are not defined results in a silent failure
+          err = new Error('Command failed: npm\nmissing script: '+context.vars.DOCUMENT_GENERATE_HOOK);
+        }
+        if (err) {
+          callback(err);
+        }
+        else {
+          setUpVars();
+        }
+      });
+    }
+  }
+
   var repoDir;
 
   function setUpVars() {
@@ -185,7 +185,7 @@ function publishGithubPages(context, callback) {
       cwd: projectDir,
       env: vars,
     }, function(err, stdout, stderr) {
-      vars = envVar.parsePrintenv(stdout, vars);
+      vars = configVars.parsePrintenv(stdout, vars);
       repoDir = vars.GHPAGES_DIR;
       if (err) {
         callback(err);
@@ -453,8 +453,7 @@ function publishGithubPages(context, callback) {
   function allComplete() {
     outputUrls(context, callback);
     process.nextTick(function() {
-      callback();
-      // process.exit(0);
+      callback(undefined, context);
     });
   }
 }
@@ -470,14 +469,14 @@ function publishGithubPages(context, callback) {
  * @private
  */
 function outputUrls(context, callback) {
-  var envVar = context.environmentVariables;
+  var envVar = context.configVariables;
 
   var CNAME;
-  if (process.env.FLAG_COPY_ASSETS === 'true' &&
-      process.env.DOCUMENT_ASSETS.split(' ').indexOf('CNAME') >= 0) {
+  if (context.vars.FLAG_COPY_ASSETS === 'true' &&
+      context.vars.DOCUMENT_ASSETS.split(' ').indexOf('CNAME') >= 0) {
     // Best guess that CNAME file was copied in
     try {
-      var CNAMEfile = path.join(process.env.PROJECT_DIR, 'CNAME');
+      var CNAMEfile = path.join(context.vars.PROJECT_DIR, 'CNAME');
       CNAME = fs.readFileSync(CNAMEfile).toString().trim();
     }
     catch (e) {
@@ -488,16 +487,16 @@ function outputUrls(context, callback) {
     /* istanbul ignore if :
       this project will not be able to test this - it isn't an organisation page
       will need and entirely new project in order to test this */
-    if (process.env.GH_USER.match( /^[^\.]+.github.io$/)) {
-      CNAME = process.env.GH_USER;
+    if (context.vars.GH_USER.match( /^[^\.]+.github.io$/)) {
+      CNAME = context.vars.GH_USER;
     }
     else {
-      CNAME = process.env.GH_USER+'.github.io';
+      CNAME = context.vars.GH_USER+'.github.io';
     }
   }
   var publishDomain = 'http://'+CNAME;
-  var publishUrl = publishDomain+'/'+process.env.GH_REPO;
-  var publishApiUrl = publishUrl+'/'+process.env.DOCUMENT_PUBLISH_FOLDER;
+  var publishUrl = publishDomain+'/'+context.vars.GH_REPO;
+  var publishApiUrl = publishUrl+'/'+context.vars.DOCUMENT_PUBLISH_FOLDER;
   console.log('Base URL: '+publishUrl);
   console.log('API  URL: '+publishApiUrl);
 }

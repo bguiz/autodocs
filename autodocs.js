@@ -43,7 +43,16 @@ function runAutodocs(context, callback) {
   try {
     context = context || {};
 
-    context.environmentVariables = require('./environment-variables');
+    // Set up context variables with whatever was passed in,
+    // but override with any environment variables
+    context.vars = context.vars || {};
+    for (var varName in process.env) {
+      if (process.env.hasOwnProperty(varName)) {
+        context.vars[varName] = process.env[varName];
+      }
+    }
+
+    context.configVariables = require('./config-variables')(context.vars);
 
     runAutodocsImpl(context, callback);
   }
@@ -58,21 +67,21 @@ function runAutodocs(context, callback) {
 }
 
 function runAutodocsImpl(context, callback) {
-  var envVar = context.environmentVariables;
+  var configVars = context.configVariables;
 
   /**
    * @property SELECT_CI
    * @type String (Environment Variable)
    * @default 'travis'
    */
-  var ciName = envVar.default('SELECT_CI', 'travis');
+  var ciName = configVars.default('SELECT_CI', 'travis');
 
   /**
    * @property SELECT_PUBLISH
    * @type String (Environment Variable)
    * @default 'github-pages'
    */
-  var publishName = envVar.default('SELECT_PUBLISH', 'github-pages');
+  var publishName = configVars.default('SELECT_PUBLISH', 'github-pages');
   var ci = require('./ci/'+ciName);
   var publish = require('./publish/'+publishName);
   ci.init(context, callback);
@@ -100,14 +109,14 @@ function runAutodocsImpl(context, callback) {
  * @for  Autodocs
  */
 function environmentVariablesAutodocs(context, callback) {
-  var envVar = context.environmentVariables;
+  var configVars = context.configVariables;
 
   var projectPath = path.resolve('.');
   var projectPackageJson = require(path.resolve(projectPath, 'package.json'));
   var projectVersion = projectPackageJson.version;
   var projectName = projectPackageJson.name;
 
-  process.env.PROJECT_NAME = projectName;
+  context.vars.PROJECT_NAME = projectName;
 
   /**
    * The directory that the project being published ios located in.
@@ -117,7 +126,7 @@ function environmentVariablesAutodocs(context, callback) {
    * @default The current working directory
    * @readOnly
    */
-  process.env.PROJECT_DIR = projectPath;
+  context.vars.PROJECT_DIR = projectPath;
 
   var projectVersionTokens = projectVersion.split('.');
 
@@ -131,7 +140,7 @@ function environmentVariablesAutodocs(context, callback) {
    * @default The major version read in from package.json
    * @readOnly
    */
-  process.env.MAJOR_VERSION = projectVersionTokens[0];
+  context.vars.MAJOR_VERSION = projectVersionTokens[0];
 
   /**
    * The minor version of the project
@@ -143,7 +152,7 @@ function environmentVariablesAutodocs(context, callback) {
    * @default The minor version read in from package.json
    * @readOnly
    */
-  process.env.MINOR_VERSION = projectVersionTokens[1];
+  context.vars.MINOR_VERSION = projectVersionTokens[1];
 
   /**
    * The patch version of the project
@@ -155,7 +164,7 @@ function environmentVariablesAutodocs(context, callback) {
    * @default The patch version read in from package.json
    * @readOnly
    */
-  process.env.PATCH_VERSION = projectVersionTokens.slice(2).join('.');
+  context.vars.PATCH_VERSION = projectVersionTokens.slice(2).join('.');
 
   /**
    * Name to use when creating the Git commit
@@ -164,7 +173,7 @@ function environmentVariablesAutodocs(context, callback) {
    * @type String (Environment Variable)
    * @default 'autodocs Git User'
    */
-  envVar.default('GIT_USER', 'autodocs Git User');
+  configVars.default('GIT_USER', 'autodocs Git User');
 
   /**
    * Email address to use when creating the Git commit
@@ -173,7 +182,7 @@ function environmentVariablesAutodocs(context, callback) {
    * @type String (Environment Variable)
    * @default 'autodocs-git-user@bguiz.com'
    */
-  envVar.default('GIT_EMAIL', 'autodocs-git-user@bguiz.com');
+  configVars.default('GIT_EMAIL', 'autodocs-git-user@bguiz.com');
 
 
   /**
@@ -184,7 +193,7 @@ function environmentVariablesAutodocs(context, callback) {
    * @type String (Environment Variable)
    * @default 'false'
    */
-  envVar.default('FLAG_COPY_ASSETS', 'false');
+  configVars.default('FLAG_COPY_ASSETS', 'false');
 
   /**
    * By default, publish will occur when a branch is pushed.
@@ -196,7 +205,7 @@ function environmentVariablesAutodocs(context, callback) {
    * @type String (Environment Variable)
    * @default 'false'
    */
-  envVar.default('FLAG_PUBLISH_ON_RELEASE', 'false');
+  configVars.default('FLAG_PUBLISH_ON_RELEASE', 'false');
 
   /**
    * Whether to clean up afterward, by deleting the directory that was published
@@ -205,7 +214,7 @@ function environmentVariablesAutodocs(context, callback) {
    * @type String (Environment Variable)
    * @default 'false'
    */
-  envVar.default('FLAG_CLEAN_DOCUMENT', 'false');
+  configVars.default('FLAG_CLEAN_DOCUMENT', 'false');
 
   /**
    * Any tokens contained in the build output will be stripped out
@@ -217,7 +226,7 @@ function environmentVariablesAutodocs(context, callback) {
    * @type String (Environment Variable)
    * @default 'true'
    */
-  envVar.default('FLAG_STRIP_TOKEN_OUTPUT', 'true');
+  configVars.default('FLAG_STRIP_TOKEN_OUTPUT', 'true');
 
   /**
    * By default, this will publish a latest page,
@@ -236,7 +245,7 @@ function environmentVariablesAutodocs(context, callback) {
    * @type String (Environment Variable)
    * @default 'true'
    */
-  envVar.default('FLAG_LATEST_PAGE', 'true');
+  configVars.default('FLAG_LATEST_PAGE', 'true');
 
   /**
    * By default, this will publish an all page,
@@ -258,7 +267,7 @@ function environmentVariablesAutodocs(context, callback) {
    * @type String (Environment Variable)
    * @default 'true'
    */
-  envVar.default('FLAG_ALL_PAGE', 'true');
+  configVars.default('FLAG_ALL_PAGE', 'true');
 
   /**
    * Set to false to do all of the steps in publishing,
@@ -271,7 +280,7 @@ function environmentVariablesAutodocs(context, callback) {
    * @type String (Environment Variable)
    * @default 'false'
    */
-  envVar.default('FLAG_SKIP_PUSH', 'false');
+  configVars.default('FLAG_SKIP_PUSH', 'false');
 
   /**
    * Set to true to skip step where documentation is generated. i.e. Do not run
@@ -285,7 +294,7 @@ function environmentVariablesAutodocs(context, callback) {
    * @type String (Environment Variable)
    * @default 'false'
    */
-  envVar.default('FLAG_SKIP_GENERATE', 'false');
+  configVars.default('FLAG_SKIP_GENERATE', 'false');
 
   /**
    * Set to true to skips the entirety of the CI publish run function.
@@ -299,7 +308,7 @@ function environmentVariablesAutodocs(context, callback) {
    * @type String (Environment Variable)
    * @default 'false'
    */
-  envVar.default('FLAG_SKIP_PUBLISH_RUN', 'false');
+  configVars.default('FLAG_SKIP_PUBLISH_RUN', 'false');
 
   /**
    * Documentation will be generated only when this **branch** is pushed
@@ -308,7 +317,7 @@ function environmentVariablesAutodocs(context, callback) {
    * @type String (Environment Variable)
    * @default 'master'
    */
-  envVar.default('DOCUMENT_BRANCH', 'master');
+  configVars.default('DOCUMENT_BRANCH', 'master');
 
   /**
    * Documentation will be generated only on one of the jobs
@@ -318,7 +327,7 @@ function environmentVariablesAutodocs(context, callback) {
    * @type String (Environment Variable)
    * @default '1'
    */
-  envVar.default('DOCUMENT_JOB_INDEX', '1');
+  configVars.default('DOCUMENT_JOB_INDEX', '1');
 
   /**
    * The name of the npm script to run,
@@ -331,7 +340,7 @@ function environmentVariablesAutodocs(context, callback) {
    * @type String (Environment Variable)
    * @default 'generatedocs'
    */
-  envVar.default('DOCUMENT_GENERATE_HOOK', 'generatedocs');
+  configVars.default('DOCUMENT_GENERATE_HOOK', 'generatedocs');
 
   /**
    * After the documentation generation script is run,
@@ -342,7 +351,7 @@ function environmentVariablesAutodocs(context, callback) {
    * @type String (Environment Variable)
    * @default 'documentation'
    */
-  envVar.default('DOCUMENT_GENERATED_FOLDER', 'documentation');
+  configVars.default('DOCUMENT_GENERATED_FOLDER', 'documentation');
 
   /**
    * All documentation will be published under this root directory
@@ -353,7 +362,7 @@ function environmentVariablesAutodocs(context, callback) {
    * @type String (Environment Variable)
    * @default 'api'
    */
-  envVar.default('DOCUMENT_PUBLISH_FOLDER_ROOT', 'api');
+  configVars.default('DOCUMENT_PUBLISH_FOLDER_ROOT', 'api');
 
   /**
    * The documentation will be published in this subdirectory of the root directory.
@@ -364,7 +373,7 @@ function environmentVariablesAutodocs(context, callback) {
    * @type String (Environment Variable)
    * @default '{{MAJOR_VERSION}}.{{MINOR_VERSION}}'
    */
-  envVar.default('DOCUMENT_PUBLISH_SUBFOLDER', '{{MAJOR_VERSION}}.{{MINOR_VERSION}}');
+  configVars.default('DOCUMENT_PUBLISH_SUBFOLDER', '{{MAJOR_VERSION}}.{{MINOR_VERSION}}');
 
 
   /**
@@ -375,7 +384,7 @@ function environmentVariablesAutodocs(context, callback) {
    * @type String (Environment Variable)
    * @default '{{DOCUMENT_PUBLISH_FOLDER_ROOT}}/{{DOCUMENT_PUBLISH_SUBFOLDER}}'
    */
-  envVar.default('DOCUMENT_PUBLISH_FOLDER', '{{DOCUMENT_PUBLISH_FOLDER_ROOT}}/{{DOCUMENT_PUBLISH_SUBFOLDER}}');
+  configVars.default('DOCUMENT_PUBLISH_FOLDER', '{{DOCUMENT_PUBLISH_FOLDER_ROOT}}/{{DOCUMENT_PUBLISH_SUBFOLDER}}');
 
   /**
    * list of files and folders (bash style) to copy into the root of the `gh-pages` branch
@@ -385,15 +394,15 @@ function environmentVariablesAutodocs(context, callback) {
    * @type String (Environment Variable)
    * @default ''
    */
-  envVar.default('DOCUMENT_ASSETS', '');
+  configVars.default('DOCUMENT_ASSETS', '');
 
-  envVar.default('FLAG_TESTING', 'false');
+  configVars.default('FLAG_TESTING', 'false');
 
   [
     'DOCUMENT_PUBLISH_FOLDER_ROOT',
     'DOCUMENT_PUBLISH_SUBFOLDER',
     'DOCUMENT_PUBLISH_FOLDER'
-  ].forEach(envVar.substitute);
+  ].forEach(configVars.substitute);
 }
 
 module.exports = {
