@@ -109,6 +109,7 @@ function publishGithubPages(context, callback) {
     'FLAG_PUBLISH_ON_RELEASE',
     'FLAG_CLEAN_DOCUMENT',
     'FLAG_STRIP_TOKEN_OUTPUT',
+    'FLAG_ALL_PAGE',
     'FLAG_LATEST_PAGE',
     'FLAG_SKIP_PUSH',
     'FLAG_SKIP_GENERATE',

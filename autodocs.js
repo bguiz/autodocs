@@ -375,6 +375,23 @@ function environmentVariablesAutodocs(context, callback) {
    */
   configVars.default('DOCUMENT_PUBLISH_SUBFOLDER', '{{MAJOR_VERSION}}.{{MINOR_VERSION}}');
 
+  /**
+   * If set to `'true'` `DOCUMENT_PUBLISH_FOLDER` is ignored,
+   * and the document is published in the root folder instead.
+   *
+   * @property FLAG_PUBLISH_IN_ROOT
+   * @type String (Environment Variable)
+   * @default 'false'
+   */
+  configVars.default('FLAG_PUBLISH_IN_ROOT', 'false');
+
+  var defaultPublishFolder;
+  if (context.vars.FLAG_PUBLISH_IN_ROOT === 'true') {
+    defaultPublishFolder = '';
+  }
+  else {
+    defaultPublishFolder = '{{DOCUMENT_PUBLISH_FOLDER_ROOT}}/{{DOCUMENT_PUBLISH_SUBFOLDER}}'
+  }
 
   /**
    * Joins `DOCUMENT_PUBLISH_FOLDER_ROOT` with `DOCUMENT_PUBLISH_SUBFOLDER`
@@ -384,7 +401,7 @@ function environmentVariablesAutodocs(context, callback) {
    * @type String (Environment Variable)
    * @default '{{DOCUMENT_PUBLISH_FOLDER_ROOT}}/{{DOCUMENT_PUBLISH_SUBFOLDER}}'
    */
-  configVars.default('DOCUMENT_PUBLISH_FOLDER', '{{DOCUMENT_PUBLISH_FOLDER_ROOT}}/{{DOCUMENT_PUBLISH_SUBFOLDER}}');
+  configVars.default('DOCUMENT_PUBLISH_FOLDER', defaultPublishFolder);
 
   /**
    * list of files and folders (bash style) to copy into the root of the `gh-pages` branch
