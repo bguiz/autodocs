@@ -270,7 +270,7 @@ function publishGithubPages(context, callback) {
   function copyGeneratedFiles() {
     //TODO this step could be done without using shell scripts
     console.log('Copy generated files');
-    if (var.FLAG_PUBLISH_IN_ROOT === 'true') {
+    if (vars.FLAG_PUBLISH_IN_ROOT === 'true') {
       console.log('Publishing in root');
     }
     childProcess.execFile(path.join(__dirname, 'copy-generated-files.sh'), [], {
