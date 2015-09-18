@@ -114,6 +114,7 @@ function publishGithubPages(context, callback) {
     'FLAG_SKIP_PUSH',
     'FLAG_SKIP_GENERATE',
     'FLAG_SKIP_PUBLISH_RUN',
+    'FLAG_PUBLISH_IN_ROOT',
 
     'DOCUMENT_BRANCH',
     'DOCUMENT_JOB_INDEX',
@@ -269,6 +270,9 @@ function publishGithubPages(context, callback) {
   function copyGeneratedFiles() {
     //TODO this step could be done without using shell scripts
     console.log('Copy generated files');
+    if (var.FLAG_PUBLISH_IN_ROOT === 'true') {
+      console.log('Publishing in root');
+    }
     childProcess.execFile(path.join(__dirname, 'copy-generated-files.sh'), [], {
       cwd: projectDir,
       env: vars,
