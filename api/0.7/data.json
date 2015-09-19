@@ -342,7 +342,7 @@
         },
         {
             "file": "publish/github-pages/index.js",
-            "line": 461,
+            "line": 466,
             "description": "Outputs the base URL and the API URL at which the documentation should be published.\n\nUses `CNAME` file based on best guess,\notherwise defaults to `*.github/*`",
             "itemtype": "method",
             "name": "outputUrls",
@@ -626,7 +626,18 @@
         },
         {
             "file": "autodocs.js",
-            "line": 379,
+            "line": 378,
+            "description": "If set to `'true'` `DOCUMENT_PUBLISH_FOLDER` is ignored,\nand the document is published in the root folder instead.",
+            "itemtype": "property",
+            "name": "FLAG_PUBLISH_IN_ROOT",
+            "type": "String (Environment Variable)",
+            "default": "'false'",
+            "class": "Autodocs",
+            "module": "Autodocs"
+        },
+        {
+            "file": "autodocs.js",
+            "line": 396,
             "description": "Joins `DOCUMENT_PUBLISH_FOLDER_ROOT` with `DOCUMENT_PUBLISH_SUBFOLDER`\nto get a concrete path to publish the documentation.",
             "itemtype": "property",
             "name": "DOCUMENT_PUBLISH_FOLDER",
@@ -637,7 +648,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 389,
+            "line": 406,
             "description": "list of files and folders (bash style) to copy into the root of the `gh-pages` branch\nthese files will be copied to the **root**, not the `DOCUMENT_PUBLISH_FOLDER`",
             "itemtype": "property",
             "name": "DOCUMENT_ASSETS",

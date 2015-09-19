@@ -457,6 +457,23 @@
                            */
                           configVars.default(&#x27;DOCUMENT_PUBLISH_SUBFOLDER&#x27;, &#x27;{{MAJOR_VERSION}}.{{MINOR_VERSION}}&#x27;);
                         
+                          /**
+                           * If set to &#x60;&#x27;true&#x27;&#x60; &#x60;DOCUMENT_PUBLISH_FOLDER&#x60; is ignored,
+                           * and the document is published in the root folder instead.
+                           *
+                           * @property FLAG_PUBLISH_IN_ROOT
+                           * @type String (Environment Variable)
+                           * @default &#x27;false&#x27;
+                           */
+                          configVars.default(&#x27;FLAG_PUBLISH_IN_ROOT&#x27;, &#x27;false&#x27;);
+                        
+                          var defaultPublishFolder;
+                          if (context.vars.FLAG_PUBLISH_IN_ROOT === &#x27;true&#x27;) {
+                            defaultPublishFolder = &#x27;&#x27;;
+                          }
+                          else {
+                            defaultPublishFolder = &#x27;{{DOCUMENT_PUBLISH_FOLDER_ROOT}}/{{DOCUMENT_PUBLISH_SUBFOLDER}}&#x27;;
+                          }
                         
                           /**
                            * Joins &#x60;DOCUMENT_PUBLISH_FOLDER_ROOT&#x60; with &#x60;DOCUMENT_PUBLISH_SUBFOLDER&#x60;
@@ -466,7 +483,7 @@
                            * @type String (Environment Variable)
                            * @default &#x27;{{DOCUMENT_PUBLISH_FOLDER_ROOT}}/{{DOCUMENT_PUBLISH_SUBFOLDER}}&#x27;
                            */
-                          configVars.default(&#x27;DOCUMENT_PUBLISH_FOLDER&#x27;, &#x27;{{DOCUMENT_PUBLISH_FOLDER_ROOT}}/{{DOCUMENT_PUBLISH_SUBFOLDER}}&#x27;);
+                          configVars.default(&#x27;DOCUMENT_PUBLISH_FOLDER&#x27;, defaultPublishFolder);
                         
                           /**
                            * list of files and folders (bash style) to copy into the root of the &#x60;gh-pages&#x60; branch

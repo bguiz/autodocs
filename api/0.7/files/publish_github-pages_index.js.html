@@ -191,10 +191,12 @@
                             &#x27;FLAG_PUBLISH_ON_RELEASE&#x27;,
                             &#x27;FLAG_CLEAN_DOCUMENT&#x27;,
                             &#x27;FLAG_STRIP_TOKEN_OUTPUT&#x27;,
+                            &#x27;FLAG_ALL_PAGE&#x27;,
                             &#x27;FLAG_LATEST_PAGE&#x27;,
                             &#x27;FLAG_SKIP_PUSH&#x27;,
                             &#x27;FLAG_SKIP_GENERATE&#x27;,
                             &#x27;FLAG_SKIP_PUBLISH_RUN&#x27;,
+                            &#x27;FLAG_PUBLISH_IN_ROOT&#x27;,
                         
                             &#x27;DOCUMENT_BRANCH&#x27;,
                             &#x27;DOCUMENT_JOB_INDEX&#x27;,
@@ -350,6 +352,9 @@
                           function copyGeneratedFiles() {
                             //TODO this step could be done without using shell scripts
                             console.log(&#x27;Copy generated files&#x27;);
+                            if (vars.FLAG_PUBLISH_IN_ROOT === &#x27;true&#x27;) {
+                              console.log(&#x27;Publishing in root&#x27;);
+                            }
                             childProcess.execFile(path.join(__dirname, &#x27;copy-generated-files.sh&#x27;), [], {
                               cwd: projectDir,
                               env: vars,
