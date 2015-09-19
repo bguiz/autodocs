@@ -85,6 +85,10 @@ In addition to this, publishing also needs a few environment variables to be set
   - to specify folder where documentation is generated
   - this represents the location of the **input** for `autodocs`,
     and it expects the files needed to be published to be here after running the `generatedocs` script
+- `FLAG_PUBLISH_IN_ROOT`
+  - default: `false`
+  - whether to publish in the root folder
+  - by default, documents will be published in `/api/MAJOR_VERSION.MINOR_VERSION`
 - `FLAG_COPY_ASSETS`
   - default: `false`
   - whether there are any assets to copy
