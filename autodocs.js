@@ -390,7 +390,7 @@ function environmentVariablesAutodocs(context, callback) {
     defaultPublishFolder = '';
   }
   else {
-    defaultPublishFolder = '{{DOCUMENT_PUBLISH_FOLDER_ROOT}}/{{DOCUMENT_PUBLISH_SUBFOLDER}}'
+    defaultPublishFolder = '{{DOCUMENT_PUBLISH_FOLDER_ROOT}}/{{DOCUMENT_PUBLISH_SUBFOLDER}}';
   }
 
   /**
