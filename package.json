@@ -1,6 +1,6 @@
 {
   "name": "autodocs",
-  "version": "0.7.1",
+  "version": "0.8.0-rc",
   "description": "Automates publishing API docs for NodeJs projects, useful for continuous integration",
   "main": "index.js",
   "scripts": {

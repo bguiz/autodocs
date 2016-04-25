@@ -297,6 +297,21 @@ function environmentVariablesAutodocs(context, callback) {
   configVars.default('FLAG_SKIP_GENERATE', 'false');
 
   /**
+   * Set to true to skip step where documentation is tested.
+   * i.e. Do not run tests
+   *
+   * `npm run testdocs`
+   *
+   * This is useful when the generate command executes
+   * its own tests
+   *
+   * @property FLAG_SKIP_TEST
+   * @type String (Environment Variable)
+   * @default 'false'
+   */
+  configVars.default('FLAG_SKIP_TEST', 'false');
+
+  /**
    * Set to true to skips the entirety of the CI publish run function.
    * **None** of the publishing related step will occur,
    * except for setting any required environment variables.
@@ -341,6 +356,19 @@ function environmentVariablesAutodocs(context, callback) {
    * @default 'generatedocs'
    */
   configVars.default('DOCUMENT_GENERATE_HOOK', 'generatedocs');
+
+  /**
+   * The name of the npm script to run,
+   * expecting the documentation to get tested.
+   * For example:
+   *
+   * `npm run ${DOCUMENT_TEST_HOOK}`
+   *
+   * @property DOCUMENT_TEST_HOOK
+   * @type String (Environment Variable)
+   * @default 'testdocs'
+   */
+  configVars.default('DOCUMENT_TEST_HOOK', 'testdocs');
 
   /**
    * After the documentation generation script is run,
