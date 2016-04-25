@@ -148,7 +148,7 @@ function publishGithubPages(context, callback) {
     console.log('Generating documentation');
     if (context.vars.FLAG_SKIP_GENERATE === 'true') {
       console.log('Re-using previously generated documentation');
-      setUpVars();
+      runTestdocs();
     }
     else {
       console.log('Invoking "generatedocs" script');
@@ -167,7 +167,43 @@ function publishGithubPages(context, callback) {
               .scripts[context.vars.DOCUMENT_GENERATE_HOOK]) {
           // Necessary to test this scenario because in npm 1.x,
           // npm run on scripts that are not defined results in a silent failure
-          err = new Error('Command failed: npm\nmissing script: '+context.vars.DOCUMENT_GENERATE_HOOK);
+          err = new Error('Command failed: npm\nmissing script: '+
+            context.vars.DOCUMENT_GENERATE_HOOK);
+        }
+        if (err) {
+          callback(err);
+        }
+        else {
+          runTestdocs();
+        }
+      });
+    }
+  }
+
+  function runTestdocs() {
+    if (context.vars.FLAG_SKIP_TEST === 'true') {
+      console.log('Skipping tests for documentation');
+      setUpVars();
+    }
+    else {
+      console.log('Invoking "testdocs" script');
+      var execStatement = 'npm run '+context.vars.DOCUMENT_TEST_HOOK;
+      console.log(execStatement);
+      childProcess.exec(execStatement, {
+        cwd: projectDir,
+        env: vars,
+      }, function(err, stdout, stderr) {
+        console.log(stdout);
+        console.log(stderr);
+
+        /* istanbul ignore if */
+        if (!err &&
+            !(require(path.resolve(context.vars.PROJECT_DIR, 'package.json')))
+              .scripts[context.vars.DOCUMENT_TEST_HOOK]) {
+          // Necessary to test this scenario because in npm 1.x,
+          // npm run on scripts that are not defined results in a silent failure
+          err = new Error('Command failed: npm\nmissing script: '+
+            context.vars.DOCUMENT_TEST_HOOK);
         }
         if (err) {
           callback(err);
