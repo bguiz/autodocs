@@ -1,6 +1,6 @@
 {
   "name": "autodocs",
-  "version": "0.7.1",
+  "version": "0.8.1",
   "description": "Automates publishing API docs for NodeJs projects, useful for continuous integration",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,8 @@
     "cover": "node ./node_modules/istanbul/lib/cli cover ./node_modules/jasmine-node/bin/jasmine-node test",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "generatedocs": "node ./node_modules/yuidocjs/lib/cli .",
-    "autodocs": "node ./index"
+    "testdocs": "node ./testdocs.js",
+    "autodocs": "node ./index.js"
   },
   "repository": {
     "type": "git",
