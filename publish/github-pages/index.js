@@ -419,6 +419,7 @@ function publishGithubPages(context, callback) {
   }
 
   var numFilesChanged;
+
   function commitAndPush() {
     console.log('Commit and push');
     var execStatement = 'git ls-files -m -o | wc -l';
