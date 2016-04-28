@@ -1,10 +1,9 @@
 /*@flow*/
 'use strict';
 
-var fs = require('fs');
 var path = require('path');
-var childProcess = require('child_process');
 
+const executeCommand = require('./execute-command.js');
 const copyAssets = require('./copy-assets.js');
 
 module.exports = copyGeneratedFiles;
@@ -16,19 +15,16 @@ function copyGeneratedFiles(context/*: Object*/) {
     if (context.vars.FLAG_PUBLISH_IN_ROOT === 'true') {
       console.log('Publishing in root');
     }
-    let execFile = path.join(__dirname, 'copy-generated-files.sh');
-    childProcess.execFile(execFile, [], {
+    else {
+      console.log('Publishing in directory based on version');
+    }
+    let filePath = path.join(__dirname, 'copy-generated-files.sh');
+    return executeCommand.file(filePath, [], {
       cwd: context.projectDir,
       env: context.vars,
-    }, function(err, stdout, stderr) {
-      console.log(stdout);
-      console.log(stderr);
-      if (err) {
-        return reject(err);
-      }
-      else {
-        return resolve(copyAssets(context));
-      }
     });
+  })
+  .then((result) => {
+    return (copyAssets(context));
   });
 }

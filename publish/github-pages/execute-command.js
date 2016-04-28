@@ -12,18 +12,22 @@ module.exports = {
  * Utility function to execute a file on the commandline
  * via a separate process (child process)
  *
- * @param  {string} statement  the executable file to invoke
+ * @param  {string} filePath  the executable file to invoke
  * @param  {Array<string>} args  arguments to pass to the executable
  * @param  {Object} options  Typically options would include `cwd` and `env`
  * @return {Promise}  Rejects if the command failed,
  *                    otherwise resolves with stdout and stdin
  */
 function executeFile(
-  statement/*: string*/,
+  filePath/*: string*/,
   argv/*: Array<string>*/,
   options/*: Object*/) {
   return new Promise((resolve, reject) => {
-    childProcess.execFile(statement, argv, options, function(err, stdout, stderr) {
+    console.log('Execute file:');
+    console.log(
+      filePath,
+      argv.map(s => filePath`"${s}"`).join(' '));
+    childProcess.execFile(filePath, argv, options, function(err, stdout, stderr) {
       console.log(stdout);
       console.log(stderr);
       if (!!err) {
@@ -50,6 +54,9 @@ function executeFile(
  */
 function executeStatement(
   statement/*: string*/, options/*: Object*/) {
+    console.log('Execute statement:');
+    console.log(
+      statement);
   return new Promise((resolve, reject) => {
     childProcess.exec(statement, options, function(err, stdout, stderr) {
       console.log(stdout);

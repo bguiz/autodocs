@@ -545,6 +545,7 @@ function outputUrls(context, callback) {
 
 module.exports = {
   init: environmentVariablesGithub,
-  run: publishGithubPages,
+  // run: publishGithubPages,
+  run: require('./publish.js'),
 };
 

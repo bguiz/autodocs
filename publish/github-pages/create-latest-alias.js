@@ -1,10 +1,10 @@
 /*@flow*/
 'use strict';
 
-var fs = require('fs');
-var path = require('path');
-var childProcess = require('child_process');
+const fs = require('fs');
+const path = require('path');
 
+const executeCommand = require('./execute-command.js');
 const commitAndPush = require('./commit-and-push.js');
 
 module.exports = createLatestAlias;
@@ -14,7 +14,7 @@ function createLatestAlias(context/*: Object*/) {
     if (context.vars.FLAG_LATEST_PAGE === 'false') {
       console.log('Not creating a latest page');
       context.vars.LATEST_ASSETS = '';
-      return resolve(commitAndPush(context));
+      return resolve(true);
     }
     else {
       console.log('Create latest alias');
@@ -30,10 +30,14 @@ function createLatestAlias(context/*: Object*/) {
       } catch (ex) {
         // Do nothing - we don't care if the directory already exists
       }
-      fs.writeFileSync(path.resolve(context.repoDir, context.vars.LATEST_DIR, 'index.html'), outHtml);
+      fs.writeFileSync(path.resolve(
+        context.repoDir, context.vars.LATEST_DIR, 'index.html'), outHtml);
 
       context.vars.LATEST_ASSETS = context.vars.LATEST_DIR;
-      return resolve(commitAndPush(context));
+      return resolve(true);
     }
+  })
+  .then((result) => {
+    return (commitAndPush(context));
   });
 }

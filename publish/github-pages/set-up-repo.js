@@ -1,10 +1,9 @@
 /*@flow*/
 'use strict';
 
-var fs = require('fs');
 var path = require('path');
-var childProcess = require('child_process');
 
+const executeCommand = require('./execute-command.js');
 const ghpagesBranch = require('./ghpages-branch.js');
 
 module.exports = setUpRepo;
@@ -12,17 +11,13 @@ module.exports = setUpRepo;
 function setUpRepo(context/*: Object*/) {
   return new Promise((resolve, reject) => {
     console.log('Set up repo');
-    childProcess.execFile(path.join(__dirname, 'set-up-repo.sh'), [], {
+    let filePath = path.join(__dirname, 'set-up-repo.sh');
+    return executeCommand.file(filePath, [], {
       cwd: context.projectDir,
       env: context.vars,
-    }, function(err, stdout, stderr) {
-      console.log(stdout);
-      if (err) {
-        return reject(err);
-      }
-      else {
-        return resolve(ghpagesBranch(context));
-      }
     });
+  })
+  .then((result) => {
+    return (ghpagesBranch(context));
   });
 }

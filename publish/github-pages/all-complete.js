@@ -4,8 +4,9 @@ module.exports = allComplete;
 
 function allComplete(context) {
   return new Promise((resolve, reject) => {
+    console.log('allComplete...');
     outputUrls(context);
-    resolve(undefined, context);
+    resolve(context);
   });
 }
 

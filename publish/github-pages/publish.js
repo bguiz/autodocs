@@ -7,11 +7,16 @@ const runGeneratedocs = require('./run-generatedocs.js');
 module.exports = publishGithubPages;
 
 function publishGithubPages(context/*: Object*/, callback/*: Function*/) {
+  console.log('publishGithubPages...');
   publishGithubPagesImpl(context)
     .then((result) => {
+      console.log('publishGithubPages... done');
+
       callback(undefined, result);
     })
     .catch((err) => {
+      console.log('publishGithubPages... failed');
+
       console.error(err);
       callback(err);
     });
@@ -19,6 +24,7 @@ function publishGithubPages(context/*: Object*/, callback/*: Function*/) {
 
 function publishGithubPagesImpl(context/*: Object*/) {
   return new Promise((resolve, reject) => {
+    console.log('publishGithubPagesImpl...');
 
     var configVars = context.configVariables;
 
@@ -68,10 +74,10 @@ function publishGithubPagesImpl(context/*: Object*/) {
     context.projectDir = context.vars.PROJECT_DIR;
 
     if (context.vars.FLAG_SKIP_PUBLISH_RUN === 'true') {
-      return resolve(allComplete(context));
+      return (allComplete(context));
     }
     else {
-      return resolve(runGeneratedocs(context));
+      return (runGeneratedocs(context));
     }
   });
 }
