@@ -66,6 +66,7 @@ function publishGithubPagesImpl(context/*: Object*/) {
 
       'DOCUMENT_BRANCH',
       'DOCUMENT_JOB_INDEX',
+      'DOCUMENT_TEST_HOOK',
       'DOCUMENT_GENERATE_HOOK',
       'DOCUMENT_GENERATED_FOLDER',
       'DOCUMENT_PUBLISH_FOLDER_ROOT',
