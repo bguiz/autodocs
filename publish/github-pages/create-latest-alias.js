@@ -11,6 +11,7 @@ module.exports = createLatestAlias;
 
 function createLatestAlias(context/*: Object*/) {
   return new Promise((resolve, reject) => {
+    console.log('createLatestAlias... start');
     if (context.vars.FLAG_LATEST_PAGE === 'false') {
       console.log('Not creating a latest page');
       context.vars.LATEST_ASSETS = '';
@@ -38,6 +39,7 @@ function createLatestAlias(context/*: Object*/) {
     }
   })
   .then((result) => {
+    console.log('createLatestAlias... finish');
     return (commitAndPush(context));
   });
 }

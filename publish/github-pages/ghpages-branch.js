@@ -8,16 +8,16 @@ module.exports = ghpagesBranch;
 
 function ghpagesBranch(context/*: Object*/) {
   return new Promise((resolve, reject) => {
-    console.log('Set up branch');
+    console.log('ghpagesBranch... start');
     var statement =
       "git ls-remote --heads "+context.vars.REPO_URL_UNAUTH+
       " | grep 'refs\\\/heads\\\/"+context.vars.GH_PUBLISH_BRANCH+
       "' | wc -l";
     console.log(statement);
-    return executeCommand.statement(statement, {
+    return resolve(executeCommand.statement(statement, {
       cwd: context.projectDir,
       env: context.vars,
-    });
+    }));
   })
   .then((result) => {
     console.log('NUM_PUBLISH_BRANCHES', result.stdout);
@@ -35,12 +35,14 @@ function ghpagesBranch(context/*: Object*/) {
       throw ('Could not determine whether repo has a '+
         context.vars.GH_PUBLISH_BRANCH+' branch');
     }
+    console.log('ghpagesBranch... finish');
     return (ghpagesBranchImpl(context));
   });
 }
 
 function ghpagesBranchImpl(context/*: Object*/) {
   return new Promise((resolve, reject) => {
+    console.log('ghpagesBranchImpl... start');
     let statement;
     if (context.numPublishBranches === 0) {
       console.log('Creating new '+context.vars.GH_PUBLISH_BRANCH+' branch');
@@ -52,12 +54,13 @@ function ghpagesBranchImpl(context/*: Object*/) {
         ' && git checkout '+context.vars.GH_PUBLISH_BRANCH;
     }
     console.log(statement);
-    executeCommand.statement(statement, {
+    return resolve(executeCommand.statement(statement, {
       cwd: context.repoDir,
       env: context.vars,
-    });
+    }));
   })
   .then((result) => {
+    console.log('ghpagesBranchImpl... finish');
     return (copyGeneratedFiles(context));
   });
 }

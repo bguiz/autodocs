@@ -10,14 +10,14 @@ module.exports = copyAssets;
 
 function copyAssets(context/*: Object*/) {
   return new Promise((resolve, reject) => {
-    console.log('Copy assets');
+    console.log('copyAssets... start');
     if (context.vars.FLAG_COPY_ASSETS === 'true') {
       console.log('Copying assets: '+context.vars.DOCUMENT_ASSETS);
       let execFile = path.join(__dirname, 'copy-assets.sh');
-      return executeCommand.file(execFile, [], {
+      return resolve(executeCommand.file(execFile, [], {
         cwd: context.projectDir,
         env: context.vars,
-      });
+      }));
     }
     else {
       console.log('Not copying assets');
@@ -26,6 +26,7 @@ function copyAssets(context/*: Object*/) {
     }
   })
   .then((result) => {
+    console.log('copyAssets... finish');
     return (createIndexPage(context));
   });
 }

@@ -23,17 +23,19 @@ function executeFile(
   argv/*: Array<string>*/,
   options/*: Object*/) {
   return new Promise((resolve, reject) => {
-    console.log('Execute file:');
+    console.log('executeFile:');
     console.log(
       filePath,
-      argv.map(s => filePath`"${s}"`).join(' '));
+      argv.map((s) => `"${s}"`).join(' '));
     childProcess.execFile(filePath, argv, options, function(err, stdout, stderr) {
       console.log(stdout);
       console.log(stderr);
       if (!!err) {
+        console.error('executeFile error');
         return reject(err);
       }
       else {
+        console.error('executeFile success');
         return resolve({
           stdout,
           stderr,
@@ -54,17 +56,19 @@ function executeFile(
  */
 function executeStatement(
   statement/*: string*/, options/*: Object*/) {
-    console.log('Execute statement:');
+  return new Promise((resolve, reject) => {
+    console.log('executeStatement:');
     console.log(
       statement);
-  return new Promise((resolve, reject) => {
     childProcess.exec(statement, options, function(err, stdout, stderr) {
       console.log(stdout);
       console.log(stderr);
       if (!!err) {
+        console.error('executeStatement error');
         return reject(err);
       }
       else {
+        console.error('executeStatement success');
         return resolve({
           stdout,
           stderr,

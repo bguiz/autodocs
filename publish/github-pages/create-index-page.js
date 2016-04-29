@@ -11,25 +11,32 @@ module.exports = createIndexPage;
 
 function createIndexPage(context/*: Object*/) {
   return new Promise((resolve, reject) => {
+    console.log('createIndexPage... start');
     if (context.vars.FLAG_ALL_PAGE === 'false') {
       console.log('Not creating an all page');
       context.vars.ALL_ASSETS = '';
       return resolve(true);
     }
     else {
-      return createIndexPageImpl(context);
+      return resolve(createIndexPageImpl(context));
     }
   })
   .then((result) => {
+    console.log('createIndexPage... finish');
     return (createLatestAlias(context));
   });
 }
 
 function createIndexPageImpl(context) {
   return new Promise((resolve, reject) => {
+    console.log('createIndexPageImpl... start');
     console.log('Create an all page');
-    var publishFolderRoot =
-      path.resolve(context.repoDir, context.vars.DOCUMENT_PUBLISH_FOLDER_ROOT);
+    console.log(
+      context.repoDir,
+      context.vars.DOCUMENT_PUBLISH_FOLDER_ROOT);
+    context.publishFolderRoot =
+      path.resolve(context.repoDir,
+        context.vars.DOCUMENT_PUBLISH_FOLDER_ROOT);
     fs.readdir(context.publishFolderRoot, function(err, files) {
       if (err) {
         return reject(err);
@@ -65,5 +72,8 @@ function createIndexPageImpl(context) {
     fs.writeFileSync(path.resolve(context.repoDir, context.vars.ALL_DIR, 'index.html'), outHtml);
 
     context.vars.ALL_ASSETS = context.vars.ALL_DIR;
+
+    console.log('createIndexPageImpl... finish');
+    return true;
   });
 }
