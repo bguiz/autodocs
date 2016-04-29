@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>publish/github-pages/run-testdocs.js - autodocs</title>
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/css/custom.css">
+    <link rel="stylesheet" href="../assets/css/lucid.css">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+</head>
+<body class="yui3-skin-sam">
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <h1 class="brand" style="padding: 10px 16px 10px; height: 20px; line-height: 20px; margin-left: 0;">
+            autodocs
+        </h1>
+	<div class="nav">
+            <li class="divider-vertical"></li>
+            <li>
+                <p class="navbar-text">
+                    API Docs for Version: <b>0.9.1</b>
+                </p>
+            </li>
+        </div>
+        <form class="navbar-form pull-right" style="line-height: 40px; height: 40px;">
+            <input style="margin-top: 0;" type="text" class="search-query" placeholder="Search for classes/modules..." data-obj='["classes/Autodocs", "classes/AutodocsRun", "classes/CiTravis", "classes/EnvironmentVariables", "classes/PublishGithubPages", "modules/Autodocs", "modules/AutodocsCi", "modules/AutodocsPublish"]'>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span3">
+<div>
+    <div id="sidebar">
+    <div id="classes">
+        <ul id="api-classes" class="nav nav-list">
+                <li><a href="../classes/Autodocs.html">Autodocs</a></li>
+                <li><a href="../classes/AutodocsRun.html">AutodocsRun</a></li>
+                <li><a href="../classes/CiTravis.html">CiTravis</a></li>
+                <li><a href="../classes/EnvironmentVariables.html">EnvironmentVariables</a></li>
+                <li><a href="../classes/PublishGithubPages.html">PublishGithubPages</a></li>
+        </ul>
+    </div>
+    </div>
+</div>
+        </div>
+        <div class="span9">
+    <form id="options-form" class="form-inline pull-right">
+        Show:
+        <label for="api-show-inherited" class="checkbox">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected" class="checkbox">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private" class="checkbox">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated" class="checkbox">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </form>
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<div class="page-header">
+    <h1>publish/github-pages/run-testdocs.js <small>File</small></h1>
+</div>
+
+<div class="file">
+    <pre class="prettyprint linenums">
+/*@flow*/
+&#x27;use strict&#x27;;
+
+const executeCommand = require(&#x27;./execute-command.js&#x27;);
+const setUpVars = require(&#x27;./set-up-vars.js&#x27;);
+
+module.exports = runTestdocs;
+
+/**
+ * Invokes the &#x60;testdocs&#x60; command,
+ * unless &#x60;FLAG_SKIP_TEST&#x60; is true,
+ * in which case it is up to the client
+ * to invoke tests as appropriate.
+ *
+ * @method runTestdocs
+ * @for  PublishGithubPages
+ */
+function runTestdocs(context/*: Object*/) {
+  return new Promise((resolve, reject) =&gt; {
+    console.log(&#x27;runTestdocs... start&#x27;);
+    if (context.vars.FLAG_SKIP_TEST === &#x27;true&#x27;) {
+      console.log(&#x27;Skipping tests for documentation&#x27;);
+      return resolve(true);
+    }
+    else {
+      console.log(&#x27;Invoking &quot;testdocs&quot; script&#x27;);
+      var statement = &#x27;npm run &#x27;+context.vars.DOCUMENT_TEST_HOOK;
+      return resolve(executeCommand.statement(statement, {
+        cwd: context.projectDir,
+        env: context.vars,
+      }));
+    }
+  })
+  .then((result) =&gt; {
+    console.log(&#x27;runTestdocs... finish&#x27;);
+    return (setUpVars(context));
+  });
+}
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/jquery/jquery-1.8.2.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/yuidoc-bootstrap.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>
