@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "./node_modules/jshint/bin/jshint --verbose --reporter ./node_modules/jshint-stylish .",
     "test": "jasmine",
-    "cover": "node ./node_modules/istanbul/lib/cli cover ./node_modules/jasmine-node/bin/jasmine-node test",
+    "cover": "node ./node_modules/istanbul/lib/cli cover ./node_modules/.bin/jasmine",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "generatedocs": "node ./node_modules/yuidocjs/lib/cli .",
     "testdocs": "node ./testdocs.js",
