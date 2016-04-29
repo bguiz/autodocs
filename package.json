@@ -1,7 +1,7 @@
 {
   "name": "autodocs",
-  "version": "0.9.0-rc1",
-  "description": "Automates publishing API docs for NodeJs projects, useful for continuous integration",
+  "version": "0.9.1",
+  "description": "Automates publishing docuentation for NodeJs projects, for use continuous integration and continuous deployment",
   "main": "index.js",
   "scripts": {
     "lint": "./node_modules/jshint/bin/jshint --verbose --reporter ./node_modules/jshint-stylish .",
@@ -26,7 +26,7 @@
     "api"
   ],
   "author": "bguiz",
-  "license": "GPLv3",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/bguiz/autodocs/issues"
   },
