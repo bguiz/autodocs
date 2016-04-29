@@ -6,6 +6,15 @@ const setUpVars = require('./set-up-vars.js');
 
 module.exports = runTestdocs;
 
+/**
+ * Invokes the `testdocs` command,
+ * unless `FLAG_SKIP_TEST` is true,
+ * in which case it is up to the client
+ * to invoke tests as appropriate.
+ *
+ * @method runTestdocs
+ * @for  PublishGithubPages
+ */
 function runTestdocs(context/*: Object*/) {
   return new Promise((resolve, reject) => {
     console.log('runTestdocs... start');

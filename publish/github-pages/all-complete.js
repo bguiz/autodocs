@@ -1,11 +1,21 @@
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
+
 module.exports = allComplete;
 
+/**
+ * When all operations are complete, this is invoked
+ *
+ * @method allComplete
+ * @for  PublishGithubPages
+ */
 function allComplete(context) {
   return new Promise((resolve, reject) => {
-    console.log('allComplete...');
+    console.log('allComplete... start');
     outputUrls(context);
+    console.log('allComplete... finish');
     resolve(context);
   });
 }

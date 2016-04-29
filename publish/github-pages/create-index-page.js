@@ -44,7 +44,7 @@ function createIndexPageImpl(context) {
       else {
         return resolve(files);
       }
-    })
+    });
   })
   .then((files) => {
     // Work out which versions have documentation available

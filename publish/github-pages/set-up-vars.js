@@ -8,6 +8,13 @@ const setUpRepo = require('./set-up-repo.js');
 
 module.exports = setUpVars;
 
+/**
+ * Set up remaining environment variables required
+ * for publishing to github pages
+ *
+ * @method setUpVars
+ * @for  PublishGithubPages
+ */
 function setUpVars(context/*: Object*/) {
   return new Promise((resolve, reject) => {
     console.log('setUpVars... start');

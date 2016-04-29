@@ -6,6 +6,15 @@ const runTestdocs = require('./run-testdocs.js');
 
 module.exports = runGeneratedocs;
 
+/**
+ * Invokes the `generatedocs` command,
+ * unless `FLAG_SKIP_GENERATE` is true,
+ * in which case it assume that the docs
+ * have already been generated.
+ *
+ * @method runGeneratedocs
+ * @for  PublishGithubPages
+ */
 function runGeneratedocs(context/*: Object*/) {
   return new Promise((resolve, reject) => {
     console.log('runGeneratedocs... start');

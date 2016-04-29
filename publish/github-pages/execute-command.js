@@ -6,7 +6,7 @@ var childProcess = require('child_process');
 module.exports = {
   statement: executeStatement,
   file: executeFile,
-}
+};
 
 /**
  * Utility function to execute a file on the commandline
