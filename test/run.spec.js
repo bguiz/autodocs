@@ -82,6 +82,7 @@ describe('[run]', function() {
 
         process.env.FLAG_SKIP_PUBLISH_RUN = 'false';
         process.env.FLAG_SKIP_GENERATE = 'false';
+        process.env.FLAG_SKIP_TEST = 'true';
 
         process.env.FLAG_COPY_ASSETS = 'true';
         process.env.DOCUMENT_ASSETS = 'CNAME';
@@ -102,6 +103,7 @@ describe('[run]', function() {
 
         process.env.FLAG_SKIP_PUBLISH_RUN = 'false';
         process.env.FLAG_SKIP_GENERATE = 'true';
+        process.env.FLAG_SKIP_TEST = 'true';
 
         process.env.FLAG_COPY_ASSETS = 'false';
         process.env.DOCUMENT_ASSETS = '';
@@ -120,10 +122,11 @@ describe('[run]', function() {
       });
     });
 
-    //TODO write more tests to cover
+    //TODO write more tests to cover:
     //
-    //- different combinations of flags
-    //- error thrown cases
+    // - when testdocs should be run
+    // - different combinations of flags
+    // - error thrown cases
 
     describe('[specific flag combinations]', function() {
       beforeEach(increaseTestDuration); afterEach(resetTestDuration);
@@ -133,6 +136,7 @@ describe('[run]', function() {
         process.env = envs.buildOnBranch();
         process.env.FLAG_SKIP_PUBLISH_RUN = 'false';
         process.env.FLAG_SKIP_GENERATE = 'true';
+        process.env.FLAG_SKIP_TEST = 'true';
         process.env.DOCUMENT_GENERATED_FOLDER = 'dir/does/not/exist';
 
         autodocs.run(undefined, function(err) {
@@ -147,6 +151,7 @@ describe('[run]', function() {
 
         process.env.FLAG_SKIP_PUBLISH_RUN = 'false';
         process.env.FLAG_SKIP_GENERATE = 'false';
+        process.env.FLAG_SKIP_TEST = 'true';
 
         process.env.DOCUMENT_GENERATE_HOOK = 'foo123';
 
@@ -165,6 +170,7 @@ describe('[run]', function() {
 
         process.env.FLAG_SKIP_PUBLISH_RUN = 'false';
         process.env.FLAG_SKIP_GENERATE = 'true';
+        process.env.FLAG_SKIP_TEST = 'true';
 
         process.env.FLAG_COPY_ASSETS = 'true';
         process.env.DOCUMENT_ASSETS = 'files/that do/not/exist';

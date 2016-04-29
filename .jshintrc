@@ -86,6 +86,7 @@
     "dojo"          : false,    // Enable globals exposed by Dojo Toolkit.
     "jquery"        : false,    // Enable globals exposed by jQuery JavaScript library.
     "mootools"      : false,    // Enable globals exposed by MooTools JavaScript framework.
+    "esversion"     : 6,        // ECMAScript2015
     "node"          : true,     // Enable globals available when code is running inside of the NodeJS runtime environment.
     "jasmine"       : true,     // Define globals exposed by Jasmine.
     "nonstandard"   : false,    // Define non-standard but widely adopted globals such as escape and unescape.

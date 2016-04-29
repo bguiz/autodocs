@@ -1,12 +1,12 @@
 {
   "name": "autodocs",
-  "version": "0.8.1",
-  "description": "Automates publishing API docs for NodeJs projects, useful for continuous integration",
+  "version": "0.9.1",
+  "description": "Automates publishing docuentation for NodeJs projects, for use continuous integration and continuous deployment",
   "main": "index.js",
   "scripts": {
     "lint": "./node_modules/jshint/bin/jshint --verbose --reporter ./node_modules/jshint-stylish .",
-    "test": "node ./node_modules/jasmine-node/bin/jasmine-node test",
-    "cover": "node ./node_modules/istanbul/lib/cli cover ./node_modules/jasmine-node/bin/jasmine-node test",
+    "test": "jasmine",
+    "cover": "node ./node_modules/istanbul/lib/cli cover ./node_modules/.bin/jasmine",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "generatedocs": "node ./node_modules/yuidocjs/lib/cli .",
     "testdocs": "node ./testdocs.js",
@@ -26,7 +26,7 @@
     "api"
   ],
   "author": "bguiz",
-  "license": "GPLv3",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/bguiz/autodocs/issues"
   },
@@ -34,7 +34,7 @@
   "devDependencies": {
     "coveralls": "^2.11.2",
     "istanbul": "^0.3.11",
-    "jasmine-node": "^2.0.0",
+    "jasmine": "^2.4.1",
     "jshint": "^2.6.3",
     "jshint-stylish": "^1.0.1",
     "yuidoc-lucid-theme": "^0.1.1",
