@@ -386,6 +386,11 @@
                     "name": "options",
                     "description": "Typically options would include `cwd` and `env`",
                     "type": "Object"
+                },
+                {
+                    "name": "flags",
+                    "description": "Flags for this function, `logStdout`, `logStderr`",
+                    "type": "Object"
                 }
             ],
             "return": {
@@ -397,7 +402,7 @@
         },
         {
             "file": "publish/github-pages/execute-command.js",
-            "line": 48,
+            "line": 56,
             "description": "Utility function to execute a statement on the commandline\nvia a separate process (child process)",
             "params": [
                 {
@@ -408,6 +413,11 @@
                 {
                     "name": "options",
                     "description": "Typically options would include `cwd` and `env`",
+                    "type": "Object"
+                },
+                {
+                    "name": "flags",
+                    "description": "Flags for this function, `logStdout`, `logStderr`",
                     "type": "Object"
                 }
             ],
@@ -981,7 +991,7 @@
         },
         {
             "message": "Missing item type\nUtility function to execute a statement on the commandline\nvia a separate process (child process)",
-            "line": " publish/github-pages/execute-command.js:48"
+            "line": " publish/github-pages/execute-command.js:56"
         }
     ]
 }

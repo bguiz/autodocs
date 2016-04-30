@@ -97,21 +97,29 @@ module.exports = {
  * @param  {string} filePath  the executable file to invoke
  * @param  {Array&lt;string&gt;} args  arguments to pass to the executable
  * @param  {Object} options  Typically options would include &#x60;cwd&#x60; and &#x60;env&#x60;
+ * @param  {Object} flags  Flags for this function, &#x60;logStdout&#x60;, &#x60;logStderr&#x60;
  * @return {Promise}  Rejects if the command failed,
  *                    otherwise resolves with stdout and stdin
  */
 function executeFile(
   filePath/*: string*/,
   argv/*: Array&lt;string&gt;*/,
-  options/*: Object*/) {
+  options/*: Object*/,
+  flags/*: ?Object*/) {
   return new Promise((resolve, reject) =&gt; {
     console.log(&#x27;executeFile:&#x27;);
     console.log(
       filePath,
       argv.map((s) =&gt; &#x60;&quot;${s}&quot;&#x60;).join(&#x27; &#x27;));
     childProcess.execFile(filePath, argv, options, function(err, stdout, stderr) {
-      console.log(stdout);
-      console.log(stderr);
+      if (!!flags) {
+        if (flags.logStdout) {
+          console.log(stdout);
+        }
+        if (flags.logStderr) {
+          console.log(stderr);
+        }
+      }
       if (!!err) {
         console.error(&#x27;executeFile error&#x27;);
         return reject(err);
@@ -133,18 +141,27 @@ function executeFile(
  *
  * @param  {string} statement  the command to execute
  * @param  {Object} options  Typically options would include &#x60;cwd&#x60; and &#x60;env&#x60;
+ * @param  {Object} flags  Flags for this function, &#x60;logStdout&#x60;, &#x60;logStderr&#x60;
  * @return {Promise}  Rejects if the command failed,
  *                    otherwise resolves with stdout and stdin
  */
 function executeStatement(
-  statement/*: string*/, options/*: Object*/) {
+  statement/*: string*/,
+  options/*: Object*/,
+  flags/*: ?Object*/) {
   return new Promise((resolve, reject) =&gt; {
     console.log(&#x27;executeStatement:&#x27;);
     console.log(
       statement);
     childProcess.exec(statement, options, function(err, stdout, stderr) {
-      console.log(stdout);
-      console.log(stderr);
+      if (!!flags) {
+        if (flags.logStdout) {
+          console.log(stdout);
+        }
+        if (flags.logStderr) {
+          console.log(stderr);
+        }
+      }
       if (!!err) {
         console.error(&#x27;executeStatement error&#x27;);
         return reject(err);
