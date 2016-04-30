@@ -23,7 +23,7 @@ function executeFile(
   filePath/*: string*/,
   argv/*: Array<string>*/,
   options/*: Object*/,
-  flags/*: Object*/) {
+  flags/*: ?Object*/) {
   return new Promise((resolve, reject) => {
     console.log('executeFile:');
     console.log(
@@ -64,9 +64,9 @@ function executeFile(
  *                    otherwise resolves with stdout and stdin
  */
 function executeStatement(
-  filePath/*: string*/,
+  statement/*: string*/,
   options/*: Object*/,
-  flags/*: Object*/) {
+  flags/*: ?Object*/) {
   return new Promise((resolve, reject) => {
     console.log('executeStatement:');
     console.log(
