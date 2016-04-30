@@ -15,21 +15,29 @@ module.exports = {
  * @param  {string} filePath  the executable file to invoke
  * @param  {Array<string>} args  arguments to pass to the executable
  * @param  {Object} options  Typically options would include `cwd` and `env`
+ * @param  {Object} flags  Flags for this function, `logStdout`, `logStderr`
  * @return {Promise}  Rejects if the command failed,
  *                    otherwise resolves with stdout and stdin
  */
 function executeFile(
   filePath/*: string*/,
   argv/*: Array<string>*/,
-  options/*: Object*/) {
+  options/*: Object*/,
+  flags/*: ?Object*/) {
   return new Promise((resolve, reject) => {
     console.log('executeFile:');
     console.log(
       filePath,
       argv.map((s) => `"${s}"`).join(' '));
     childProcess.execFile(filePath, argv, options, function(err, stdout, stderr) {
-      console.log(stdout);
-      console.log(stderr);
+      if (!!flags) {
+        if (flags.logStdout) {
+          console.log(stdout);
+        }
+        if (flags.logStderr) {
+          console.log(stderr);
+        }
+      }
       if (!!err) {
         console.error('executeFile error');
         return reject(err);
@@ -51,18 +59,27 @@ function executeFile(
  *
  * @param  {string} statement  the command to execute
  * @param  {Object} options  Typically options would include `cwd` and `env`
+ * @param  {Object} flags  Flags for this function, `logStdout`, `logStderr`
  * @return {Promise}  Rejects if the command failed,
  *                    otherwise resolves with stdout and stdin
  */
 function executeStatement(
-  statement/*: string*/, options/*: Object*/) {
+  statement/*: string*/,
+  options/*: Object*/,
+  flags/*: ?Object*/) {
   return new Promise((resolve, reject) => {
     console.log('executeStatement:');
     console.log(
       statement);
     childProcess.exec(statement, options, function(err, stdout, stderr) {
-      console.log(stdout);
-      console.log(stderr);
+      if (!!flags) {
+        if (flags.logStdout) {
+          console.log(stdout);
+        }
+        if (flags.logStderr) {
+          console.log(stderr);
+        }
+      }
       if (!!err) {
         console.error('executeStatement error');
         return reject(err);
