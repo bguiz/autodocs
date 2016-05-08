@@ -407,6 +407,10 @@ function environmentVariablesAutodocs(context, callback) {
    * If set to `'true'` `DOCUMENT_PUBLISH_FOLDER` is ignored,
    * and the document is published in the root folder instead.
    *
+   * If using this module to publish something like a blog,
+   * instead of versioned software documentation,
+   * you should set this flag to `true`.
+   *
    * @property FLAG_PUBLISH_IN_ROOT
    * @type String (Environment Variable)
    * @default 'false'
