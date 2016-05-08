@@ -2,7 +2,7 @@
     "project": {
         "name": "autodocs",
         "description": "Automates publishing docuentation for NodeJs projects, for use continuous integration and continuous deployment",
-        "version": "0.9.3"
+        "version": "0.9.4"
     },
     "files": {
         "ci/travis/index.js": {
@@ -824,7 +824,7 @@
         {
             "file": "autodocs.js",
             "line": 406,
-            "description": "If set to `'true'` `DOCUMENT_PUBLISH_FOLDER` is ignored,\nand the document is published in the root folder instead.",
+            "description": "If set to `'true'` `DOCUMENT_PUBLISH_FOLDER` is ignored,\nand the document is published in the root folder instead.\n\nIf using this module to publish something like a blog,\ninstead of versioned software documentation,\nyou should set this flag to `true`.",
             "itemtype": "property",
             "name": "FLAG_PUBLISH_IN_ROOT",
             "type": "String (Environment Variable)",
@@ -834,7 +834,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 424,
+            "line": 428,
             "description": "Joins `DOCUMENT_PUBLISH_FOLDER_ROOT` with `DOCUMENT_PUBLISH_SUBFOLDER`\nto get a concrete path to publish the documentation.",
             "itemtype": "property",
             "name": "DOCUMENT_PUBLISH_FOLDER",
@@ -845,7 +845,7 @@
         },
         {
             "file": "autodocs.js",
-            "line": 434,
+            "line": 438,
             "description": "list of files and folders (bash style) to copy into the root of the `gh-pages` branch\nthese files will be copied to the **root**, not the `DOCUMENT_PUBLISH_FOLDER`",
             "itemtype": "property",
             "name": "DOCUMENT_ASSETS",
