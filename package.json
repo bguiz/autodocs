@@ -1,6 +1,6 @@
 {
   "name": "autodocs",
-  "version": "0.9.4",
+  "version": "0.10.0",
   "description": "Automates publishing documentation, for use continuous integration and continuous deployment",
   "main": "index.js",
   "bin": {
