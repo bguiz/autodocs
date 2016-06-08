@@ -2,7 +2,7 @@
     "project": {
         "name": "autodocs",
         "description": "Automates publishing documentation, for use continuous integration and continuous deployment",
-        "version": "0.10.0"
+        "version": "0.10.2"
     },
     "files": {
         "ci/travis/index.js": {
