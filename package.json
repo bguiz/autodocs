@@ -1,10 +1,10 @@
 {
   "name": "autodocs",
-  "version": "0.10.1",
+  "version": "0.10.2",
   "description": "Automates publishing documentation, for use continuous integration and continuous deployment",
   "main": "index.js",
   "bin": {
-    "autodocs": "node ./index.js"
+    "autodocs": "./index.js"
   },
   "scripts": {
     "lint": "./node_modules/jshint/bin/jshint --verbose --reporter ./node_modules/jshint-stylish .",
