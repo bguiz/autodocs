@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>publish/github-pages/execute-command.js - autodocs</title>
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/css/custom.css">
+    <link rel="stylesheet" href="../assets/css/lucid.css">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+</head>
+<body class="yui3-skin-sam">
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <h1 class="brand" style="padding: 10px 16px 10px; height: 20px; line-height: 20px; margin-left: 0;">
+            autodocs
+        </h1>
+	<div class="nav">
+            <li class="divider-vertical"></li>
+            <li>
+                <p class="navbar-text">
+                    API Docs for Version: <b>0.10.0</b>
+                </p>
+            </li>
+        </div>
+        <form class="navbar-form pull-right" style="line-height: 40px; height: 40px;">
+            <input style="margin-top: 0;" type="text" class="search-query" placeholder="Search for classes/modules..." data-obj='["classes/Autodocs", "classes/AutodocsRun", "classes/CiTravis", "classes/EnvironmentVariables", "classes/PublishGithubPages", "modules/Autodocs", "modules/AutodocsCi", "modules/AutodocsPublish"]'>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span3">
+<div>
+    <div id="sidebar">
+    <div id="classes">
+        <ul id="api-classes" class="nav nav-list">
+                <li><a href="../classes/Autodocs.html">Autodocs</a></li>
+                <li><a href="../classes/AutodocsRun.html">AutodocsRun</a></li>
+                <li><a href="../classes/CiTravis.html">CiTravis</a></li>
+                <li><a href="../classes/EnvironmentVariables.html">EnvironmentVariables</a></li>
+                <li><a href="../classes/PublishGithubPages.html">PublishGithubPages</a></li>
+        </ul>
+    </div>
+    </div>
+</div>
+        </div>
+        <div class="span9">
+    <form id="options-form" class="form-inline pull-right">
+        Show:
+        <label for="api-show-inherited" class="checkbox">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected" class="checkbox">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private" class="checkbox">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated" class="checkbox">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </form>
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<div class="page-header">
+    <h1>publish/github-pages/execute-command.js <small>File</small></h1>
+</div>
+
+<div class="file">
+    <pre class="prettyprint linenums">
+/*@flow*/
+&#x27;use strict&#x27;;
+
+var childProcess = require(&#x27;child_process&#x27;);
+
+module.exports = {
+  statement: executeStatement,
+  file: executeFile,
+};
+
+/**
+ * Utility function to execute a file on the commandline
+ * via a separate process (child process)
+ *
+ * @param  {string} filePath  the executable file to invoke
+ * @param  {Array&lt;string&gt;} args  arguments to pass to the executable
+ * @param  {Object} options  Typically options would include &#x60;cwd&#x60; and &#x60;env&#x60;
+ * @param  {Object} flags  Flags for this function, &#x60;logStdout&#x60;, &#x60;logStderr&#x60;
+ * @return {Promise}  Rejects if the command failed,
+ *                    otherwise resolves with stdout and stdin
+ */
+function executeFile(
+  filePath/*: string*/,
+  argv/*: Array&lt;string&gt;*/,
+  options/*: Object*/,
+  flags/*: ?Object*/) {
+  return new Promise((resolve, reject) =&gt; {
+    console.log(&#x27;executeFile:&#x27;);
+    console.log(
+      filePath,
+      argv.map((s) =&gt; &#x60;&quot;${s}&quot;&#x60;).join(&#x27; &#x27;));
+    childProcess.execFile(filePath, argv, options, function(err, stdout, stderr) {
+      if (!!flags) {
+        if (flags.logStdout) {
+          console.log(stdout);
+        }
+        if (flags.logStderr) {
+          console.log(stderr);
+        }
+      }
+      if (!!err) {
+        console.error(&#x27;executeFile error&#x27;);
+        return reject(err);
+      }
+      else {
+        console.error(&#x27;executeFile success&#x27;);
+        return resolve({
+          stdout,
+          stderr,
+        });
+      }
+    });
+  });
+}
+
+/**
+ * Utility function to execute a statement on the commandline
+ * via a separate process (child process)
+ *
+ * @param  {string} statement  the command to execute
+ * @param  {Object} options  Typically options would include &#x60;cwd&#x60; and &#x60;env&#x60;
+ * @param  {Object} flags  Flags for this function, &#x60;logStdout&#x60;, &#x60;logStderr&#x60;
+ * @return {Promise}  Rejects if the command failed,
+ *                    otherwise resolves with stdout and stdin
+ */
+function executeStatement(
+  statement/*: string*/,
+  options/*: Object*/,
+  flags/*: ?Object*/) {
+  return new Promise((resolve, reject) =&gt; {
+    console.log(&#x27;executeStatement:&#x27;);
+    console.log(
+      statement);
+    childProcess.exec(statement, options, function(err, stdout, stderr) {
+      if (!!flags) {
+        if (flags.logStdout) {
+          console.log(stdout);
+        }
+        if (flags.logStderr) {
+          console.log(stderr);
+        }
+      }
+      if (!!err) {
+        console.error(&#x27;executeStatement error&#x27;);
+        return reject(err);
+      }
+      else {
+        console.error(&#x27;executeStatement success&#x27;);
+        return resolve({
+          stdout,
+          stderr,
+        });
+      }
+    });
+  });
+}
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/jquery/jquery-1.8.2.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/yuidoc-bootstrap.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>
